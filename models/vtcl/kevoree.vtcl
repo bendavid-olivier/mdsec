@@ -1,0 +1,87 @@
+import nemf.packages.kevoree;
+import nemf.ecore.datatypes;
+import datatypes;
+
+machine kevoree { 
+	
+	 //allows to list all nodes
+	 pattern node(N) = {
+	 	ContainerNode(N); 
+	 }
+	 
+	 pattern nodeComponent(N,C) = {
+ 		ContainerNode(N); 
+ 		ComponentInstance(C);
+		ContainerNode.components(NC, N, C);
+	 }
+	 
+	 pattern channel(CHA) = {
+	 	Channel(CHA);	
+	 }
+	 
+	 pattern connection(N,C,P,B) ={
+		ContainerNode(N); 
+ 		ComponentInstance(C);
+		ContainerNode.components(NC, N, C);		
+		Port(P);
+		ComponentInstance.required(RELREQ,C,P);
+		MBinding(B);
+		MBinding.port(RELPORT,B,P);
+		Channel(CHA);
+		MBinding.hub(RELHUB,B,CHA);	 	
+	}
+	
+	 pattern enforcedRule(N1,COMP1,PORT1,BIND1,CHAN,N2,COMP2,PORT2,BIND2) ={
+		
+		Channel(CHAN);
+		
+		ContainerNode(N1); 
+ 		ComponentInstance(COMP1);
+		ContainerNode.components(NC1, N1, COMP1);		
+		Port(PORT1);
+		ComponentInstance.required(RELREQ1,COMP1,PORT1);
+		MBinding(BIND1);
+		MBinding.port(RELPORT1,BIND1,PORT1);
+		MBinding.hub(RELHUB1,BIND1,CHAN);
+		
+		ContainerNode(N2); 
+ 		ComponentInstance(COMP2);
+		ContainerNode.components(NC2, N2, COMP2);		
+		Port(PORT2);
+		ComponentInstance.provided(RELREQ2,COMP2,PORT2);
+		MBinding(BIND2);
+		MBinding.port(RELPORT2,BIND2,PORT2);
+		MBinding.hub(RELHUB2,BIND2,CHAN);
+			 	
+	}
+	
+	
+	pattern threeBuyers(N1,C1,N2,C2,N3,C3) ={
+		ContainerNode(N1); 
+ 		ComponentInstance(C1);
+ 		TypeDefinition(TYPDEF1);
+ 		Instance.typeDefinition(R1,C1,TYPDEF1);	
+		EString(TYPNAME1);
+		NamedElement.name(RR1,TYPDEF1,TYPNAME1);
+		check (toString(value(TYPNAME1)) == "Buyer");
+		ContainerNode.components(NC1, N1, C1);		
+	
+		ContainerNode(N2); 
+ 		ComponentInstance(C2);
+		TypeDefinition(TYPDEF2);
+ 		Instance.typeDefinition(R2,C2,TYPDEF1);	
+		EString(TYPNAME2);
+		NamedElement.name(RR2,TYPDEF2,TYPNAME2);
+		check (toString(value(TYPNAME2)) == "Buyer");	
+		ContainerNode.components(NC2, N2, C2);
+
+		ContainerNode(N3); 
+ 		ComponentInstance(C3);
+		TypeDefinition(TYPDEF3);
+ 		Instance.typeDefinition(R3,C3,TYPDEF1);	
+		EString(TYPNAME3);
+		NamedElement.name(RR3,TYPDEF3,TYPNAME3);
+		check (toString(value(TYPNAME3)) == "Buyer");
+		ContainerNode.components(NC3, N3, C3);	
+	}
+}

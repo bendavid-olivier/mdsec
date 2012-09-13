@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/mdsec/src"
+    modelPluginID="mdsec" modelName="Policy" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="6.0" copyrightFields="false">
+  <foreignModel>policy.ecore</foreignModel>
+  <genPackages prefix="Policy" disposableProviderFactory="true" ecorePackage="policy.ecore#/">
+    <genClasses ecoreClass="policy.ecore#//User">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//User/roles"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//User/session"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//User/delegates"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//User/delegatees"/>
+    </genClasses>
+    <genClasses ecoreClass="policy.ecore#//Role">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Role/permissions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Role/users"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Role/sessions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Role/ssod"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Role/ssodOpp"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Role/dsod"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Role/dsodOpp"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Role/rh"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Role/rhOpp"/>
+    </genClasses>
+    <genClasses ecoreClass="policy.ecore#//Permission">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Permission/operations"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Permission/objects"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Permission/roles"/>
+    </genClasses>
+    <genClasses ecoreClass="policy.ecore#//Operation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Operation/permissions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Operation/objects"/>
+    </genClasses>
+    <genClasses ecoreClass="policy.ecore#//Object">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Object/permissions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Object/operations"/>
+    </genClasses>
+    <genClasses ecoreClass="policy.ecore#//Session">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Session/user"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Session/roles"/>
+    </genClasses>
+    <genClasses ecoreClass="policy.ecore#//Policy">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference policy.ecore#//Policy/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="policy.ecore#//PolicyElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute policy.ecore#//PolicyElement/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute policy.ecore#//PolicyElement/archType"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

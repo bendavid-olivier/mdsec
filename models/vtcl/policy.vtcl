@@ -1,0 +1,149 @@
+import nemf.packages.policy;
+import nemf.ecore.datatypes;
+import datatypes;
+
+machine policy { 
+	 
+	 //allows to list all users
+	 pattern user(U) = {
+	 	User(U); 
+	 }
+	 
+	 //allows to list all roles
+	 pattern role(R) = {
+	 	Role(R); 
+	 }
+	 
+	 //allows to list all sessions
+	 pattern session(S) = {
+	 	Session(S); 
+	 }
+	 
+	 //allows to list all permission
+	 pattern permission(P) = {
+	 	Permission(P); 
+	 }
+
+	//allows to list all permission
+	 pattern operation(OP) = {
+	 	Operation(OP); 
+	 }
+	
+		 
+	  //allows to list all users
+	 pattern object(OB) = {
+	 	Object(OB);  
+	 }
+	 
+	 //list user-role assignment
+	 pattern userRoleAssignment(USER,ROLE) ={
+	 	User(USER);
+	 	Role(ROLE);
+	 	User.roles(REL,USER,ROLE);	
+	 }
+	 
+	 //list role-permission assignment
+	 pattern RolePermissionAssignment(ROLE,PERM) ={
+	 	Role(ROLE);
+	 	Permission(PERM);
+	 	Role.permissions(REL,ROLE,PERM);	
+	 }
+	 
+	 //list permission-operation assignment
+	 pattern PermissionOperationAssignment(PERM,OPE) ={
+	 	Permission(PERM);
+	 	Operation(OPE);
+	 	Permission.operations(REL,PERM,OPE);	
+	 }
+	 
+	 //list permission-operation assignment
+	 pattern OperationObjectAssignment(PERM,OPE,OBJ) ={
+	 	Permission(PERM);
+	 	Operation(OPE);
+	 	Object(OBJ);
+	 	Permission.operations(REL,PERM,OPE);
+	 	Operation.objects(REL2,OPE,OBJ);	  
+	 }
+	 
+	 //allows to list user->operation
+	 pattern userOperation(USER,OPERATIONNAME) = {
+	 	User(USER);
+	 	Role(ROLE);
+	 	Permission(PERMISSION);
+	 	Operation(OPERATION);
+	 	EString(OPERATIONNAME); 
+	 	PolicyElement.name(R,OPERATION,OPERATIONNAME);			
+	 	User.roles(UR,USER,ROLE);
+	 	Role.permissions(RP,ROLE,PERMISSION);
+	 	Permission.operations(PO,PERMISSION,OPERATION);
+	 }
+	 
+	 //allows to list reules under the form of user->operation->Object
+	 pattern userRule(USER,OPERATION,OBJECT) = {
+	 	User(USER);
+	 	Role(ROLE);
+	 	Permission(PERMISSION);
+	 	Operation(OPERATION);
+	 	Object(OBJECT);
+	 	User.roles(UR,USER,ROLE);
+	 	Role.permissions(RP,ROLE,PERMISSION);
+	 	Permission.operations(PO,PERMISSION,OPERATION);
+	 	Operation.objects(OR,OPERATION,OBJECT);
+	 }
+	 
+	//allows to list rule under the form of  user->role->permission->operation->Object (rule)
+	//here it may be interesting to detect  what are the redundant user rule(user->operation->object)
+	 pattern userFullRule(USER,ROLE,PERMISSION,OPERATION,OBJECT) = {
+	 	User(USER);
+	 	Role(ROLE);
+	 	Permission(PERMISSION);
+	 	Operation(OPERATION);
+	 	Object(OBJECT);	 	
+	 	User.roles(UR,USER,ROLE);
+	 	Role.permissions(RP,ROLE,PERMISSION);
+	 	Permission.operations(PO,PERMISSION,OPERATION);
+	 	Operation.objects(OR,OPERATION,OBJECT);
+	 }
+	
+	 	//allows to list rule under the form of  user->role->permission->operation->Object (rule)
+	//here it may be interesting to detect  what are the redundant user rule(user->operation->object)
+	 pattern userRoleRule(USER,ROLE,OPERATION,OBJECT) = {
+	 	User(USER);
+	 	Role(ROLE);
+	 	Permission(PERMISSION);
+	 	Operation(OPERATION);
+	 	Object(OBJECT);	 	
+	 	User.roles(UR,USER,ROLE);
+	 	Role.permissions(RP,ROLE,PERMISSION);
+	 	Permission.operations(PO,PERMISSION,OPERATION);
+	 	Operation.objects(OR,OPERATION,OBJECT);
+	 }
+	 
+	 pattern userActivatedRoleRule(USER,ROLE,OPERATION,OBJECT) = {
+	 	User(USER);
+	 	Role(ROLE);
+	 	Permission(PERMISSION);
+	 	Operation(OPERATION);
+	 	Object(OBJECT);	 
+	 	Session(SESSION);
+	 	
+	 	User.session(US,USER,SESSION);	
+	 	User.roles(UR,USER,ROLE);
+	 	Session.roles(SR,SESSION,ROLE);
+	 	Role.permissions(RP,ROLE,PERMISSION);
+	 	Permission.operations(PO,PERMISSION,OPERATION);
+	 	Operation.objects(OR,OPERATION,OBJECT);
+	 	
+	 }
+	
+	
+	pattern dsod(USER,ROLEA,ROLEB) = {
+		User(USER);
+	 	Role(ROLEA);
+	 	Role(ROLEB);
+	 	User.roles(URA,USER,ROLEA);
+	 	User.roles(URB,USER,ROLEB);
+	 	Role.dsod(RDA,ROLEA,ROLEB);	
+	}
+	
+}

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/mdsec/src"
+    modelPluginID="mdsec" modelName="Knowledge" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="6.0" copyrightFields="false">
+  <foreignModel>knowledge.ecore</foreignModel>
+  <genPackages prefix="Knowledge" disposableProviderFactory="true" ecorePackage="knowledge.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="knowledge.ecore#//FragmentType">
+      <genEnumLiterals ecoreEnumLiteral="knowledge.ecore#//FragmentType/Definition"/>
+      <genEnumLiterals ecoreEnumLiteral="knowledge.ecore#//FragmentType/Requirement"/>
+      <genEnumLiterals ecoreEnumLiteral="knowledge.ecore#//FragmentType/Recommendation"/>
+      <genEnumLiterals ecoreEnumLiteral="knowledge.ecore#//FragmentType/AcceptablePractice"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="knowledge.ecore#//StatusType">
+      <genEnumLiterals ecoreEnumLiteral="knowledge.ecore#//StatusType/ComputerBased"/>
+      <genEnumLiterals ecoreEnumLiteral="knowledge.ecore#//StatusType/ExpertValidation"/>
+      <genEnumLiterals ecoreEnumLiteral="knowledge.ecore#//StatusType/ExpertAddition"/>
+      <genEnumLiterals ecoreEnumLiteral="knowledge.ecore#//StatusType/ExpertDeletion"/>
+      <genEnumLiterals ecoreEnumLiteral="knowledge.ecore#//StatusType/ExpertEdition"/>
+    </genEnums>
+    <genClasses ecoreClass="knowledge.ecore#//KnowledgeBase">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//KnowledgeBase/corpus"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//KnowledgeBase/contexts"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//KnowledgeBase/projects"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//KnowledgeBase/interactionModel"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//KnowledgeBase/themes"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//Corpus">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//Corpus/documents"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Corpus/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="knowledge.ecore#//Document">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//Document/fragments"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Document/date"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Document/author"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//Standard"/>
+    <genClasses image="false" ecoreClass="knowledge.ecore#//DocumentModelElement"/>
+    <genClasses ecoreClass="knowledge.ecore#//Section">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//Section/fragments"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Section/title"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="knowledge.ecore#//TypedFragment">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//TypedFragment/Category"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//TypedFragment/Criticality"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//TypedFragment/Flexibility"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//TypedFragment/Maturity"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//TypedFragment/interpretedAs"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//Requirement"/>
+    <genClasses ecoreClass="knowledge.ecore#//Recommendation"/>
+    <genClasses ecoreClass="knowledge.ecore#//Definition"/>
+    <genClasses image="false" ecoreClass="knowledge.ecore#//Fragment">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Fragment/informationNote"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference knowledge.ecore#//Fragment/inThemes"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//Interpretation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Interpretation/date"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Interpretation/author"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference knowledge.ecore#//Interpretation/context"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Interpretation/value"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference knowledge.ecore#//Interpretation/interpretedFragment"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Interpretation/fragmentType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//Interpretation/refinedAs"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//Context">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Context/Country"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Context/date"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Context/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="knowledge.ecore#//Interaction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Interaction/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Interaction/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Interaction/Description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Interaction/author"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Interaction/dependencyDate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Interaction/Status"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//Composition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Composition/isTotal"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//Composition/composedOf"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//Composition/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//Characterization">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//Characterization/mainFragment"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//Characterization/additionalFragments"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//Specialization">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//Specialization/alternatives"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//Reference"/>
+    <genClasses ecoreClass="knowledge.ecore#//Coverage"/>
+    <genClasses ecoreClass="knowledge.ecore#//TotalEquivalence"/>
+    <genClasses ecoreClass="knowledge.ecore#//PartialEquivalence"/>
+    <genClasses ecoreClass="knowledge.ecore#//Require"/>
+    <genClasses ecoreClass="knowledge.ecore#//Conflict"/>
+    <genClasses ecoreClass="knowledge.ecore#//Justification">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference knowledge.ecore#//Justification/documentElement"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference knowledge.ecore#//Justification/qualificationElement"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//Verification">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference knowledge.ecore#//Verification/architectureElement"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference knowledge.ecore#//Verification/qualificationElement"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//Assignment">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference knowledge.ecore#//Assignment/documentElement"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference knowledge.ecore#//Assignment/architectureElement"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//QualificationModelElement"/>
+    <genClasses ecoreClass="knowledge.ecore#//ArchitectureModelElement"/>
+    <genClasses image="false" ecoreClass="knowledge.ecore#//ModelElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//ModelElement/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//ModelElement/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//ModelElement/description"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference knowledge.ecore#//ModelElement/interactions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//ModelElement/expression"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="knowledge.ecore#//NonDirectionalInteraction"/>
+    <genClasses image="false" ecoreClass="knowledge.ecore#//InterAreaInteraction"/>
+    <genClasses image="false" ecoreClass="knowledge.ecore#//DirectionalInteraction"/>
+    <genClasses ecoreClass="knowledge.ecore#//Architecture">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//Architecture/architectureElements"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Architecture/name"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//Qualification">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//Qualification/qualificationElements"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Qualification/name"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//Project">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Project/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//Project/architecture"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//Project/qualification"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//InteractionModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference knowledge.ecore#//InteractionModel/interactions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//InteractionModel/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="knowledge.ecore#//IntraAreaInteraction">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference knowledge.ecore#//IntraAreaInteraction/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference knowledge.ecore#//IntraAreaInteraction/target"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="knowledge.ecore#//Operator">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Operator/id"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//AND"/>
+    <genClasses ecoreClass="knowledge.ecore#//OR"/>
+    <genClasses ecoreClass="knowledge.ecore#//XOR"/>
+    <genClasses ecoreClass="knowledge.ecore#//AcceptedPractice"/>
+    <genClasses ecoreClass="knowledge.ecore#//RegulatoryText"/>
+    <genClasses ecoreClass="knowledge.ecore#//RegulatoryGuidance"/>
+    <genClasses ecoreClass="knowledge.ecore#//Principle"/>
+    <genClasses ecoreClass="knowledge.ecore#//TechnicalCode"/>
+    <genClasses ecoreClass="knowledge.ecore#//RegulatoryPosition"/>
+    <genClasses ecoreClass="knowledge.ecore#//OperatorDocument"/>
+    <genClasses ecoreClass="knowledge.ecore#//Text"/>
+    <genClasses ecoreClass="knowledge.ecore#//Theme">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Theme/ThemeId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Theme/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute knowledge.ecore#//Theme/Signature"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference knowledge.ecore#//Theme/tracks"/>
+    </genClasses>
+    <genClasses ecoreClass="knowledge.ecore#//NormativeAnnex"/>
+    <genClasses ecoreClass="knowledge.ecore#//InformativeAnnex"/>
+    <genClasses ecoreClass="knowledge.ecore#//AcceptablePractice"/>
+    <genClasses image="false" ecoreClass="knowledge.ecore#//Refinement"/>
+  </genPackages>
+</genmodel:GenModel>
