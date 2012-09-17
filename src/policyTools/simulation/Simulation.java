@@ -11,6 +11,7 @@ import policyTools.editor.PolicyEditor;
 import policyTools.guiEditor.commands.CommandLoadASMSSmall;
 import policyTools.guiEditor.commands.CommandLoadModelExample;
 import policyTools.guiEditor.graphicComponents.PolicyTextualEditor;
+import utils.statistics.Statistics;
 import utils.time.Chrono;
 import kevoree.ContainerRoot;
 import kevoree.KevoreeFactory;
@@ -158,41 +159,51 @@ public class Simulation {
 //		}
 //		averageTime = sumTime / (numberOfIteration-1);
 
-		StandardDeviation sd = new StandardDeviation();		
-		Max max = new  Max();
-		Min min = new Min();
-		Mean mean = new Mean();
+//		StandardDeviation sd = new StandardDeviation();		
+//		Max max = new  Max();
+//		Min min = new Min();
+//		Mean mean = new Mean();
+//		
+//		HashMap <Double,Integer> execTimesP = new HashMap<Double, Integer>();
+//		
+//		for(double tim : executionTime){
+//			if(execTimesP.containsKey(tim)){
+//				execTimesP.put(tim, execTimesP.get(tim) + 1);
+//			}
+//			else{
+//				execTimesP.put(tim, 1);
+//			}
+//		}
+//		
+//		double mode = 0;
+//		int numberOccurrenceMode = 0;
+//		
+//		for(Entry<Double, Integer> d : execTimesP.entrySet()){
+//			if(d.getValue() > numberOccurrenceMode){
+//				numberOccurrenceMode = d.getValue();
+//				mode = d.getKey();
+//			}
+//		}
+//		
+//		double standardDeviation = sd.evaluate(executionTime, 1, numberOfIteration-1);		
+//		
+//		System.out.println("min time : "+min.evaluate(executionTime, 1, numberOfIteration - 1));
+//		System.out.println("max time : "+max.evaluate(executionTime, 1, numberOfIteration - 1));
+//		System.out.println("mean time : "+mean.evaluate(executionTime, 1, numberOfIteration - 1));
+//		System.out.println("mode : "+mode+ "  numberOccurrenceMode : "+numberOccurrenceMode);
+//		System.out.println("standard deviation : "+ standardDeviation);
 		
-		HashMap <Double,Integer> execTimesP = new HashMap<Double, Integer>();
 		
-		for(double tim : executionTime){
-			if(execTimesP.containsKey(tim)){
-				execTimesP.put(tim, execTimesP.get(tim) + 1);
-			}
-			else{
-				execTimesP.put(tim, 1);
-			}
-		}
-		
-		double mode = 0;
-		int numberOccurrenceMode = 0;
-		
-		for(Entry<Double, Integer> d : execTimesP.entrySet()){
-			if(d.getValue() > numberOccurrenceMode){
-				numberOccurrenceMode = d.getValue();
-				mode = d.getKey();
-			}
-		}
-		
-		double standardDeviation = sd.evaluate(executionTime, 1, numberOfIteration-1);		
-		
-		System.out.println("min time : "+min.evaluate(executionTime, 1, numberOfIteration - 1));
-		System.out.println("max time : "+max.evaluate(executionTime, 1, numberOfIteration - 1));
-		System.out.println("mean time : "+mean.evaluate(executionTime, 1, numberOfIteration - 1));
-		System.out.println("mode : "+mode+ "  numberOccurrenceMode : "+numberOccurrenceMode);
-		System.out.println("standard deviation : "+ standardDeviation);
+		//hello Phillipa
 		
 		
+		//initialise
+
+		Statistics stats = new Statistics(executionTime);
+
+		//runs the statistics and also say whether the results should be grouped in ranges - right now the range is 10 groups.
+
+		stats.statistics(true);
 		
 	}	
 }

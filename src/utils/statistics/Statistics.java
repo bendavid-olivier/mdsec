@@ -95,9 +95,10 @@ public class Statistics {
 		return mode;
 	}
 	
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		Statistics s = new Statistics();
 		s.statistics(false);
-	}*/
+	}
+	
+	
 }
-

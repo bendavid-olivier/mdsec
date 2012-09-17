@@ -35,6 +35,8 @@
     <genClasses ecoreClass="policy.ecore#//Object">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Object/permissions"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Object/operations"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute policy.ecore#//Object/nodeName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute policy.ecore#//Object/isInstance"/>
     </genClasses>
     <genClasses ecoreClass="policy.ecore#//Session">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference policy.ecore#//Session/user"/>
@@ -46,6 +48,11 @@
     <genClasses ecoreClass="policy.ecore#//PolicyElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute policy.ecore#//PolicyElement/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute policy.ecore#//PolicyElement/archType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference policy.ecore#//PolicyElement/constraints"/>
+    </genClasses>
+    <genClasses ecoreClass="policy.ecore#//Constraint">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute policy.ecore#//Constraint/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute policy.ecore#//Constraint/expression"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

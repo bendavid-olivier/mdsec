@@ -8,9 +8,6 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Export-Package: patternmatchers.kevoree,
  patternmatchers.policy,
- policy,
- policy.impl,
- policy.util,
  signatures.kevoree,
  signatures.policy
 Require-Bundle: org.eclipse.core.runtime,
