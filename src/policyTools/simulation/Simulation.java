@@ -118,92 +118,33 @@ public class Simulation {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("START ");
-		int numberOfIteration = 1000;
-		
+		System.out.println("START SIMULATION");
+		int numberOfIteration = 2;
 		double[] executionTime = new double[numberOfIteration]; 
+		for(int size =0;size <3;size++){
+			for(int i =0;i<numberOfIteration; i++){	
+				Chrono c = new Chrono();
+				c.start();
+				PolicyTextualEditor editor = new PolicyTextualEditor(false);
+				//load policy model example
+				CommandLoadASMSSmall loadModelExample = new CommandLoadASMSSmall(editor, "loadME", "loadME");
+				loadModelExample.execute( (int)Math.pow(10, size+1));		
+				//load types for the simulation
+				editor.simulation.loadTypes();
+				//listen architectural model
+				editor.simulation.kevoreeListener.listen();
+				//init architectural changes
+				editor.simulation.initSimulationArchitecturalChanges();
+				c.stop();
+				executionTime[i] = c.timeMs();
+			}
 		
-	//	String times = "TIMES \n";		
-		for(int i =0;i<numberOfIteration; i++){	
-			Chrono c = new Chrono();
-			c.start();
-			PolicyTextualEditor editor = new PolicyTextualEditor(false);
-			//load policy model example
-			CommandLoadASMSSmall loadModelExample = new CommandLoadASMSSmall(editor, "loadME", "loadME");
-			loadModelExample.execute();		
-//			System.out.println("model loaded : "+editor.policy.getElements().size());
-			//load types for the simulation
-			editor.simulation.loadTypes();
-//			System.out.println("types loaded : "+editor.simulation.kevoree.getTypeDefinitions().size());
-			//listen architectural model
-			editor.simulation.kevoreeListener.listen();
-//			System.out.println("kevoree model listened");
-			//init architectural changes
-			editor.simulation.initSimulationArchitecturalChanges();
-//			System.out.println("architecture model change generated");
-			c.stop();
-		//	times = times +  " iteration : "+i+" : "+c.displayTime() +"\n";
-			executionTime[i] = c.timeMs();
-//			System.out.println(c.displayTime());
-//			System.out.println();
-//			System.out.println("-------------------------------------------------------------------------------------------------------------");
-//			System.out.println();
+			System.out.println("Policy size : "+ (size + 1));
+			//initialise
+			Statistics stats = new Statistics(executionTime);
+			//runs the statistics and also say whether the results should be grouped in ranges - right now the range is 10 groups.
+			stats.statistics(false);	
 		}
-		
-//		System.out.println(times);
-		
-//		double sumTime = 0;
-//		double averageTime = 0;
-//		for(int i = 1;i<numberOfIteration; i++){
-//			sumTime = sumTime + executionTime[i];
-//		}
-//		averageTime = sumTime / (numberOfIteration-1);
-
-//		StandardDeviation sd = new StandardDeviation();		
-//		Max max = new  Max();
-//		Min min = new Min();
-//		Mean mean = new Mean();
-//		
-//		HashMap <Double,Integer> execTimesP = new HashMap<Double, Integer>();
-//		
-//		for(double tim : executionTime){
-//			if(execTimesP.containsKey(tim)){
-//				execTimesP.put(tim, execTimesP.get(tim) + 1);
-//			}
-//			else{
-//				execTimesP.put(tim, 1);
-//			}
-//		}
-//		
-//		double mode = 0;
-//		int numberOccurrenceMode = 0;
-//		
-//		for(Entry<Double, Integer> d : execTimesP.entrySet()){
-//			if(d.getValue() > numberOccurrenceMode){
-//				numberOccurrenceMode = d.getValue();
-//				mode = d.getKey();
-//			}
-//		}
-//		
-//		double standardDeviation = sd.evaluate(executionTime, 1, numberOfIteration-1);		
-//		
-//		System.out.println("min time : "+min.evaluate(executionTime, 1, numberOfIteration - 1));
-//		System.out.println("max time : "+max.evaluate(executionTime, 1, numberOfIteration - 1));
-//		System.out.println("mean time : "+mean.evaluate(executionTime, 1, numberOfIteration - 1));
-//		System.out.println("mode : "+mode+ "  numberOccurrenceMode : "+numberOccurrenceMode);
-//		System.out.println("standard deviation : "+ standardDeviation);
-		
-		
-		//hello Phillipa
-		
-		
-		//initialise
-
-		Statistics stats = new Statistics(executionTime);
-
-		//runs the statistics and also say whether the results should be grouped in ranges - right now the range is 10 groups.
-
-		stats.statistics(false);
-		
+		System.out.println("END SIMULATION");
 	}	
 }
