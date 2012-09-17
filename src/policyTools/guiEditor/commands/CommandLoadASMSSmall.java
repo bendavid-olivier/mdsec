@@ -27,4 +27,13 @@ public class CommandLoadASMSSmall extends Command{
 		gen.generateModelExampleASMSvaryUsers(size);
 	}
 	
+	public void execute2(int numberUsers , int numberSales) {
+		Policy policy = PolicyFactory.eINSTANCE.createPolicy();
+		editor.setPolicy(policy);
+		editor.policyListener = new PolicyListener(editor);
+		editor.policyListener.listen();
+		Generator gen = new Generator(policy);
+		gen.generateModelExampleASMSvaryUsers3(numberUsers,numberSales);
+	}
+	
 }

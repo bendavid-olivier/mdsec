@@ -5,6 +5,7 @@ import java.util.HashSet;
 import org.eclipse.emf.common.util.EList;
 
 import policy.*;
+import policy.Object;
 import policy.impl.*;
 
 public class PolicyEditor {
@@ -61,7 +62,6 @@ public class PolicyEditor {
 	public HashSet<String> getPolicyObjectsNames(String policyName){
 		 HashSet<String> res = new HashSet<String>();
 		 for(PolicyElement e :policy.getElements()){
-//			 System.out.println(e.getName() + " " +e.getClass());
 				if(e instanceof ObjectImpl){
 					
 					res.add(e.getName());
@@ -70,6 +70,16 @@ public class PolicyEditor {
 		 return res;
 	}
 	
+	
+	public HashSet<policy.Object> getPolicyObjects(String policyName){
+		 HashSet<policy.Object> res = new HashSet<policy.Object>();
+		 for(PolicyElement e :policy.getElements()){
+				if(e instanceof ObjectImpl){
+					res.add((Object) e);
+				}
+			}
+		 return res;
+	}
 	
 	public void addPolicyUser(String policyName, String userName) {
 		User x = factory.createUser();
@@ -383,6 +393,25 @@ public class PolicyEditor {
 			String roleChildName) {
 		getPolicyRoleByName(policyName, roleName).getRh().remove(
 				getPolicyRoleByName(policyName, roleChildName));
+	}
+	
+	
+	//here navigate policies and sub-policies if any
+	// right now only the root one !
+	public int getNumberPolicyRules(){
+		int res = 0;
+		for( PolicyElement pe : policy.getElements()){
+			if(pe instanceof Role){
+				for(Permission p : ((Role)pe).getPermissions()){
+					for(Operation op : p.getOperations()){
+						for(policy.Object ob : op.getObjects()){
+							res = res + 1;
+						}
+					}
+				}
+			}
+		}
+		return res;
 	}
 
 }
