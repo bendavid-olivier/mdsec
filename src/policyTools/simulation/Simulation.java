@@ -203,7 +203,7 @@ public class Simulation {
 
 		//runs the statistics and also say whether the results should be grouped in ranges - right now the range is 10 groups.
 
-		stats.statistics(true);
+		stats.statistics(false);
 		
 	}	
 }
