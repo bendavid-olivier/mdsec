@@ -69,7 +69,7 @@ public class Simulation {
 					operations.add(op.getName());
 				}
 				for(String op :operations){
-					editor.addComponentTypePortProv(ob.getName(), op);
+					editor.addComponentTypePortProv(ob.getArchType(), op);
 				}
 			}
 		}
@@ -87,12 +87,20 @@ public class Simulation {
 	public void addResources(){
 		PolicyEditor pe = new PolicyEditor(policyTextualEditor.getPolicy());
 		//System.out.println("resources " +policyTextualEditor.getPolicy().getElements().size() + " "+ policyTextualEditor.policyEditor);
-		HashSet<String> objects = pe.getPolicyObjectsNames(policyTextualEditor.getPolicy().getName());
-		for(String obj : objects){
+//		HashSet<String> objects = pe.getPolicyObjectsNames(policyTextualEditor.getPolicy().getName());
+//		for(String obj : objects){
+////			System.out.println("adding resource : "+obj);
+//			editor.addNode(obj);
+//			editor.addNodeComponent(obj, obj, obj);
+//		}
+		
+		HashSet<policy.Object> objects = pe.getPolicyObjects(policyTextualEditor.getPolicy().getName());
+		for(policy.Object obj : objects){
 //			System.out.println("adding resource : "+obj);
-			editor.addNode(obj);
-			editor.addNodeComponent(obj, obj, obj);
+			editor.addNode(obj.getName());
+			editor.addNodeComponent(obj.getName(), obj.getName(), obj.getArchType());
 		}
+		
 	}
 	
 	public void connectUsers(){
@@ -119,8 +127,16 @@ public class Simulation {
 	
 	public static void main(String[] args) {
 		System.out.println("START SIMULATION");
-		int numberOfIteration = 2;
+		int numberOfIteration = 10;
 		double[] executionTime = new double[numberOfIteration]; 
+		
+		PolicyTextualEditor editor2 = new PolicyTextualEditor(false);
+		CommandLoadASMSSmall loadModelExample2 = new CommandLoadASMSSmall(editor2, "loadME", "loadME");
+		loadModelExample2.execute2(10, 10);		
+		PolicyEditor pe = new PolicyEditor(editor2.policy);
+		System.out.println("policy rules : " + pe.getNumberPolicyRules());
+		
+		
 		for(int size =0;size <3;size++){
 			for(int i =0;i<numberOfIteration; i++){	
 				Chrono c = new Chrono();
@@ -128,17 +144,17 @@ public class Simulation {
 				PolicyTextualEditor editor = new PolicyTextualEditor(false);
 				//load policy model example
 				CommandLoadASMSSmall loadModelExample = new CommandLoadASMSSmall(editor, "loadME", "loadME");
-				loadModelExample.execute( (int)Math.pow(10, size+1));		
+				loadModelExample.execute2(10*(size+1), 10);		
 				//load types for the simulation
 				editor.simulation.loadTypes();
 				//listen architectural model
 				editor.simulation.kevoreeListener.listen();
 				//init architectural changes
 				editor.simulation.initSimulationArchitecturalChanges();
+
 				c.stop();
 				executionTime[i] = c.timeMs();
 			}
-		
 			System.out.println("Policy size : "+ (size + 1));
 			//initialise
 			Statistics stats = new Statistics(executionTime);

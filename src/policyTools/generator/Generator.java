@@ -69,14 +69,7 @@ public class Generator{
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	public void generateModelExampleMDSEC() {
 		PolicyEditor pe = new PolicyEditor(policy);
 		String policyName = "AuctionSaleSystemPolicy";
@@ -199,6 +192,86 @@ public class Generator{
 		//adding relationships between role and permissions and objects
 		pe.addPolicyPermissionOperationObject(policyName, "pUser","bid","Sale");
 		pe.addPolicyPermissionOperationObject(policyName, "pUser","register","Sale");
+		pe.addPolicyPermissionOperationObject(policyName, "pAdmin","create","SaleManager");
+		pe.addPolicyPermissionOperationObject(policyName, "pAdmin","delete","SaleManager");
+	}
+	
+	
+	
+	
+	public void generateModelExampleASMSvaryUsers3(int numberUsers, int numberSales) {
+		PolicyEditor pe = new PolicyEditor(policy);
+		String policyName = "AuctionSaleSystemPolicy";
+		
+		pe.setMainPolicyName(policyName);
+		
+		//adding users
+		for(int i = 0;i<numberUsers;i++){
+			pe.addPolicyUser(policyName, "User"+i);
+		}		
+		
+		//adding roles
+		pe.addPolicyRole(policyName, "Buyer");
+		pe.getPolicyRoleByName(policyName, "Buyer").setArchType("Buyer");
+		
+		
+		pe.addPolicyRole(policyName, "Seller");
+		pe.getPolicyRoleByName(policyName, "Seller").setArchType("Seller");
+		
+		
+		//adding permissions
+		pe.addPolicyPermission(policyName, "pUser");
+		pe.addPolicyPermission(policyName, "pAdmin");
+		pe.addPolicyPermission(policyName, "pPersonal");
+	
+		//adding operations
+		pe.addPolicyOperation(policyName, "bid");
+//		pe.addPolicyOperation(policyName, "bid10");
+//		pe.addPolicyOperation(policyName, "bid50");
+		pe.addPolicyOperation(policyName, "register");
+//		pe.addPolicyOperation(policyName, "unregister");
+		
+		pe.addPolicyOperation(policyName, "create");
+//		pe.addPolicyOperation(policyName, "read");
+//		pe.addPolicyOperation(policyName, "update");
+		pe.addPolicyOperation(policyName, "delete");
+		
+	
+		//adding objects
+		for(int i = 0;i<numberSales;i++){
+			pe.addPolicyObject(policyName, "Sale"+i);
+			pe.getPolicyObjectByName(policyName, "Sale"+i).setArchType("Sale");
+		}
+		
+		pe.addPolicyObject(policyName, "SaleManager");
+		pe.getPolicyObjectByName(policyName, "SaleManager").setArchType("SaleManager");
+		
+		
+		//adding dsod
+		pe.addPolicyRoleRoleDSOD(policyName, "Buyer", "Seller");
+		
+		//adding relationships users to roles
+		for(int i = 0;i<numberUsers;i++){
+			pe.addPolicyUserRole(policyName, "User"+i, "Buyer");
+			pe.addPolicyUserRole(policyName, "User"+i, "Seller");	
+		}
+		
+		//adding relationships between role and permissions
+		pe.addPolicyRolePermission(policyName, "Buyer", "pUser");
+		pe.addPolicyRolePermission(policyName, "Seller", "pAdmin");
+		
+		//adding relationships between role and permissions
+		pe.addPolicyPermissionOperation(policyName, "pUser", "bid");
+		pe.addPolicyPermissionOperation(policyName, "pUser", "register");
+		pe.addPolicyPermissionOperation(policyName, "pAdmin", "create");
+		pe.addPolicyPermissionOperation(policyName, "pAdmin", "delete");
+
+		//adding relationships between role and permissions and objects
+		
+		for(int i = 0;i<numberSales;i++){
+			pe.addPolicyPermissionOperationObject(policyName, "pUser","bid","Sale"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pUser","register","Sale"+i);
+		}
 		pe.addPolicyPermissionOperationObject(policyName, "pAdmin","create","SaleManager");
 		pe.addPolicyPermissionOperationObject(policyName, "pAdmin","delete","SaleManager");
 	}

@@ -96,8 +96,6 @@ public class KevoreeEditor{
 	}
 	
 	
-	
-	
 	//managing instances
 	
 	public void addNode(String name){
@@ -196,6 +194,7 @@ public class KevoreeEditor{
 	
 	public void addBinding(String nodeName,String compName,String portName,String channelName){
 		MBinding b = factory.createMBinding();
+		
 //		System.out.println(getChannelByName(channelName).getName());
 //		System.out.println(getNodeComponentPortByName(nodeName, compName, portName).getPortTypeRef().getName());
 		
