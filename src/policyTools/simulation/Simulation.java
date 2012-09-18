@@ -1,16 +1,10 @@
 package policyTools.simulation;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
-
 import java.util.HashSet;
-
 import policy.*;
 import policy.impl.*;
 import policyTools.editor.PolicyEditor;
 import policyTools.guiEditor.commands.CommandLoadASMSSmall;
-import policyTools.guiEditor.commands.CommandLoadModelExample;
-import policyTools.guiEditor.controllers.PolicyListener;
 import policyTools.guiEditor.graphicComponents.PolicyTextualEditor;
 import utils.statistics.Statistics;
 import utils.time.Chrono;
@@ -19,11 +13,6 @@ import kevoree.KevoreeFactory;
 import kevoreeTools.editor.KevoreeEditor;
 import kevoreeTools.guiEditor.controllers.KevoreeListener;
 
-import org.apache.commons.math3.stat.*;
-import org.apache.commons.math3.stat.descriptive.moment.Mean;
-import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
-import org.apache.commons.math3.stat.descriptive.rank.*;
-
 public class Simulation {
 
 	public ContainerRoot kevoree;
@@ -31,6 +20,12 @@ public class Simulation {
 	public KevoreeEditor editor;
 	public KevoreeListener kevoreeListener;
 	public PolicyTextualEditor policyTextualEditor;
+	public Policy policy;
+	
+	
+	public Simulation(){
+		
+	}
 	
 	public Simulation(PolicyTextualEditor pe){
 		KevoreeFactory fact = KevoreeFactory.eINSTANCE;

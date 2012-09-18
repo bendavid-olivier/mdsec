@@ -39,7 +39,6 @@ public class PolicyEditor {
 		if (id.equals(policy.getName())) {
 			return policy;
 		} else {
-			EList<PolicyElement> test = policy.getElements();
 			for (PolicyElement elt : policy.getElements()) {
 				if (elt instanceof PolicyImpl && elt.getName().equals(id)) {
 					res = (Policy) elt;
@@ -70,8 +69,6 @@ public class PolicyEditor {
 		 return res;
 	}
 	
-	
-
 	public HashSet<policy.User> getPolicyUsers(String policyName){
 		 HashSet<policy.User> res = new HashSet<policy.User>();
 		 for(PolicyElement e :policy.getElements()){
@@ -81,7 +78,6 @@ public class PolicyEditor {
 			}
 		 return res;
 	}
-	
 	
 	public HashSet<policy.Object> getPolicyObjects(String policyName){
 		 HashSet<policy.Object> res = new HashSet<policy.Object>();
@@ -109,7 +105,6 @@ public class PolicyEditor {
 		getPolicyUserByName(policyName, userName).setSession(null);
 		getPolicyByName(policyName).getElements().remove(
 				getPolicyUserByName(policyName, userName));
-
 	}
 
 	public User getPolicyUserByName(String policyName, String id) {
@@ -122,7 +117,7 @@ public class PolicyEditor {
 		}
 		return res;
 	}
-
+	
 	public Role getPolicyUserRoleByName(String policyName, String userName,
 			String roleName) {
 		Role res = null;
@@ -136,7 +131,7 @@ public class PolicyEditor {
 		}
 		return res;
 	}
-
+	
 	public void addPolicyRole(String policyName, String roleName) {
 		Role x = factory.createRole();
 		x.setName(roleName);
@@ -173,8 +168,6 @@ public class PolicyEditor {
 		return pol;
 	}
 	
-	
-	
 	public User cloneUser(User r){
 		User user = factory.createUser();
 		user.setName(r.getName());
@@ -209,7 +202,6 @@ public class PolicyEditor {
 		ob.setArchType(r.getArchType());
 		return ob;
 	}
-	
 	
 	public void removePolicyRole(String policyName, String roleName) {
 		getPolicyRoleByName(policyName, roleName).getPermissions().clear();

@@ -1,7 +1,5 @@
 package policyTools.split;
-
 import java.util.HashSet;
-
 import policy.Operation;
 import policy.Permission;
 import policy.Policy;
@@ -9,25 +7,23 @@ import policy.PolicyFactory;
 import policy.Role;
 import policy.User;
 import policyTools.editor.PolicyEditor;
-
 public class Splitter {
-
 	public Policy policy;
 	public PolicyFactory factory;
-	
 	public Splitter(Policy p){
 		policy = p;
 		factory = PolicyFactory.eINSTANCE;
 	}
-	
 	public HashSet<Policy> split(){
 		HashSet<Policy> res = new HashSet<Policy>();
 		PolicyEditor policyEditor = new PolicyEditor(policy);
 		for (User u : policyEditor.getPolicyUsers(policy.getName())){
 			String policyName = u.getName();
 			Policy p = factory.createPolicy();
+			p.setName(policyName);
 			PolicyEditor pe = new PolicyEditor(p);
-			p.getElements().add(pe.cloneUser(u));
+			User usr = pe.cloneUser(u);   
+			p.getElements().add(usr);
 			for(Role r : u.getRoles()){
 				Role rol = pe.cloneRole(r);
 				p.getElements().add(rol);
@@ -48,10 +44,8 @@ public class Splitter {
 					}
 				}
 			}
+			res.add(p);
 		}
 		return res;
 	}
-	
-	
-	
 }

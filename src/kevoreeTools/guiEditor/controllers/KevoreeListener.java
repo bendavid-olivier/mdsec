@@ -4,12 +4,10 @@ import org.eclipse.viatra2.emf.incquery.runtime.exception.IncQueryRuntimeExcepti
 import org.eclipse.viatra2.emf.incquery.runtime.extensibility.BuilderRegistry;
 import org.eclipse.viatra2.gtasm.patternmatcher.incremental.rete.misc.DeltaMonitor;
 import patternmatchers.kevoree.*;
-import policy.PolicyElement;
-import policy.impl.UserImpl;
 import policyTools.editor.PolicyEditor;
 import policyTools.simulation.Simulation;
+import policyTools.simulation.SimulationSplit;
 import signatures.kevoree.*;
-import signatures.policy.UserActivatedRoleRuleSignature;
 import kevoree.*;
 import kevoreeTools.guiEditor.graphicComponents.*;
 
@@ -17,7 +15,7 @@ public class KevoreeListener {
 
 	private KevoreeTextualEditor editor;
 	private ContainerRoot kevoree;
-	private Simulation simulation;
+	private SimulationSplit simulation;
 
 	private NodeMatcher nodeMatcher;
 	private NodeComponentMatcher nodeComponentMatcher;
@@ -49,13 +47,13 @@ public class KevoreeListener {
 
 	public void initMatchers() {
 		try {
-			nodeMatcher = NodeMatcher.FACTORY.getMatcher(simulation.kevoree);
+			nodeMatcher = NodeMatcher.FACTORY.getMatcher(kevoree);
 			nodeComponentMatcher = NodeComponentMatcher.FACTORY
-					.getMatcher(simulation.kevoree);
+					.getMatcher(kevoree);
 			channelMatcher = ChannelMatcher.FACTORY
-					.getMatcher(simulation.kevoree);
+					.getMatcher(kevoree);
 			enforcedRuleMatcher = EnforcedRuleMatcher.FACTORY
-					.getMatcher(simulation.kevoree);
+					.getMatcher(kevoree);
 		} catch (IncQueryRuntimeException e) {
 			e.printStackTrace();
 		}
@@ -71,8 +69,29 @@ public class KevoreeListener {
 		monitorChannel = channelMatcher.newDeltaMonitor(false);
 		monitorEnforcedRule = enforcedRuleMatcher.newDeltaMonitor(false);
 	}
+	
+	public KevoreeListener(ContainerRoot cr) {
+		kevoree = cr;
+		registerLiteners();
+		initMatchers();
+		monitorNode = nodeMatcher.newDeltaMonitor(false);
+		monitorNodeComponent = nodeComponentMatcher.newDeltaMonitor(false);
+		monitorChannel = channelMatcher.newDeltaMonitor(false);
+		monitorEnforcedRule = enforcedRuleMatcher.newDeltaMonitor(false);
+	}
 
 	public KevoreeListener(Simulation k) {
+		kevoree = k.kevoree;
+		registerLiteners();
+//		simulation = k;
+		initMatchers();
+		monitorNode = nodeMatcher.newDeltaMonitor(false);
+		monitorNodeComponent = nodeComponentMatcher.newDeltaMonitor(false);
+		monitorChannel = channelMatcher.newDeltaMonitor(false);
+		monitorEnforcedRule = enforcedRuleMatcher.newDeltaMonitor(false);
+	}
+	
+	public KevoreeListener(SimulationSplit k) {
 		kevoree = k.kevoree;
 		registerLiteners();
 		simulation = k;
@@ -94,18 +113,18 @@ public class KevoreeListener {
 //					System.out.println("detection of the addition of a node : "+node);
 					
 //					simulation.policyTextualEditor.simulationPanel.archiTreeMonitor
-//							.addNode(node);					
+//							.addNode(node);		
+
+//					System.out.println(simulation.policy.getName());
 					PolicyEditor pe = new PolicyEditor(
-							simulation.policyTextualEditor.getPolicy());
+							simulation.policy);
 					
 					// check whether it is a new user ?
 					// if yes then create a session
-					if (pe.getPolicyUserByName(simulation.policyTextualEditor
-							.getPolicy().getName(), node) != null) {
-						pe.setPolicyUserSession(simulation.policyTextualEditor
-								.getPolicy().getName(), node, "s" + node);
+					if (pe.getPolicyUserByName(simulation.policy.getName(), node) != null) {
+						pe.setPolicyUserSession(simulation.policy.getName(), node, "s" + node);
 					}
-					simulation.policyTextualEditor.update();
+//					simulation.policyTextualEditor.update();
 
 //					System.out.println("yo detect something : " + node);
 				}
@@ -136,17 +155,16 @@ public class KevoreeListener {
 //					System.out.println("detection of the addition of a component : "+comp+" of type : "+compType+" in the node : "+node);
 
 					PolicyEditor pe = new PolicyEditor(
-							simulation.policyTextualEditor.getPolicy());
+							simulation.policy);
 					// check whether it is a role activation ?
 					boolean roleActivation = true;
 					// check if it is a role
-					if (pe.getPolicyRoleByName(simulation.policyTextualEditor
-							.getPolicy().getName(), compType) == null) {
+					if (pe.getPolicyRoleByName(simulation.policy.getName(), compType) == null) {
 						roleActivation = false;
 					}
 					// check if the role is associated to the user
 					if (pe.getPolicyUserRoleByName(
-							simulation.policyTextualEditor.getPolicy()
+							simulation.policy
 									.getName(), node, compType) == null) {
 						roleActivation = false;
 					}
@@ -154,8 +172,7 @@ public class KevoreeListener {
 					// TODO smartly
 					// activate the role
 					if (roleActivation) {
-						pe.addPolicySessionRole(simulation.policyTextualEditor
-								.getPolicy().getName(), "s" + node, compType);
+						pe.addPolicySessionRole(simulation.policy.getName(), "s" + node, compType);
 					}
 //					simulation.policyTextualEditor.simulationPanel.archiTreeMonitor
 //							.addComponent(comp);
@@ -200,9 +217,10 @@ public class KevoreeListener {
 							.getName();
 					String roleX = ((ComponentInstance) sig.getValueOfCOMP1())
 							.getTypeDefinition().getName();
+					System.out.println("number policy rules enforced : "+getPolicyRulesEnforced());
 //					simulation.policyTextualEditor.outputEditor.enforcedPolicyRules
 //							.updateTable(getPolicyRulesEnforced());
-					simulation.policyTextualEditor.update();
+//					simulation.policyTextualEditor.update();
 				}
 				for (ChannelSignature sig : monitorChannel.matchFoundEvents) {
 					String channel = ((Channel) sig.getValueOfCHA()).getName();

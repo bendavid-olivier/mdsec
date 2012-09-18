@@ -131,8 +131,8 @@ public class PolicyListener {
 	
 	public PolicyListener(Policy pol){
 		policy = pol;
-		transfo2XACML  = new Policy2KevScriptXACML(editor.getPolicy());
-		transfo2MDSEC = new Policy2KevScript(editor.getPolicy());
+		transfo2XACML  = new Policy2KevScriptXACML(pol);
+		transfo2MDSEC = new Policy2KevScript(pol);
 		registerMatchers();
 		initMatchers();
 		
