@@ -213,28 +213,42 @@ public class Generator{
 		//adding roles
 		pe.addPolicyRole(policyName, "Buyer");
 		pe.getPolicyRoleByName(policyName, "Buyer").setArchType("Buyer");
-		
-		
+				
 		pe.addPolicyRole(policyName, "Seller");
 		pe.getPolicyRoleByName(policyName, "Seller").setArchType("Seller");
 		
 		
 		//adding permissions
 		pe.addPolicyPermission(policyName, "pUser");
-		pe.addPolicyPermission(policyName, "pAdmin");
 		pe.addPolicyPermission(policyName, "pPersonal");
+		
+		pe.addPolicyPermission(policyName, "pAdmin");
+		
 	
 		//adding operations
+			//user
 		pe.addPolicyOperation(policyName, "bid");
-//		pe.addPolicyOperation(policyName, "bid10");
-//		pe.addPolicyOperation(policyName, "bid50");
 		pe.addPolicyOperation(policyName, "register");
-//		pe.addPolicyOperation(policyName, "unregister");
+		pe.addPolicyOperation(policyName, "unregister");
 		
+		pe.addPolicyOperation(policyName, "comment");
+		pe.addPolicyOperation(policyName, "proposeAprice");
+		
+	
+			//user and personal
+		pe.addPolicyOperation(policyName, "bid10");
+		pe.addPolicyOperation(policyName, "bid50");
+		pe.addPolicyOperation(policyName, "bid100");
+		
+
+			//admin
 		pe.addPolicyOperation(policyName, "create");
-//		pe.addPolicyOperation(policyName, "read");
-//		pe.addPolicyOperation(policyName, "update");
+		pe.addPolicyOperation(policyName, "read");
+		pe.addPolicyOperation(policyName, "update");
 		pe.addPolicyOperation(policyName, "delete");
+		pe.addPolicyOperation(policyName, "stop");
+		pe.addPolicyOperation(policyName, "describe");
+	
 		
 	
 		//adding objects
@@ -258,23 +272,60 @@ public class Generator{
 		
 		//adding relationships between role and permissions
 		pe.addPolicyRolePermission(policyName, "Buyer", "pUser");
+		pe.addPolicyRolePermission(policyName, "Buyer", "pPersonal");
 		pe.addPolicyRolePermission(policyName, "Seller", "pAdmin");
+		
 		
 		//adding relationships between role and permissions
 		pe.addPolicyPermissionOperation(policyName, "pUser", "bid");
 		pe.addPolicyPermissionOperation(policyName, "pUser", "register");
+		pe.addPolicyPermissionOperation(policyName, "pUser", "unregister");
+		pe.addPolicyPermissionOperation(policyName, "pUser", "comment");
+		pe.addPolicyPermissionOperation(policyName, "pUser", "proposeAprice");
+		
+		pe.addPolicyPermissionOperation(policyName, "pPersonal", "bid");
+		pe.addPolicyPermissionOperation(policyName, "pPersonal", "bid10");
+		pe.addPolicyPermissionOperation(policyName, "pPersonal", "bid50");
+		pe.addPolicyPermissionOperation(policyName, "pPersonal", "register");
+		pe.addPolicyPermissionOperation(policyName, "pPersonal", "unregister");
+		pe.addPolicyPermissionOperation(policyName, "pPersonal", "comment");
+		pe.addPolicyPermissionOperation(policyName, "pPersonal", "proposeAprice");
+		
+		
+		
 		pe.addPolicyPermissionOperation(policyName, "pAdmin", "create");
+		pe.addPolicyPermissionOperation(policyName, "pAdmin", "read");
+		pe.addPolicyPermissionOperation(policyName, "pAdmin", "update");
 		pe.addPolicyPermissionOperation(policyName, "pAdmin", "delete");
+		pe.addPolicyPermissionOperation(policyName, "pAdmin", "stop");
+		pe.addPolicyPermissionOperation(policyName, "pAdmin", "describe");
 
 		//adding relationships between role and permissions and objects
 		
 		for(int i = 0;i<numberSales;i++){
 			pe.addPolicyPermissionOperationObject(policyName, "pUser","bid","Sale"+i);
 			pe.addPolicyPermissionOperationObject(policyName, "pUser","register","Sale"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pUser","unregister","Sale"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pUser","comment","Sale"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pUser","proposeAprice","Sale"+i);
+			
+			pe.addPolicyPermissionOperationObject(policyName, "pPersonal","bid","Sale"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pPersonal","bid10","Sale"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pPersonal","bid50","Sale"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pPersonal","register","Sale"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pPersonal","unregister","Sale"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pPersonal","comment","Sale"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pPersonal","proposeAprice","Sale"+i);
+			
+			pe.addPolicyPermissionOperationObject(policyName, "pAdmin","stop","Sale"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pAdmin","describe","Sale"+i);
+			
 		}
 		pe.addPolicyPermissionOperationObject(policyName, "pAdmin","create","SaleManager");
 		pe.addPolicyPermissionOperationObject(policyName, "pAdmin","delete","SaleManager");
 	}
+		
+	
 	
 	
 	

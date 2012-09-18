@@ -71,6 +71,18 @@ public class PolicyEditor {
 	}
 	
 	
+
+	public HashSet<policy.User> getPolicyUsers(String policyName){
+		 HashSet<policy.User> res = new HashSet<policy.User>();
+		 for(PolicyElement e :policy.getElements()){
+				if(e instanceof UserImpl){
+					res.add((User) e);
+				}
+			}
+		 return res;
+	}
+	
+	
 	public HashSet<policy.Object> getPolicyObjects(String policyName){
 		 HashSet<policy.Object> res = new HashSet<policy.Object>();
 		 for(PolicyElement e :policy.getElements()){
@@ -131,9 +143,74 @@ public class PolicyEditor {
 		if (getPolicyRoleByName(policyName, roleName) == null) {
 			getPolicyByName(policyName).getElements().add(x);
 		}
-
 	}
-
+	
+	public void addPolicyRole(String policyName, Role rol) {
+		if (getPolicyRoleByName(policyName, rol.getName()) == null) {
+			getPolicyByName(policyName).getElements().add(rol);
+		}
+	}
+	
+	public Policy clonePolicyElement(){
+		Policy pol = factory.createPolicy();
+		for(PolicyElement pe :  policy.getElements()){
+			if(pe instanceof UserImpl){
+				pol.getElements().add(cloneUser((User) pe));
+			}
+			else if(pe instanceof RoleImpl){
+				pol.getElements().add(cloneRole((Role) pe));
+			}
+			else if(pe instanceof PermissionImpl){
+				pol.getElements().add(clonePermission((Permission) pe));
+						}
+			else if(pe instanceof OperationImpl){
+				pol.getElements().add(cloneOperation((Operation) pe));
+			}
+			else if(pe instanceof ObjectImpl){
+				pol.getElements().add(cloneObject((Object) pe));
+			}
+		}
+		return pol;
+	}
+	
+	
+	
+	public User cloneUser(User r){
+		User user = factory.createUser();
+		user.setName(r.getName());
+		user.setArchType(r.getArchType());
+		return user;
+	}
+	
+	public Role cloneRole(Role r){
+		Role rol = factory.createRole();
+		rol.setName(r.getName());
+		rol.setArchType(r.getArchType());
+		return rol;
+	}
+	
+	public Permission clonePermission(Permission r){
+		Permission perm = factory.createPermission();
+		perm.setName(r.getName());
+		perm.setArchType(r.getArchType());
+		return perm;
+	}
+	
+	public Operation cloneOperation(Operation r){
+		Operation ope = factory.createOperation();
+		ope.setName(r.getName());
+		ope.setArchType(r.getArchType());
+		return ope;
+	}
+	
+	public Object cloneObject(Object r){
+		Object ob = factory.createObject();
+		ob.setName(r.getName());
+		ob.setArchType(r.getArchType());
+		return ob;
+	}
+	
+	
 	public void removePolicyRole(String policyName, String roleName) {
 		getPolicyRoleByName(policyName, roleName).getPermissions().clear();
 		getPolicyRoleByName(policyName, roleName).getSessions().clear();
@@ -405,6 +482,7 @@ public class PolicyEditor {
 				for(Permission p : ((Role)pe).getPermissions()){
 					for(Operation op : p.getOperations()){
 						for(policy.Object ob : op.getObjects()){
+							System.out.println(pe.getName()+":"+p.getName()+":"+op.getName()+":"+ob.getName());
 							res = res + 1;
 						}
 					}

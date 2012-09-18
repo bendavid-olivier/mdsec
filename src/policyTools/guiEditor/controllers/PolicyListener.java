@@ -117,8 +117,24 @@ public class PolicyListener {
 		registerMatchers();
 		initMatchers();
 		
+		portNumber = 42000;
+		monitorUser = userMatcher.newDeltaMonitor(false);
+		monitorRole = roleMatcher.newDeltaMonitor(false);
+		monitorPermission = permissionMatcher.newDeltaMonitor(false);
+		monitorOperation = operationMatcher.newDeltaMonitor(false);
+		monitorObject = objectMatcher.newDeltaMonitor(false);
+		monitorSession = sessionMatcher.newDeltaMonitor(false);
 		
+		monitorUserRule = userRuleMatcher.newDeltaMonitor(false);
+		monitorActivatedUserRule = userActivatedRuleMatcher.newDeltaMonitor(false);
+	}
 	
+	public PolicyListener(Policy pol){
+		policy = pol;
+		transfo2XACML  = new Policy2KevScriptXACML(editor.getPolicy());
+		transfo2MDSEC = new Policy2KevScript(editor.getPolicy());
+		registerMatchers();
+		initMatchers();
 		
 		portNumber = 42000;
 		monitorUser = userMatcher.newDeltaMonitor(false);

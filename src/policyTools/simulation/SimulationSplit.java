@@ -12,32 +12,42 @@ import policyTools.guiEditor.commands.CommandLoadASMSSmall;
 import policyTools.guiEditor.commands.CommandLoadModelExample;
 import policyTools.guiEditor.controllers.PolicyListener;
 import policyTools.guiEditor.graphicComponents.PolicyTextualEditor;
+import policyTools.split.Splitter;
 import utils.statistics.Statistics;
 import utils.time.Chrono;
 import kevoree.ContainerRoot;
 import kevoree.KevoreeFactory;
 import kevoreeTools.editor.KevoreeEditor;
 import kevoreeTools.guiEditor.controllers.KevoreeListener;
+import com.sun.tools.javac.util.Pair;
 
-import org.apache.commons.math3.stat.*;
-import org.apache.commons.math3.stat.descriptive.moment.Mean;
-import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
-import org.apache.commons.math3.stat.descriptive.rank.*;
-
-public class Simulation {
+public class SimulationSplit extends Simulation{
 
 	public ContainerRoot kevoree;
+	
+	public HashMap<String, Pair<Policy, PolicyListener>> policies;
 	
 	public KevoreeEditor editor;
 	public KevoreeListener kevoreeListener;
 	public PolicyTextualEditor policyTextualEditor;
 	
-	public Simulation(PolicyTextualEditor pe){
+	public SimulationSplit(PolicyTextualEditor pe){
+		super(pe);
 		KevoreeFactory fact = KevoreeFactory.eINSTANCE;
 		kevoree = fact.createContainerRoot();
 		policyTextualEditor = pe;
 		editor = new KevoreeEditor(kevoree);		
 		kevoreeListener = new KevoreeListener(this);
+		
+		policies =  new HashMap<String, Pair<Policy,PolicyListener>>();
+		Splitter splitter = new Splitter(policyTextualEditor.getPolicy());
+		
+		for(Policy p : splitter.split()){
+			policies.put(p.getName(),new  Pair<Policy, PolicyListener>(p, new PolicyListener(p)));
+		}
+		for(Entry e :  policies.entrySet()){
+			((Pair<Policy,PolicyListener>)e.getValue()).snd.listen();
+		}
 	}
 	
 	public void loadTypes(){
@@ -47,7 +57,6 @@ public class Simulation {
 				editor.addPortType(e.getName());
 			}
 		}
-		
 		//creating component types after
 		for(PolicyElement e :policyTextualEditor.getPolicy().getElements()){
 			if(e instanceof RoleImpl){
@@ -128,20 +137,17 @@ public class Simulation {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("START SIMULATION");
-		int numberOfIteration = 10;
+		System.out.println("START SIMULATION SPLIT");
+		int numberOfIteration = 2;
 		int variationSizeUsers = 1;
-		
 		
 		double[] executionTime = new double[numberOfIteration]; 
 		
 		PolicyTextualEditor editor2 = new PolicyTextualEditor(false);
 		CommandLoadASMSSmall loadModelExample2 = new CommandLoadASMSSmall(editor2, "loadME", "loadME");
-		loadModelExample2.execute2(10, 10);		
+		loadModelExample2.execute2(2, 10);		
 		PolicyEditor pe = new PolicyEditor(editor2.policy);
 		System.out.println("policy rules : " + pe.getNumberPolicyRules());
-		
-		
 		for(int size =0;size <variationSizeUsers;size++){
 			for(int i =0;i<numberOfIteration; i++){	
 				Chrono c = new Chrono();
