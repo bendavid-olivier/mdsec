@@ -116,17 +116,26 @@ public class KevoreeListener {
 //							.addNode(node);		
 
 //					System.out.println(simulation.policy.getName());
+					
+//					if(simulation.policies.containsKey(node)){
+					
 					PolicyEditor pe = new PolicyEditor(
 							simulation.policy);
 					
 					// check whether it is a new user ?
 					// if yes then create a session
+//					System.out.println(pe.getPolicyUserByName(simulation.policy.getName(), node));
+					
+//					System.out.println("size : "+pe.getPolicyByName(simulation.policy.getName()).getElements().size());
+					
 					if (pe.getPolicyUserByName(simulation.policy.getName(), node) != null) {
 						pe.setPolicyUserSession(simulation.policy.getName(), node, "s" + node);
 					}
 //					simulation.policyTextualEditor.update();
 
 //					System.out.println("yo detect something : " + node);
+					
+//					}
 				}
 				for (NodeSignature sig : monitorNode.matchLostEvents) {
 					String node = ((ContainerNode) sig.getValueOfN()).getName();
@@ -217,7 +226,7 @@ public class KevoreeListener {
 							.getName();
 					String roleX = ((ComponentInstance) sig.getValueOfCOMP1())
 							.getTypeDefinition().getName();
-					System.out.println("number policy rules enforced : "+getPolicyRulesEnforced());
+//					System.out.println("number policy rules enforced : "+getPolicyRulesEnforced());
 //					simulation.policyTextualEditor.outputEditor.enforcedPolicyRules
 //							.updateTable(getPolicyRulesEnforced());
 //					simulation.policyTextualEditor.update();

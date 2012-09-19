@@ -40,19 +40,19 @@ public class SimulationSplit{
 
 		//load policy model example
 		Generator gen = new Generator(policy);
-		gen.generateModelExampleASMSvaryUsers3(10, 10);
+		gen.generateModelExampleASMSvaryUsers3(4,4);
 		
 		kevoreeEditor = new KevoreeEditor(kevoree);
 		policyEditor = new PolicyEditor(policy);
 
 		kevoreeListener = new KevoreeListener(this);
-		policyListener = new PolicyListener(policy);
+		policyListener = new PolicyListener(this);
 		
 		policies =  new HashMap<String, Pair<Policy,PolicyListener>>();
 		Splitter splitter = new Splitter(policy);
 		
 		for(Policy p : splitter.split()){
-			policies.put(p.getName(),new  Pair<Policy, PolicyListener>(p, new PolicyListener(p)));
+			policies.put(p.getName(),new  Pair<Policy, PolicyListener>(p, new PolicyListener(this)));
 		}
 		for(Entry e :  policies.entrySet()){
 			((Pair<Policy,PolicyListener>)e.getValue()).snd.listen();
@@ -111,7 +111,6 @@ public class SimulationSplit{
 			kevoreeEditor.addNode(obj.getName());
 			kevoreeEditor.addNodeComponent(obj.getName(), obj.getName(), obj.getArchType());
 		}
-		
 	}
 	
 	public void connectUsers(){
@@ -139,9 +138,9 @@ public class SimulationSplit{
 		c.start();
 		System.out.println("START SIMULATION SPLIT");
 		SimulationSplit simul = new SimulationSplit();
-//		simul.policyEditor.getNumberPolicyRules();
 		simul.loadTypes();
 		simul.kevoreeListener.listen();
+		simul.policyListener.listen();
 		simul.initSimulationArchitecturalChanges();
 		c.stop();
 		System.out.println("END SIMULATION SPLIT : "+c.displayTime());

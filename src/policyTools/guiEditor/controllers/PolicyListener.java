@@ -2,6 +2,8 @@ package policyTools.guiEditor.controllers;
 
 import java.util.HashSet;
 
+import kevoreeTools.editor.KevoreeEditor;
+
 import org.eclipse.viatra2.emf.incquery.runtime.exception.IncQueryRuntimeException;
 import org.eclipse.viatra2.emf.incquery.runtime.extensibility.BuilderRegistry;
 import org.eclipse.viatra2.gtasm.patternmatcher.incremental.rete.misc.DeltaMonitor;
@@ -18,6 +20,7 @@ import policy.Role;
 import policy.Session;
 import policy.User;
 import policyTools.guiEditor.graphicComponents.*;
+import policyTools.simulation.SimulationSplit;
 import policyTools.transformations.IPolicy2KevScript;
 import policyTools.transformations.Policy2KevScript;
 import policyTools.transformations.Policy2KevScriptXACML;
@@ -59,6 +62,7 @@ public class PolicyListener {
 	final DeltaMonitor<UserRoleRuleSignature> monitorUserRule;
 	final DeltaMonitor<UserActivatedRoleRuleSignature> monitorActivatedUserRule;
 
+	private SimulationSplit simulation;
 
 	private int portNumber;
 	
@@ -129,10 +133,11 @@ public class PolicyListener {
 		monitorActivatedUserRule = userActivatedRuleMatcher.newDeltaMonitor(false);
 	}
 	
-	public PolicyListener(Policy pol){
-		policy = pol;
-		transfo2XACML  = new Policy2KevScriptXACML(pol);
-		transfo2MDSEC = new Policy2KevScript(pol);
+	public PolicyListener(SimulationSplit s){
+		simulation = s;
+		policy = simulation.policy;
+		transfo2XACML  = new Policy2KevScriptXACML(policy);
+		transfo2MDSEC = new Policy2KevScript(policy);
 		registerMatchers();
 		initMatchers();
 		
@@ -249,6 +254,7 @@ public class PolicyListener {
 			public void run() {
 				for (SessionSignature sig : monitorSession.matchFoundEvents) {
 					String session = ((Session)sig.getValueOfS()).getName();
+//					System.out.println("detection addition session : "+session);
 //					editor.policyTreeMonitor.addSession(session);
 //					editor.update();
 				}
@@ -287,64 +293,66 @@ public class PolicyListener {
 					applyScript(script);
 //					editor.outputEditor.policyRulesActivated.updateTable(getPolicyRulesActivated());
 					
-					
+//					System.out.println("rule : "+user+":"+role+":"+operation+":"+object);
 					
 					//adaptation 
 					HashSet<String> causes = new HashSet<String>();
 					boolean canAdapt = true;
 					//ajout channel pas de risque c'est juste une representation virtuelle
-					editor.simulation.editor.addChannel(user+role+operation);
+					KevoreeEditor ked = new KevoreeEditor(simulation.kevoree);
+//					editor.simulation.k  editor.addChannel(user+role+operation);
+					ked.addChannel(user+role+operation);
 					//ajout binding : risque, l'user, le role ou l'operation ne sont pas la ?
-					if(editor.simulation.editor.getNodeByName(user) == null){
+					if(ked.getNodeByName(user) == null){
 						causes.add("node "+user);
 						canAdapt = false;
 					}
-					if(editor.simulation.editor.getNodeComponentByName(user, role) == null){
+					if(ked.getNodeComponentByName(user, role) == null){
 						causes.add("component "+role);
 						canAdapt = false;
 					}
-					if(editor.simulation.editor.getNodeComponentPortByName(user, role, operation) == null){
+					if(ked.getNodeComponentPortByName(user, role, operation) == null){
 						causes.add("user port "+operation);
 						canAdapt = false;
 					}
 											
 					//ajout binding : risque, l'objectnode, l object ou l'operation ne sont pas la ?
-					if(editor.simulation.editor.getNodeByName(object) == null){
+					if(ked.getNodeByName(object) == null){
 						causes.add("node "+object);
 						canAdapt = false;
 					}
-					if(editor.simulation.editor.getNodeComponentByName(object, object) == null){
+					if(ked.getNodeComponentByName(object, object) == null){
 						causes.add("component "+object);
 						canAdapt = false;
 					}
-					if(editor.simulation.editor.getNodeComponentPortByName(object, object, operation) == null){
+					if(ked.getNodeComponentPortByName(object, object, operation) == null){
 						causes.add("object port "+operation);
 						canAdapt = false;
 					}
 					if(canAdapt){
-						editor.simulation.editor.addBinding(user, role, operation, user+role+operation);
-						editor.simulation.editor.addBinding(object, object, operation, user+role+operation);
+						ked.addBinding(user, role, operation, user+role+operation);
+						ked.addBinding(object, object, operation, user+role+operation);
 					}
 					else{
-						for(String causeX : causes){
-							java.lang.Object[][] dataTemp = editor.outputEditor.errorEnforcement.data;
-							java.lang.Object[][] data = new java.lang.Object[dataTemp.length+1][5]; 
-							for(int i =0; i< dataTemp.length; i++){
-								data[i] = dataTemp[i];
-							}
-							String userX = ((policy.User)sig.getValueOfUSER()).getName();
-							String operationX = ((policy.Operation)sig.getValueOfOPERATION()).getName();
-							String objectX = ((policy.Object)sig.getValueOfOBJECT()).getName();
-							String roleX = ((policy.Role)sig.getValueOfROLE()).getName();
-							java.lang.Object[] line = {userX,roleX,operationX,objectX,causeX};
-							data[dataTemp.length] = line;
-							editor.outputEditor.errorEnforcement.updateTable(data);
-						}
+//						for(String causeX : causes){
+//							java.lang.Object[][] dataTemp = editor.outputEditor.errorEnforcement.data;
+//							java.lang.Object[][] data = new java.lang.Object[dataTemp.length+1][5]; 
+//							for(int i =0; i< dataTemp.length; i++){
+//								data[i] = dataTemp[i];
+//							}
+//							String userX = ((policy.User)sig.getValueOfUSER()).getName();
+//							String operationX = ((policy.Operation)sig.getValueOfOPERATION()).getName();
+//							String objectX = ((policy.Object)sig.getValueOfOBJECT()).getName();
+//							String roleX = ((policy.Role)sig.getValueOfROLE()).getName();
+//							java.lang.Object[] line = {userX,roleX,operationX,objectX,causeX};
+//							data[dataTemp.length] = line;
+//							editor.outputEditor.errorEnforcement.updateTable(data);
+//						}
 					}
 					
 					verifyEnforcement("rule activation");	
 					
-					editor.update();
+//					editor.update();
 				}
 				monitorActivatedUserRule.clear();
 			}
@@ -362,7 +370,7 @@ public class PolicyListener {
 				String operationXX = sigX[2].toString();
 				String objectXX = sigX[3].toString();
 				boolean isEnforced = false;
-				for(Object[] sigX2 : editor.simulation.kevoreeListener.getPolicyRulesEnforced()){
+				for(Object[] sigX2 : simulation.kevoreeListener.getPolicyRulesEnforced()){
 					String userXX2 = sigX2[0].toString();
 					String roleXX2 = sigX2[1].toString();
 					String operationXX2 = sigX2[2].toString();
@@ -428,7 +436,7 @@ public class PolicyListener {
 	}
 	
 	public void applyScript(String s){
-		editor.update();
+//		editor.update();
 		Boolean scriptApplied = true; 
 //		editor.outputEditor.consoleEditor.print(s);
 //		if (! (editor.kevGuard == null)){
@@ -439,7 +447,7 @@ public class PolicyListener {
 //		}
 //		JOptionPane.showMessageDialog(editor, scriptApplied+":"+s,
 //				"IncTransf", JOptionPane.INFORMATION_MESSAGE);
-		editor.update();
+//		editor.update();
 	}
 	
 	public IPolicy2KevScript getTransformator(){

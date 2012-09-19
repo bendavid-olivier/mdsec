@@ -11,7 +11,7 @@ import com.mysql.jdbc.ResultSet;
 import policy.*;
 import policyTools.editor.PolicyEditor;
 public class Generator{
-	private Policy policy;
+	public Policy policy;
 	public static final String LMS = "jdbc:mysql://localhost:3306/library";
     public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
 	public Generator(Policy x) {
@@ -55,7 +55,6 @@ public class Generator{
 		pe.addPolicyUserRole(policyName, "Jane", "Buyer");
 		pe.addPolicyUserRole(policyName, "Jane", "Seller");
 		
-		
 		pe.addPolicyRolePermission(policyName, "Buyer", "pUser");
 		pe.addPolicyRolePermission(policyName, "Seller", "pAdmin");
 		pe.addPolicyPermissionOperation(policyName, "pUser", "bid");
@@ -68,8 +67,6 @@ public class Generator{
 		pe.addPolicyPermissionOperationObject(policyName, "pAdmin","delete","SaleManager");
 	}
 	
-	
-
 	public void generateModelExampleMDSEC() {
 		PolicyEditor pe = new PolicyEditor(policy);
 		String policyName = "AuctionSaleSystemPolicy";
