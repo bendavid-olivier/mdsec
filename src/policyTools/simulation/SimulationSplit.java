@@ -52,7 +52,7 @@ public class SimulationSplit{
 		Splitter splitter = new Splitter(policy);
 		
 		for(Policy p : splitter.split()){
-			policies.put(p.getName(),new  Pair<Policy, PolicyListener>(p, new PolicyListener(this)));
+			policies.put(p.getName(),new  Pair<Policy, PolicyListener>(p, new PolicyListener(this,p)));
 		}
 		for(Entry e :  policies.entrySet()){
 			((Pair<Policy,PolicyListener>)e.getValue()).snd.listen();

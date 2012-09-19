@@ -153,6 +153,26 @@ public class PolicyListener {
 		monitorActivatedUserRule = userActivatedRuleMatcher.newDeltaMonitor(false);
 	}
 	
+	public PolicyListener(SimulationSplit s, Policy p){
+		simulation = s;
+		policy = p;
+		transfo2XACML  = new Policy2KevScriptXACML(policy);
+		transfo2MDSEC = new Policy2KevScript(policy);
+		registerMatchers();
+		initMatchers();
+		
+		portNumber = 42000;
+		monitorUser = userMatcher.newDeltaMonitor(false);
+		monitorRole = roleMatcher.newDeltaMonitor(false);
+		monitorPermission = permissionMatcher.newDeltaMonitor(false);
+		monitorOperation = operationMatcher.newDeltaMonitor(false);
+		monitorObject = objectMatcher.newDeltaMonitor(false);
+		monitorSession = sessionMatcher.newDeltaMonitor(false);
+		
+		monitorUserRule = userRuleMatcher.newDeltaMonitor(false);
+		monitorActivatedUserRule = userActivatedRuleMatcher.newDeltaMonitor(false);
+	}
+	
 	public void listen(){
 		//add user
 		userMatcher.addCallbackAfterUpdates(new Runnable() {			
@@ -254,7 +274,7 @@ public class PolicyListener {
 			public void run() {
 				for (SessionSignature sig : monitorSession.matchFoundEvents) {
 					String session = ((Session)sig.getValueOfS()).getName();
-//					System.out.println("detection addition session : "+session);
+					System.out.println("detection addition session : "+session+" in : "+policy.getName());
 //					editor.policyTreeMonitor.addSession(session);
 //					editor.update();
 				}

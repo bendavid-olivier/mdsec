@@ -108,34 +108,21 @@ public class KevoreeListener {
 			@Override
 			public void run() {
 				for (NodeSignature sig : monitorNode.matchFoundEvents) {
-					
 					String node = ((ContainerNode) sig.getValueOfN()).getName();
-//					System.out.println("detection of the addition of a node : "+node);
-					
-//					simulation.policyTextualEditor.simulationPanel.archiTreeMonitor
-//							.addNode(node);		
-
-//					System.out.println(simulation.policy.getName());
-					
-//					if(simulation.policies.containsKey(node)){
-					
-					PolicyEditor pe = new PolicyEditor(
-							simulation.policy);
-					
+					//System.out.println("detection of the addition of a node : "+node);
 					// check whether it is a new user ?
 					// if yes then create a session
-//					System.out.println(pe.getPolicyUserByName(simulation.policy.getName(), node));
-					
-//					System.out.println("size : "+pe.getPolicyByName(simulation.policy.getName()).getElements().size());
-					
-					if (pe.getPolicyUserByName(simulation.policy.getName(), node) != null) {
-						pe.setPolicyUserSession(simulation.policy.getName(), node, "s" + node);
+					if(simulation.policies.containsKey(node)){
+//						PolicyEditor pe = new PolicyEditor(
+//								simulation.policy);
+						PolicyEditor pe = new PolicyEditor(
+								simulation.policies.get(node).fst);
+//						if (pe.getPolicyUserByName(simulation.policy.getName(), node) != null) {
+//							pe.setPolicyUserSession(simulation.policy.getName(), node, "s" + node);
+//						}
+						System.out.println("add session in : "+simulation.policies.get(node).fst.getName());
+						pe.setPolicyUserSession(simulation.policies.get(node).fst.getName(), node, "s" + node);
 					}
-//					simulation.policyTextualEditor.update();
-
-//					System.out.println("yo detect something : " + node);
-					
-//					}
 				}
 				for (NodeSignature sig : monitorNode.matchLostEvents) {
 					String node = ((ContainerNode) sig.getValueOfN()).getName();
@@ -155,36 +142,28 @@ public class KevoreeListener {
 					String compType = ((ComponentInstance) sig.getValueOfC())
 							.getTypeDefinition().getName();
 					
-					int cptComp = 0;
-					for(ContainerNode cn: kevoree.getNodes() ) {
-						cptComp = cptComp+cn.getComponents().size();  
+					if(simulation.policies.containsKey(node)){
+						PolicyEditor pe = new PolicyEditor(
+								simulation.policies.get(node).fst);
+						// check whether it is a role activation ?
+						boolean roleActivation = true;
+						// check if it is a role
+						if (pe.getPolicyRoleByName(simulation.policies.get(node).fst.getName(), compType) == null) {
+							roleActivation = false;
 						}
-//					System.out.println(" number of node(s) : "+ kevoree.getNodes().size());
-//					System.out.println(" number of component(s) : "+ cptComp);
-//					System.out.println("detection of the addition of a component : "+comp+" of type : "+compType+" in the node : "+node);
-
-					PolicyEditor pe = new PolicyEditor(
-							simulation.policy);
-					// check whether it is a role activation ?
-					boolean roleActivation = true;
-					// check if it is a role
-					if (pe.getPolicyRoleByName(simulation.policy.getName(), compType) == null) {
-						roleActivation = false;
+						// check if the role is associated to the user
+						if (pe.getPolicyUserRoleByName(
+								simulation.policies.get(node).fst
+										.getName(), node, compType) == null) {
+							roleActivation = false;
+						}
+						// check if the role can be activated
+						// TODO smartly
+						// activate the role
+						if (roleActivation) {
+							pe.addPolicySessionRole(simulation.policies.get(node).fst.getName(), "s" + node, compType);
+						}
 					}
-					// check if the role is associated to the user
-					if (pe.getPolicyUserRoleByName(
-							simulation.policy
-									.getName(), node, compType) == null) {
-						roleActivation = false;
-					}
-					// check if the role can be activated
-					// TODO smartly
-					// activate the role
-					if (roleActivation) {
-						pe.addPolicySessionRole(simulation.policy.getName(), "s" + node, compType);
-					}
-//					simulation.policyTextualEditor.simulationPanel.archiTreeMonitor
-//							.addComponent(comp);
 				}
 
 				for (NodeComponentSignature sig : monitorNodeComponent.matchLostEvents) {
