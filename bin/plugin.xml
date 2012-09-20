@@ -15,6 +15,38 @@
          id="mdsec.generatedContribution"
          point="org.eclipse.viatra2.emf.incquery.patternmatcher.builder">
       <pattern-builder
+            build-class="patternbuilders.policy.PatternBuilderForrole"
+            pattern-fqn="policy.role">
+      </pattern-builder>
+      <pattern-builder
+            build-class="patternbuilders.policy.PatternBuilderForuserFullRule"
+            pattern-fqn="policy.userFullRule">
+      </pattern-builder>
+      <pattern-builder
+            build-class="patternbuilders.kevoree.PatternBuilderForchannel"
+            pattern-fqn="kevoree.channel">
+      </pattern-builder>
+      <pattern-builder
+            build-class="patternbuilders.policy.PatternBuilderForsession"
+            pattern-fqn="policy.session">
+      </pattern-builder>
+      <pattern-builder
+            build-class="patternbuilders.policy.PatternBuilderForOperationObjectAssignment"
+            pattern-fqn="policy.OperationObjectAssignment">
+      </pattern-builder>
+      <pattern-builder
+            build-class="patternbuilders.policy.PatternBuilderForuser"
+            pattern-fqn="policy.user">
+      </pattern-builder>
+      <pattern-builder
+            build-class="patternbuilders.policy.PatternBuilderForuserRule"
+            pattern-fqn="policy.userRule">
+      </pattern-builder>
+      <pattern-builder
+            build-class="patternbuilders.policy.PatternBuilderForRolePermissionAssignment"
+            pattern-fqn="policy.RolePermissionAssignment">
+      </pattern-builder>
+      <pattern-builder
             build-class="patternbuilders.kevoree.PatternBuilderForenforcedRule"
             pattern-fqn="kevoree.enforcedRule">
       </pattern-builder>
@@ -23,60 +55,32 @@
             pattern-fqn="policy.userOperation">
       </pattern-builder>
       <pattern-builder
-            build-class="patternbuilders.policy.PatternBuilderForuserRule"
-            pattern-fqn="policy.userRule">
-      </pattern-builder>
-      <pattern-builder
-            build-class="patternbuilders.policy.PatternBuilderForuserActivatedRoleRule"
-            pattern-fqn="policy.userActivatedRoleRule">
-      </pattern-builder>
-      <pattern-builder
-            build-class="patternbuilders.policy.PatternBuilderForuserRoleAssignment"
-            pattern-fqn="policy.userRoleAssignment">
-      </pattern-builder>
-      <pattern-builder
-            build-class="patternbuilders.policy.PatternBuilderForsession"
-            pattern-fqn="policy.session">
-      </pattern-builder>
-      <pattern-builder
-            build-class="patternbuilders.kevoree.PatternBuilderFornodeComponent"
-            pattern-fqn="kevoree.nodeComponent">
-      </pattern-builder>
-      <pattern-builder
-            build-class="patternbuilders.policy.PatternBuilderForPermissionOperationAssignment"
-            pattern-fqn="policy.PermissionOperationAssignment">
-      </pattern-builder>
-      <pattern-builder
-            build-class="patternbuilders.policy.PatternBuilderForuserFullRule"
-            pattern-fqn="policy.userFullRule">
-      </pattern-builder>
-      <pattern-builder
-            build-class="patternbuilders.policy.PatternBuilderForuser"
-            pattern-fqn="policy.user">
-      </pattern-builder>
-      <pattern-builder
             build-class="patternbuilders.policy.PatternBuilderForpermission"
             pattern-fqn="policy.permission">
       </pattern-builder>
       <pattern-builder
-            build-class="patternbuilders.kevoree.PatternBuilderForchannel"
-            pattern-fqn="kevoree.channel">
+            build-class="patternbuilders.policy.PatternBuilderForobject"
+            pattern-fqn="policy.object">
       </pattern-builder>
       <pattern-builder
             build-class="patternbuilders.policy.PatternBuilderForoperation"
             pattern-fqn="policy.operation">
       </pattern-builder>
       <pattern-builder
-            build-class="patternbuilders.policy.PatternBuilderForrole"
-            pattern-fqn="policy.role">
+            build-class="patternbuilders.kevoree.PatternBuilderFornode"
+            pattern-fqn="kevoree.node">
       </pattern-builder>
       <pattern-builder
-            build-class="patternbuilders.policy.PatternBuilderFordsod"
-            pattern-fqn="policy.dsod">
+            build-class="patternbuilders.kevoree.PatternBuilderForconnection"
+            pattern-fqn="kevoree.connection">
       </pattern-builder>
       <pattern-builder
-            build-class="patternbuilders.policy.PatternBuilderForOperationObjectAssignment"
-            pattern-fqn="policy.OperationObjectAssignment">
+            build-class="patternbuilders.policy.PatternBuilderForuserActivatedRoleRule"
+            pattern-fqn="policy.userActivatedRoleRule">
+      </pattern-builder>
+      <pattern-builder
+            build-class="patternbuilders.policy.PatternBuilderForPermissionOperationAssignment"
+            pattern-fqn="policy.PermissionOperationAssignment">
       </pattern-builder>
       <pattern-builder
             build-class="patternbuilders.kevoree.PatternBuilderForthreeBuyers"
@@ -87,20 +91,16 @@
             pattern-fqn="policy.userRoleRule">
       </pattern-builder>
       <pattern-builder
-            build-class="patternbuilders.policy.PatternBuilderForobject"
-            pattern-fqn="policy.object">
+            build-class="patternbuilders.policy.PatternBuilderForuserRoleAssignment"
+            pattern-fqn="policy.userRoleAssignment">
       </pattern-builder>
       <pattern-builder
-            build-class="patternbuilders.kevoree.PatternBuilderForconnection"
-            pattern-fqn="kevoree.connection">
+            build-class="patternbuilders.policy.PatternBuilderFordsod"
+            pattern-fqn="policy.dsod">
       </pattern-builder>
       <pattern-builder
-            build-class="patternbuilders.kevoree.PatternBuilderFornode"
-            pattern-fqn="kevoree.node">
-      </pattern-builder>
-      <pattern-builder
-            build-class="patternbuilders.policy.PatternBuilderForRolePermissionAssignment"
-            pattern-fqn="policy.RolePermissionAssignment">
+            build-class="patternbuilders.kevoree.PatternBuilderFornodeComponent"
+            pattern-fqn="kevoree.nodeComponent">
       </pattern-builder>
    </extension>
 

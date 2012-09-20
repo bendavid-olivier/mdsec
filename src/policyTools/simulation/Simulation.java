@@ -127,12 +127,11 @@ public class Simulation {
 		int numberOfIteration = 10;
 		int variationSizeUsers = 1;
 		
-		
 		double[] executionTime = new double[numberOfIteration]; 
 		
 		PolicyTextualEditor editor2 = new PolicyTextualEditor(false);
 		CommandLoadASMSSmall loadModelExample2 = new CommandLoadASMSSmall(editor2, "loadME", "loadME");
-		loadModelExample2.execute2(10, 10);		
+		loadModelExample2.execute2(a, b);		
 		PolicyEditor pe = new PolicyEditor(editor2.policy);
 		System.out.println("policy rules : " + pe.getNumberPolicyRules());
 		
