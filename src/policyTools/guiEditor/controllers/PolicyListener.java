@@ -274,6 +274,8 @@ public class PolicyListener {
 			public void run() {
 				for (SessionSignature sig : monitorSession.matchFoundEvents) {
 					String session = ((Session)sig.getValueOfS()).getName();
+
+					//System.out.println("detection addition session : "+session+" in : "+policy.getName());
 //					System.out.println("detection addition session : "+session+" in : "+policy.getName());
 //					editor.policyTreeMonitor.addSession(session);
 //					editor.update();
