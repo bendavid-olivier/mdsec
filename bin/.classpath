@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="graphs/|lib/|metamodel/|models/|src-gen/|src-gen/|src/" kind="src" path=""/>
+	<classpathentry kind="src" path="src-gen"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/commons-math3-3.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/commons-math3-3.0-sources.jar"/>
+	<classpathentry kind="lib" path="lib/commons-math3-3.0.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.1.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-3.0.17-ga-bin.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.common_2.7.0.v20110912-0920.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore_2.7.0.v20110912-0920.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore.source_2.7.0.v20110912-0920.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore.xmi_2.7.0.v20110520-1406.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.viatra2.emf.incquery.runtime_0.4.0.201201150015.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.viatra2.gtasm.patternmatcher.incremental.rete_3.3.0.201201150015.jar"/>
+	<classpathentry kind="lib" path="lib/RCaller-2.1.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/sunxacml.jar"/>
+	<classpathentry kind="lib" path="lib/tools.jar"/>
+	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -40,7 +40,7 @@ public class SimulationSplit{
 
 		//load policy model example
 		Generator gen = new Generator(policy);
-		gen.generateModelExampleASMSvaryUsers3(10,10);
+		gen.generateModelExampleASMSvaryUsers3(4,4);
 		
 		kevoreeEditor = new KevoreeEditor(kevoree);
 		policyEditor = new PolicyEditor(policy);
@@ -134,9 +134,6 @@ public class SimulationSplit{
 	}
 	
 	public static void main(String[] args) {
-		
-		
-		
 		Chrono c = new Chrono();
 		c.start();
 		System.out.println("START SIMULATION SPLIT");
@@ -147,8 +144,5 @@ public class SimulationSplit{
 		simul.initSimulationArchitecturalChanges();
 		c.stop();
 		System.out.println("END SIMULATION SPLIT : "+c.displayTime());
-		
-		
-		
 	}	
 }
