@@ -5,6 +5,7 @@ import java.util.Set;
 
 import policy.*;
 import policy.impl.*;
+import policyTools.editor.PolicyEditor;
 import policyTools.generator.Generator;
 
 import utils.time.Chrono;
@@ -139,7 +140,15 @@ public class PolicyChecker {
 		}
 		return true;
 	}
-
+	
+	public static boolean checkDSoD(Policy p, String roleA, String roleB) {	
+		PolicyEditor pe = new PolicyEditor(p);
+		if(pe.getPolicyRoleByName(p.getName(), roleA).getDsod().contains(pe.getPolicyRoleByName(p.getName(), roleB))){
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean checkAcyclicDelegation() {
 		for (PolicyElement e : policy.getElements()) {
 			if (e instanceof UserImpl) {

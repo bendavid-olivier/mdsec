@@ -19,22 +19,12 @@ import kevoreeTools.editor.KevoreeEditor;
 import kevoreeTools.guiEditor.controllers.KevoreeListener;
 
 
-public class SimulationSplit{
+public class SimulationSplit extends Simulation{
 
-	public ContainerRoot kevoree;	
-	public Policy policy;
 	
-	public HashMap<String, Pair<Policy, PolicyListener>> policies;	
-	public KevoreeListener kevoreeListener;
-	public PolicyListener policyListener;
 	
-	public KevoreeEditor kevoreeEditor;
-	public PolicyEditor policyEditor;
 	
-	public KevoreeFactory kevoreeFactory;
-	public PolicyFactory policyFactory;
-	
-	public SimulationSplit(){
+	public SimulationSplit()  {
 		kevoreeFactory = KevoreeFactory.eINSTANCE;
 		policyFactory = PolicyFactory.eINSTANCE;
 		
@@ -48,7 +38,7 @@ public class SimulationSplit{
 		kevoreeEditor = new KevoreeEditor(kevoree);
 		policyEditor = new PolicyEditor(policy);
 
-		kevoreeListener = new KevoreeListener(this);
+		kevoreeListener = new KevoreeListener(this, KevoreeListener.STRATEGY_SPLITUSERS);
 		policyListener = new PolicyListener(this);
 		
 		policies =  new HashMap<String, Pair<Policy,PolicyListener>>();
@@ -76,7 +66,7 @@ public class SimulationSplit{
 		kevoreeEditor = new KevoreeEditor(kevoree);
 		policyEditor = new PolicyEditor(policy);
 
-		kevoreeListener = new KevoreeListener(this);
+		kevoreeListener = new KevoreeListener(this, KevoreeListener.STRATEGY_SPLITUSERS);
 		policyListener = new PolicyListener(this);
 		
 		policies =  new HashMap<String, Pair<Policy,PolicyListener>>();
@@ -89,7 +79,6 @@ public class SimulationSplit{
 			((Pair<Policy,PolicyListener>)e.getValue()).snd.listen();
 		}
 	}
-	
 	public void loadTypes(){
 		//adding ports types first
 		for(PolicyElement e :policy.getElements()){
@@ -163,6 +152,7 @@ public class SimulationSplit{
 			}
 		}
 	}
+
 	
 	public static void main(String[] args) {
 		Chrono c = new Chrono();

@@ -146,7 +146,7 @@ public class SimulationPanel extends JPanel {
 		buttonAddNode.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				policyTextualEditor.simulation.editor.addNode(tfAddNode.getText());				
+//				policyTextualEditor.simulation.editor.addNode(tfAddNode.getText());				
 			}
 		});
 		changes.add(tfAddNode);
@@ -162,7 +162,7 @@ public class SimulationPanel extends JPanel {
 		buttonAddComp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				policyTextualEditor.simulation.editor.addNodeComponent(tfAddCompNodName.getText(), tfAddCompName.getText(),tfAddCompTypName.getText());				
+//				policyTextualEditor.simulation.editor.addNodeComponent(tfAddCompNodName.getText(), tfAddCompName.getText(),tfAddCompTypName.getText());				
 			}
 		});
 		changes.add(tfAddCompNodName);
@@ -177,7 +177,7 @@ public class SimulationPanel extends JPanel {
 		buttonAddCha.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				policyTextualEditor.simulation.editor.addChannel(tfAddChannel.getText());				
+//				policyTextualEditor.simulation.editor.addChannel(tfAddChannel.getText());				
 			}
 		});
 		changes.add(tfAddChannel);
@@ -192,7 +192,7 @@ public class SimulationPanel extends JPanel {
 		buttonAddBind.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				policyTextualEditor.simulation.editor.addBinding(tfAddBindNod.getText(), tfAddBindComp.getText(), tfAddBindPort.getText(), tfAddBindCha.getText());				
+//				policyTextualEditor.simulation.editor.addBinding(tfAddBindNod.getText(), tfAddBindComp.getText(), tfAddBindPort.getText(), tfAddBindCha.getText());				
 			}
 		});
 		changes.add(tfAddBindNod);

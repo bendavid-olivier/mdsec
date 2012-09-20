@@ -1,10 +1,13 @@
 package policyTools.simulation;
 
+
 import utils.statistics.Statistics;
 import utils.time.Chrono;
 
+
 public class Simulate {
 
+	
 	public void splitStrategy(int numberUsers, int numberResources) {
 		System.out.println("split strategy");
 		int numberOfIteration = 10;
@@ -26,9 +29,10 @@ public class Simulate {
 		stats.statistics(false);
 	}
 	
+	
 	public void simpleStrategy(int numberUsers, int numberResources) {
 		System.out.println("simple strategy");
-		int numberOfIteration = 10;
+		int numberOfIteration = 2;
 		double[] executionTime = new double[numberOfIteration];
 		for(int i =0;i<numberOfIteration; i++){
 			Chrono c = new Chrono();
@@ -53,15 +57,15 @@ public class Simulate {
 		splitStrategy(numberUsers, numberResources);
 	}
 	
+	
 	public static void main(String[] args) {
 		Simulate s =new Simulate();
-		for(int users = 0;users<5;users++){
-			for(int resources = 0;resources<5;resources++){
+		for(int users = 0;users<10;users++){
+			for(int resources = 0;resources<10;resources++){
 				System.out.println("number users : "+(users+1) + " number resources : "+(resources+1));
 				s.simulate(users, resources);
 			}
 		}
 	}	
-
-
+	
 }

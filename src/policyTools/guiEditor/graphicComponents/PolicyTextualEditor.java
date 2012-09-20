@@ -75,7 +75,7 @@ public PolicyEditor policyEditor;
 
 	
 	public void initOthers(){
-		simulation = new Simulation(this);
+//		simulation = new Simulation(this);
 	}
 	
 	public void initGraphicalComponents(){

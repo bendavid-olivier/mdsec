@@ -4,6 +4,9 @@ import org.eclipse.viatra2.emf.incquery.runtime.exception.IncQueryRuntimeExcepti
 import org.eclipse.viatra2.emf.incquery.runtime.extensibility.BuilderRegistry;
 import org.eclipse.viatra2.gtasm.patternmatcher.incremental.rete.misc.DeltaMonitor;
 import patternmatchers.kevoree.*;
+import policy.Policy;
+import policy.Role;
+import policyTools.checker.PolicyChecker;
 import policyTools.editor.PolicyEditor;
 import policyTools.simulation.Simulation;
 import policyTools.simulation.SimulationSplit;
@@ -13,9 +16,14 @@ import kevoreeTools.guiEditor.graphicComponents.*;
 
 public class KevoreeListener {
 
+	public final static String STRATEGY_SPLITUSERS = "STRATEGY_SPLITUSERS";
+	public final static String STRATEGY_SPLITROLES = "STRATEGY_SPLITROLES";
+	public final static String STRATEGY_SIMPLE = "STRATEGY_SIMPLE";
+	public String current_strategy = STRATEGY_SIMPLE;
+	
 	private KevoreeTextualEditor editor;
 	private ContainerRoot kevoree;
-	private SimulationSplit simulation;
+	private Simulation simulation;
 
 	private NodeMatcher nodeMatcher;
 	private NodeComponentMatcher nodeComponentMatcher;
@@ -80,19 +88,9 @@ public class KevoreeListener {
 		monitorEnforcedRule = enforcedRuleMatcher.newDeltaMonitor(false);
 	}
 
-	public KevoreeListener(Simulation k) {
+	public KevoreeListener(Simulation k, String strategy) {
 		kevoree = k.kevoree;
-		registerLiteners();
-//		simulation = k;
-		initMatchers();
-		monitorNode = nodeMatcher.newDeltaMonitor(false);
-		monitorNodeComponent = nodeComponentMatcher.newDeltaMonitor(false);
-		monitorChannel = channelMatcher.newDeltaMonitor(false);
-		monitorEnforcedRule = enforcedRuleMatcher.newDeltaMonitor(false);
-	}
-	
-	public KevoreeListener(SimulationSplit k) {
-		kevoree = k.kevoree;
+		current_strategy=strategy; 
 		registerLiteners();
 		simulation = k;
 		initMatchers();
@@ -101,6 +99,7 @@ public class KevoreeListener {
 		monitorChannel = channelMatcher.newDeltaMonitor(false);
 		monitorEnforcedRule = enforcedRuleMatcher.newDeltaMonitor(false);
 	}
+	
 
 	public void listen() {
 		// add remove nodes
@@ -109,18 +108,8 @@ public class KevoreeListener {
 			public void run() {
 				for (NodeSignature sig : monitorNode.matchFoundEvents) {
 					String node = ((ContainerNode) sig.getValueOfN()).getName();
-					//System.out.println("detection of the addition of a node : "+node);
-					// check whether it is a new user ?
-					// if yes then create a session
 					if(simulation.policies.containsKey(node)){
-//						PolicyEditor pe = new PolicyEditor(
-//								simulation.policy);
-						PolicyEditor pe = new PolicyEditor(
-								simulation.policies.get(node).fst);
-//						if (pe.getPolicyUserByName(simulation.policy.getName(), node) != null) {
-//							pe.setPolicyUserSession(simulation.policy.getName(), node, "s" + node);
-//						}
-//						System.out.println("add session in : "+simulation.policies.get(node).fst.getName());
+						PolicyEditor pe = new PolicyEditor(getAppropriatePolicy(node));
 						pe.setPolicyUserSession(simulation.policies.get(node).fst.getName(), node, "s" + node);
 					}
 				}
@@ -141,10 +130,8 @@ public class KevoreeListener {
 							.getName();
 					String compType = ((ComponentInstance) sig.getValueOfC())
 							.getTypeDefinition().getName();
-					
 					if(simulation.policies.containsKey(node)){
-						PolicyEditor pe = new PolicyEditor(
-								simulation.policies.get(node).fst);
+						PolicyEditor pe = new PolicyEditor(getAppropriatePolicy(node));
 						// check whether it is a role activation ?
 						boolean roleActivation = true;
 						// check if it is a role
@@ -161,8 +148,19 @@ public class KevoreeListener {
 						// TODO smartly
 						// activate the role
 						if (roleActivation) {
-							pe.addPolicySessionRole(simulation.policies.get(node).fst.getName(), "s" + node, compType);
-						}
+							boolean dsod = true;
+								for(Role rr : pe.getPolicyUserByName(simulation.policy.getName(), node).getSession().getRoles()){
+									dsod = dsod && PolicyChecker.checkDSoD(simulation.policy,rr.getName() ,comp);
+								}
+								if(dsod){	
+									pe.addPolicySessionRole(simulation.policies.get(node).fst.getName(), "s" + node, compType);
+								}
+								else{
+									System.out.println("dsod violation");
+									simulation.kevoreeEditor.removeNodeComponent(node, comp);
+									
+								}
+						}	
 					}
 				}
 
@@ -237,4 +235,16 @@ public class KevoreeListener {
 		}
 		return data;
 	}
+	
+	public Policy getAppropriatePolicy(String name){
+		Policy res = null;
+		if(current_strategy.equals(STRATEGY_SIMPLE)){
+			return simulation.policy;
+		}
+		if(current_strategy.equals(STRATEGY_SPLITUSERS)){
+			return simulation.policies.get(name).fst;
+		}
+		return res;
+	}
+	
 }

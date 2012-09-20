@@ -432,23 +432,31 @@ public class PolicyEditor {
 			String roleSSODName) {
 		getPolicyRoleByName(policyName, roleName).getSsod().add(
 				getPolicyRoleByName(policyName, roleSSODName));
+		getPolicyRoleByName(policyName, roleName).getSsodOpp().add(
+				getPolicyRoleByName(policyName, roleSSODName));
 	}
 
 	public void removePolicyRoleRoleSSOD(String policyName, String roleName,
 			String roleSSODName) {
 		getPolicyRoleByName(policyName, roleName).getSsod().remove(
 				getPolicyRoleByName(policyName, roleSSODName));
+		getPolicyRoleByName(policyName, roleName).getSsodOpp().remove(
+				getPolicyRoleByName(policyName, roleSSODName));
 	}
 
 	public void addPolicyRoleRoleDSOD(String policyName, String roleName,
 			String roleDSODName) {
-		getPolicyRoleByName(policyName, roleName).getSsod().add(
+		getPolicyRoleByName(policyName, roleName).getDsod().add(
+				getPolicyRoleByName(policyName, roleDSODName));
+		getPolicyRoleByName(policyName, roleName).getDsodOpp().add(
 				getPolicyRoleByName(policyName, roleDSODName));
 	}
 
 	public void removePolicyRoleRoleDSOD(String policyName, String roleName,
 			String roleDSODName) {
 		getPolicyRoleByName(policyName, roleName).getDsod().remove(
+				getPolicyRoleByName(policyName, roleDSODName));
+		getPolicyRoleByName(policyName, roleName).getDsodOpp().remove(
 				getPolicyRoleByName(policyName, roleDSODName));
 	}
 

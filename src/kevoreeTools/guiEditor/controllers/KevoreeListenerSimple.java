@@ -4,6 +4,8 @@ import org.eclipse.viatra2.emf.incquery.runtime.exception.IncQueryRuntimeExcepti
 import org.eclipse.viatra2.emf.incquery.runtime.extensibility.BuilderRegistry;
 import org.eclipse.viatra2.gtasm.patternmatcher.incremental.rete.misc.DeltaMonitor;
 import patternmatchers.kevoree.*;
+import policy.Role;
+import policyTools.checker.PolicyChecker;
 import policyTools.editor.PolicyEditor;
 import policyTools.simulation.Simulation;
 import policyTools.simulation.SimulationSimple;
@@ -184,9 +186,26 @@ public class KevoreeListenerSimple {
 					// TODO smartly
 					// activate the role
 					if (roleActivation) {
-						pe.addPolicySessionRole(simulation.policy.getName(),
-								"s" + node, compType);
+						boolean dsod = true;
+						//PolicyEditor pe = new PolicyEditor(simulation.policy);
+						
+							for(Role rr : pe.getPolicyUserByName(simulation.policy.getName(), node).getSession().getRoles()){
+								dsod = dsod && PolicyChecker.checkDSoD(simulation.policy,rr.getName() ,comp);
+							}
+							if(dsod){	
+								pe.addPolicySessionRole(simulation.policy.getName(), "s" + node, compType);
+							}
+							else{
+								System.out.println("dsod violation");
+								simulation.kevoreeEditor.removeNodeComponent(node, comp);
+							}
 					}
+					
+//					if (roleActivation) {
+//						
+//						pe.addPolicySessionRole(simulation.policy.getName(),
+//								"s" + node, compType);
+//					}
 					// simulation.policyTextualEditor.simulationPanel.archiTreeMonitor
 					// .addComponent(comp);
 				}

@@ -1,7 +1,5 @@
 package policyTools.simulation;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.HashSet;
 import policy.*;
 import policy.impl.*;
@@ -12,15 +10,17 @@ import utils.time.Chrono;
 import kevoree.ContainerRoot;
 import kevoree.KevoreeFactory;
 import kevoreeTools.editor.KevoreeEditor;
+import kevoreeTools.guiEditor.controllers.KevoreeListener;
 import kevoreeTools.guiEditor.controllers.KevoreeListenerSimple;
 
 
-public class SimulationSimple {
+public class SimulationSimple extends Simulation{
 
 	public ContainerRoot kevoree;
 	public Policy policy;
 	
-	public KevoreeListenerSimple kevoreeListener;
+//	public KevoreeListenerSimple kevoreeListener;
+	public KevoreeListener kevoreeListener;
 	public PolicyListenerSimple policyListener;
 
 	public KevoreeEditor kevoreeEditor;
@@ -43,8 +43,11 @@ public class SimulationSimple {
 		kevoreeEditor = new KevoreeEditor(kevoree);
 		policyEditor = new PolicyEditor(policy);
 
-		kevoreeListener = new KevoreeListenerSimple(this);
+//		kevoreeListener = new KevoreeListenerSimple(this);
+		kevoreeListener = new KevoreeListener(this, KevoreeListener.STRATEGY_SIMPLE);
 		policyListener = new PolicyListenerSimple(this);
+		
+		loadTypes();
 
 	}
 	
@@ -63,7 +66,8 @@ public class SimulationSimple {
 		kevoreeEditor = new KevoreeEditor(kevoree);
 		policyEditor = new PolicyEditor(policy);
 
-		kevoreeListener = new KevoreeListenerSimple(this);
+//		kevoreeListener = new KevoreeListenerSimple(this);
+		kevoreeListener = new KevoreeListener(this, KevoreeListener.STRATEGY_SIMPLE);
 		policyListener = new PolicyListenerSimple(this);
 
 	}
@@ -137,15 +141,31 @@ public class SimulationSimple {
 	public void activateUsersRoles() {
 		HashSet<String> users = policyEditor.getPolicyUsersNames(policy
 				.getName());
+	
 		for (String user : users) {
 			HashSet<String> roles = new HashSet<String>();
+
+//			String[] rolls = new String[policyEditor.getPolicyUserByName(policy.getName(),
+//					user).getRoles().size()];
+//			int cpt = 0;
+			
 			for (Role r : policyEditor.getPolicyUserByName(policy.getName(),
 					user).getRoles()) {
 				roles.add(r.getName());
+//				rolls[cpt] = r.getName();
+//				cpt++;
 			}
+			
+//			for(int i = rolls.length -1 ; i >= 0; i--){
+//				System.out.println(rolls[i]);
+//				kevoreeEditor.addNodeComponent(user, rolls[i], rolls[i]);
+//			}
+			
 			for (String role : roles) {
 				kevoreeEditor.addNodeComponent(user, role, role);
 			}
+			
+			
 		}
 	}
 
@@ -153,7 +173,7 @@ public class SimulationSimple {
 		Chrono c = new Chrono();
 		c.start();
 		System.out.println("START SIMULATION SIMPLE");
-		SimulationSplit simul = new SimulationSplit();
+		SimulationSimple simul = new SimulationSimple(3,3);
 		simul.loadTypes();
 		simul.kevoreeListener.listen();
 		simul.policyListener.listen();
@@ -161,4 +181,6 @@ public class SimulationSimple {
 		c.stop();
 		System.out.println("END SIMULATION SIMPLE : " + c.displayTime());
 	}
+	
+	
 }

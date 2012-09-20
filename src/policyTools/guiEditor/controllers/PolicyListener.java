@@ -370,7 +370,7 @@ public class PolicyListener {
 //						}
 					}
 					
-					verifyEnforcement("rule activation");	
+//					verifyEnforcement("rule activation");	
 					
 //					editor.update();
 				}
