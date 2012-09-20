@@ -38,18 +38,18 @@ public class PatternBuilderForrole implements IStatelessGeneratedRetePatternBuil
 		assert("policy.role".equals(gtPattern));
 		buildable = buildable.getNextContainer().putOnTab("policy.role");
 		
-		final Address<? extends Receiver> var_330 = buildable.patternCollector("policy.role");
-		final Stub<Address<? extends Supplier>> var_331 = buildable.buildStartStub(new Object[] {}, new Object[] {});
-		final Object var_332 = EPackage.Registry.INSTANCE.getEPackage("http://policy/1.0").getEClassifier("Role");
-		final Stub<Address<? extends Supplier>> var_333 = buildable.unaryTypeStub(new FlatTuple(new Object[] {"R"}), var_332);
-		final TupleMask var_334 = new TupleMask(new int[] {}, 0);
-		final TupleMask var_335 = new TupleMask(new int[] {}, 1);
-		final TupleMask var_336 = new TupleMask(new int[] {0}, 1);
-		final Stub<Address<? extends Supplier>> var_337 = buildable.buildBetaNode(var_331, var_333, var_334, var_335, var_336, false);
-		final TupleMask var_338 = new TupleMask(new int[] {0}, 1);
-		final Stub<Address<? extends Supplier>> var_339 = buildable.buildTrimmer(var_337, var_338);
-		buildable.buildConnection(var_339, var_330);
-		return var_330;
+		final Address<? extends Receiver> var_0 = buildable.patternCollector("policy.role");
+		final Stub<Address<? extends Supplier>> var_1 = buildable.buildStartStub(new Object[] {}, new Object[] {});
+		final Object var_2 = EPackage.Registry.INSTANCE.getEPackage("http://policy/1.0").getEClassifier("Role");
+		final Stub<Address<? extends Supplier>> var_3 = buildable.unaryTypeStub(new FlatTuple(new Object[] {"R"}), var_2);
+		final TupleMask var_4 = new TupleMask(new int[] {}, 0);
+		final TupleMask var_5 = new TupleMask(new int[] {}, 1);
+		final TupleMask var_6 = new TupleMask(new int[] {0}, 1);
+		final Stub<Address<? extends Supplier>> var_7 = buildable.buildBetaNode(var_1, var_3, var_4, var_5, var_6, false);
+		final TupleMask var_8 = new TupleMask(new int[] {0}, 1);
+		final Stub<Address<? extends Supplier>> var_9 = buildable.buildTrimmer(var_7, var_8);
+		buildable.buildConnection(var_9, var_0);
+		return var_0;
 
 	}
 	

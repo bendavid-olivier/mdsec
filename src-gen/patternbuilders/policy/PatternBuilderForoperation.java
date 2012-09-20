@@ -38,18 +38,18 @@ public class PatternBuilderForoperation implements IStatelessGeneratedRetePatter
 		assert("policy.operation".equals(gtPattern));
 		buildable = buildable.getNextContainer().putOnTab("policy.operation");
 		
-		final Address<? extends Receiver> var_340 = buildable.patternCollector("policy.operation");
-		final Stub<Address<? extends Supplier>> var_341 = buildable.buildStartStub(new Object[] {}, new Object[] {});
-		final Object var_342 = EPackage.Registry.INSTANCE.getEPackage("http://policy/1.0").getEClassifier("Operation");
-		final Stub<Address<? extends Supplier>> var_343 = buildable.unaryTypeStub(new FlatTuple(new Object[] {"OP"}), var_342);
-		final TupleMask var_344 = new TupleMask(new int[] {}, 0);
-		final TupleMask var_345 = new TupleMask(new int[] {}, 1);
-		final TupleMask var_346 = new TupleMask(new int[] {0}, 1);
-		final Stub<Address<? extends Supplier>> var_347 = buildable.buildBetaNode(var_341, var_343, var_344, var_345, var_346, false);
-		final TupleMask var_348 = new TupleMask(new int[] {0}, 1);
-		final Stub<Address<? extends Supplier>> var_349 = buildable.buildTrimmer(var_347, var_348);
-		buildable.buildConnection(var_349, var_340);
-		return var_340;
+		final Address<? extends Receiver> var_292 = buildable.patternCollector("policy.operation");
+		final Stub<Address<? extends Supplier>> var_293 = buildable.buildStartStub(new Object[] {}, new Object[] {});
+		final Object var_294 = EPackage.Registry.INSTANCE.getEPackage("http://policy/1.0").getEClassifier("Operation");
+		final Stub<Address<? extends Supplier>> var_295 = buildable.unaryTypeStub(new FlatTuple(new Object[] {"OP"}), var_294);
+		final TupleMask var_296 = new TupleMask(new int[] {}, 0);
+		final TupleMask var_297 = new TupleMask(new int[] {}, 1);
+		final TupleMask var_298 = new TupleMask(new int[] {0}, 1);
+		final Stub<Address<? extends Supplier>> var_299 = buildable.buildBetaNode(var_293, var_295, var_296, var_297, var_298, false);
+		final TupleMask var_300 = new TupleMask(new int[] {0}, 1);
+		final Stub<Address<? extends Supplier>> var_301 = buildable.buildTrimmer(var_299, var_300);
+		buildable.buildConnection(var_301, var_292);
+		return var_292;
 
 	}
 	

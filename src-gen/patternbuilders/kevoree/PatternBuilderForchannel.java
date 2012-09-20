@@ -38,18 +38,18 @@ public class PatternBuilderForchannel implements IStatelessGeneratedRetePatternB
 		assert("kevoree.channel".equals(gtPattern));
 		buildable = buildable.getNextContainer().putOnTab("kevoree.channel");
 		
-		final Address<? extends Receiver> var_320 = buildable.patternCollector("kevoree.channel");
-		final Stub<Address<? extends Supplier>> var_321 = buildable.buildStartStub(new Object[] {}, new Object[] {});
-		final Object var_322 = EPackage.Registry.INSTANCE.getEPackage("http://kevoree/1.0").getEClassifier("Channel");
-		final Stub<Address<? extends Supplier>> var_323 = buildable.unaryTypeStub(new FlatTuple(new Object[] {"CHA"}), var_322);
-		final TupleMask var_324 = new TupleMask(new int[] {}, 0);
-		final TupleMask var_325 = new TupleMask(new int[] {}, 1);
-		final TupleMask var_326 = new TupleMask(new int[] {0}, 1);
-		final Stub<Address<? extends Supplier>> var_327 = buildable.buildBetaNode(var_321, var_323, var_324, var_325, var_326, false);
-		final TupleMask var_328 = new TupleMask(new int[] {0}, 1);
-		final Stub<Address<? extends Supplier>> var_329 = buildable.buildTrimmer(var_327, var_328);
-		buildable.buildConnection(var_329, var_320);
-		return var_320;
+		final Address<? extends Receiver> var_48 = buildable.patternCollector("kevoree.channel");
+		final Stub<Address<? extends Supplier>> var_49 = buildable.buildStartStub(new Object[] {}, new Object[] {});
+		final Object var_50 = EPackage.Registry.INSTANCE.getEPackage("http://kevoree/1.0").getEClassifier("Channel");
+		final Stub<Address<? extends Supplier>> var_51 = buildable.unaryTypeStub(new FlatTuple(new Object[] {"CHA"}), var_50);
+		final TupleMask var_52 = new TupleMask(new int[] {}, 0);
+		final TupleMask var_53 = new TupleMask(new int[] {}, 1);
+		final TupleMask var_54 = new TupleMask(new int[] {0}, 1);
+		final Stub<Address<? extends Supplier>> var_55 = buildable.buildBetaNode(var_49, var_51, var_52, var_53, var_54, false);
+		final TupleMask var_56 = new TupleMask(new int[] {0}, 1);
+		final Stub<Address<? extends Supplier>> var_57 = buildable.buildTrimmer(var_55, var_56);
+		buildable.buildConnection(var_57, var_48);
+		return var_48;
 
 	}
 	

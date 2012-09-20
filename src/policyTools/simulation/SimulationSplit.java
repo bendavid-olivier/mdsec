@@ -3,6 +3,9 @@ package policyTools.simulation;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.HashSet;
+
+import com.sun.tools.javac.util.Pair;
+
 import policy.*;
 import policy.impl.*;
 import policyTools.editor.PolicyEditor;
@@ -14,7 +17,7 @@ import kevoree.ContainerRoot;
 import kevoree.KevoreeFactory;
 import kevoreeTools.editor.KevoreeEditor;
 import kevoreeTools.guiEditor.controllers.KevoreeListener;
-import com.sun.tools.javac.util.Pair;
+
 
 public class SimulationSplit{
 
@@ -100,7 +103,7 @@ public class SimulationSplit{
 	//this verification consists in checking that all activated rules are enforced.
 	public void initSimulationArchitecturalChanges(){
 		addResources();
-		connectUsers();
+		connectUsers();    
 		activateUsersRoles();
 	}
 	

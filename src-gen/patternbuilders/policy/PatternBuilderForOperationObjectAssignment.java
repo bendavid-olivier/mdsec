@@ -38,27 +38,27 @@ public class PatternBuilderForOperationObjectAssignment implements IStatelessGen
 		assert("policy.OperationObjectAssignment".equals(gtPattern));
 		buildable = buildable.getNextContainer().putOnTab("policy.OperationObjectAssignment");
 		
-		final Address<? extends Receiver> var_375 = buildable.patternCollector("policy.OperationObjectAssignment");
-		final Stub<Address<? extends Supplier>> var_376 = buildable.buildStartStub(new Object[] {}, new Object[] {});
-		final Object var_377 = ((EClass) (EPackage.Registry.INSTANCE.getEPackage("http://policy/1.0").getEClassifier("Permission"))).getEStructuralFeature("operations");
-		final Stub<Address<? extends Supplier>> var_378 = buildable.binaryEdgeTypeStub(new FlatTuple(new Object[] {"PERM", "OPE"}), var_377);
-		final TupleMask var_379 = new TupleMask(new int[] {}, 0);
-		final TupleMask var_380 = new TupleMask(new int[] {}, 2);
-		final TupleMask var_381 = new TupleMask(new int[] {0, 1}, 2);
-		final Stub<Address<? extends Supplier>> var_382 = buildable.buildBetaNode(var_376, var_378, var_379, var_380, var_381, false);
-		final Stub<Address<? extends Supplier>> var_383 = buildable.buildInjectivityChecker(var_382, 1, new int[] {0});
-		final Object var_384 = ((EClass) (EPackage.Registry.INSTANCE.getEPackage("http://policy/1.0").getEClassifier("Operation"))).getEStructuralFeature("objects");
-		final Stub<Address<? extends Supplier>> var_385 = buildable.binaryEdgeTypeStub(new FlatTuple(new Object[] {"OPE", "OBJ"}), var_384);
-		final TupleMask var_386 = new TupleMask(new int[] {1}, 2);
-		final TupleMask var_387 = new TupleMask(new int[] {0}, 2);
-		final TupleMask var_388 = new TupleMask(new int[] {1}, 2);
-		final Stub<Address<? extends Supplier>> var_389 = buildable.buildBetaNode(var_383, var_385, var_386, var_387, var_388, false);
-		final Stub<Address<? extends Supplier>> var_390 = buildable.buildInjectivityChecker(var_389, 2, new int[] {1});
-		final Stub<Address<? extends Supplier>> var_391 = buildable.buildInjectivityChecker(var_390, 2, new int[] {0});
-		final TupleMask var_392 = new TupleMask(new int[] {0, 1, 2}, 3);
-		final Stub<Address<? extends Supplier>> var_393 = buildable.buildTrimmer(var_391, var_392);
-		buildable.buildConnection(var_393, var_375);
-		return var_375;
+		final Address<? extends Receiver> var_68 = buildable.patternCollector("policy.OperationObjectAssignment");
+		final Stub<Address<? extends Supplier>> var_69 = buildable.buildStartStub(new Object[] {}, new Object[] {});
+		final Object var_70 = ((EClass) (EPackage.Registry.INSTANCE.getEPackage("http://policy/1.0").getEClassifier("Operation"))).getEStructuralFeature("objects");
+		final Stub<Address<? extends Supplier>> var_71 = buildable.binaryEdgeTypeStub(new FlatTuple(new Object[] {"OPE", "OBJ"}), var_70);
+		final TupleMask var_72 = new TupleMask(new int[] {}, 0);
+		final TupleMask var_73 = new TupleMask(new int[] {}, 2);
+		final TupleMask var_74 = new TupleMask(new int[] {0, 1}, 2);
+		final Stub<Address<? extends Supplier>> var_75 = buildable.buildBetaNode(var_69, var_71, var_72, var_73, var_74, false);
+		final Stub<Address<? extends Supplier>> var_76 = buildable.buildInjectivityChecker(var_75, 1, new int[] {0});
+		final Object var_77 = ((EClass) (EPackage.Registry.INSTANCE.getEPackage("http://policy/1.0").getEClassifier("Permission"))).getEStructuralFeature("operations");
+		final Stub<Address<? extends Supplier>> var_78 = buildable.binaryEdgeTypeStub(new FlatTuple(new Object[] {"PERM", "OPE"}), var_77);
+		final TupleMask var_79 = new TupleMask(new int[] {0}, 2);
+		final TupleMask var_80 = new TupleMask(new int[] {1}, 2);
+		final TupleMask var_81 = new TupleMask(new int[] {0}, 2);
+		final Stub<Address<? extends Supplier>> var_82 = buildable.buildBetaNode(var_76, var_78, var_79, var_80, var_81, false);
+		final Stub<Address<? extends Supplier>> var_83 = buildable.buildInjectivityChecker(var_82, 1, new int[] {2});
+		final Stub<Address<? extends Supplier>> var_84 = buildable.buildInjectivityChecker(var_83, 0, new int[] {2});
+		final TupleMask var_85 = new TupleMask(new int[] {2, 0, 1}, 3);
+		final Stub<Address<? extends Supplier>> var_86 = buildable.buildTrimmer(var_84, var_85);
+		buildable.buildConnection(var_86, var_68);
+		return var_68;
 
 	}
 	

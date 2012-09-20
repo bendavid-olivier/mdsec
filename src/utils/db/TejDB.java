@@ -8,9 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashSet;
 
-
 import policy.*;
-import policy.impl.*;
+import policy.impl.ObjectImpl;
 import policyTools.editor.PolicyEditor;
 import policyTools.guiEditor.graphicComponents.GraphMonitor;
 import utils.kevComponentGenerator.KevComponentGenerator;

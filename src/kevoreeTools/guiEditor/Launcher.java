@@ -11,7 +11,7 @@ public class Launcher{
 	public void start(){
 		editor.setVisible(true);
 	}
-public static void main(String[] args) {
+public static void main(String[] args) { 
 KevoreeTextualEditor editor = new KevoreeTextualEditor();
 editor.setVisible(true);
 editor.update();

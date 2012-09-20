@@ -38,19 +38,19 @@ public class PatternBuilderForuserRoleAssignment implements IStatelessGeneratedR
 		assert("policy.userRoleAssignment".equals(gtPattern));
 		buildable = buildable.getNextContainer().putOnTab("policy.userRoleAssignment");
 		
-		final Address<? extends Receiver> var_219 = buildable.patternCollector("policy.userRoleAssignment");
-		final Stub<Address<? extends Supplier>> var_220 = buildable.buildStartStub(new Object[] {}, new Object[] {});
-		final Object var_221 = ((EClass) (EPackage.Registry.INSTANCE.getEPackage("http://policy/1.0").getEClassifier("User"))).getEStructuralFeature("roles");
-		final Stub<Address<? extends Supplier>> var_222 = buildable.binaryEdgeTypeStub(new FlatTuple(new Object[] {"USER", "ROLE"}), var_221);
-		final TupleMask var_223 = new TupleMask(new int[] {}, 0);
-		final TupleMask var_224 = new TupleMask(new int[] {}, 2);
-		final TupleMask var_225 = new TupleMask(new int[] {0, 1}, 2);
-		final Stub<Address<? extends Supplier>> var_226 = buildable.buildBetaNode(var_220, var_222, var_223, var_224, var_225, false);
-		final Stub<Address<? extends Supplier>> var_227 = buildable.buildInjectivityChecker(var_226, 1, new int[] {0});
-		final TupleMask var_228 = new TupleMask(new int[] {0, 1}, 2);
-		final Stub<Address<? extends Supplier>> var_229 = buildable.buildTrimmer(var_227, var_228);
-		buildable.buildConnection(var_229, var_219);
-		return var_219;
+		final Address<? extends Receiver> var_596 = buildable.patternCollector("policy.userRoleAssignment");
+		final Stub<Address<? extends Supplier>> var_597 = buildable.buildStartStub(new Object[] {}, new Object[] {});
+		final Object var_598 = ((EClass) (EPackage.Registry.INSTANCE.getEPackage("http://policy/1.0").getEClassifier("User"))).getEStructuralFeature("roles");
+		final Stub<Address<? extends Supplier>> var_599 = buildable.binaryEdgeTypeStub(new FlatTuple(new Object[] {"USER", "ROLE"}), var_598);
+		final TupleMask var_600 = new TupleMask(new int[] {}, 0);
+		final TupleMask var_601 = new TupleMask(new int[] {}, 2);
+		final TupleMask var_602 = new TupleMask(new int[] {0, 1}, 2);
+		final Stub<Address<? extends Supplier>> var_603 = buildable.buildBetaNode(var_597, var_599, var_600, var_601, var_602, false);
+		final Stub<Address<? extends Supplier>> var_604 = buildable.buildInjectivityChecker(var_603, 1, new int[] {0});
+		final TupleMask var_605 = new TupleMask(new int[] {0, 1}, 2);
+		final Stub<Address<? extends Supplier>> var_606 = buildable.buildTrimmer(var_604, var_605);
+		buildable.buildConnection(var_606, var_596);
+		return var_596;
 
 	}
 	
