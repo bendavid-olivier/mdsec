@@ -43,7 +43,7 @@ public class SimulationSplit{
 
 		//load policy model example
 		Generator gen = new Generator(policy);
-		gen.generateModelExampleASMSvaryUsers3(4,4);
+		gen.generateModelExampleASMSvaryUsers3(3,2);
 		
 		kevoreeEditor = new KevoreeEditor(kevoree);
 		policyEditor = new PolicyEditor(policy);
