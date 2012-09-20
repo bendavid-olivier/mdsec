@@ -131,7 +131,7 @@ public class Simulation {
 		
 		PolicyTextualEditor editor2 = new PolicyTextualEditor(false);
 		CommandLoadASMSSmall loadModelExample2 = new CommandLoadASMSSmall(editor2, "loadME", "loadME");
-		loadModelExample2.execute2(a, b);		
+		loadModelExample2.execute2(4,4);		
 		PolicyEditor pe = new PolicyEditor(editor2.policy);
 		System.out.println("policy rules : " + pe.getNumberPolicyRules());
 		

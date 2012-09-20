@@ -7,24 +7,19 @@ import policy.*;
 import policy.impl.*;
 import policyTools.editor.PolicyEditor;
 import policyTools.generator.Generator;
-import policyTools.guiEditor.controllers.PolicyListener;
 import policyTools.guiEditor.controllers.PolicyListenerSimple;
-import policyTools.split.Splitter;
 import utils.time.Chrono;
 import kevoree.ContainerRoot;
 import kevoree.KevoreeFactory;
 import kevoreeTools.editor.KevoreeEditor;
-import kevoreeTools.guiEditor.controllers.KevoreeListener;
 import kevoreeTools.guiEditor.controllers.KevoreeListenerSimple;
 
-import com.sun.tools.javac.util.Pair;
 
 public class SimulationSimple {
 
 	public ContainerRoot kevoree;
 	public Policy policy;
-
-	public HashMap<String, Pair<Policy, PolicyListenerSimple>> policies;
+	
 	public KevoreeListenerSimple kevoreeListener;
 	public PolicyListenerSimple policyListener;
 
@@ -51,16 +46,26 @@ public class SimulationSimple {
 		kevoreeListener = new KevoreeListenerSimple(this);
 		policyListener = new PolicyListenerSimple(this);
 
-		policies = new HashMap<String, Pair<Policy, PolicyListenerSimple>>();
-		Splitter splitter = new Splitter(policy);
+	}
+	
+	
+	public SimulationSimple(int numberUsers, int numberResources) {
+		kevoreeFactory = KevoreeFactory.eINSTANCE;
+		policyFactory = PolicyFactory.eINSTANCE;
 
-		for (Policy p : splitter.split()) {
-			policies.put(p.getName(), new Pair<Policy, PolicyListenerSimple>(p,
-					new PolicyListenerSimple(this)));
-		}
-		for (Entry e : policies.entrySet()) {
-			((Pair<Policy, PolicyListener>) e.getValue()).snd.listen();
-		}
+		kevoree = kevoreeFactory.createContainerRoot();
+		policy = policyFactory.createPolicy();
+
+		// load policy model example
+		Generator gen = new Generator(policy);
+		gen.generateModelExampleASMSvaryUsers3(numberUsers, numberResources);
+
+		kevoreeEditor = new KevoreeEditor(kevoree);
+		policyEditor = new PolicyEditor(policy);
+
+		kevoreeListener = new KevoreeListenerSimple(this);
+		policyListener = new PolicyListenerSimple(this);
+
 	}
 
 	public void loadTypes() {
