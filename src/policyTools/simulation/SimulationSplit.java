@@ -62,6 +62,34 @@ public class SimulationSplit{
 		}
 	}
 	
+	public SimulationSplit(int numberUsers, int numberResources){
+		kevoreeFactory = KevoreeFactory.eINSTANCE;
+		policyFactory = PolicyFactory.eINSTANCE;
+		
+		kevoree = kevoreeFactory.createContainerRoot();
+		policy =policyFactory.createPolicy();
+
+		//load policy model example
+		Generator gen = new Generator(policy);
+		gen.generateModelExampleASMSvaryUsers3(numberUsers, numberResources);
+		
+		kevoreeEditor = new KevoreeEditor(kevoree);
+		policyEditor = new PolicyEditor(policy);
+
+		kevoreeListener = new KevoreeListener(this);
+		policyListener = new PolicyListener(this);
+		
+		policies =  new HashMap<String, Pair<Policy,PolicyListener>>();
+		Splitter splitter = new Splitter(policy);
+		
+		for(Policy p : splitter.split()){
+			policies.put(p.getName(),new  Pair<Policy, PolicyListener>(p, new PolicyListener(this,p)));
+		}
+		for(Entry e :  policies.entrySet()){
+			((Pair<Policy,PolicyListener>)e.getValue()).snd.listen();
+		}
+	}
+	
 	public void loadTypes(){
 		//adding ports types first
 		for(PolicyElement e :policy.getElements()){

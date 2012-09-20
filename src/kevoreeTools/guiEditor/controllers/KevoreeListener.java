@@ -120,7 +120,7 @@ public class KevoreeListener {
 //						if (pe.getPolicyUserByName(simulation.policy.getName(), node) != null) {
 //							pe.setPolicyUserSession(simulation.policy.getName(), node, "s" + node);
 //						}
-						System.out.println("add session in : "+simulation.policies.get(node).fst.getName());
+//						System.out.println("add session in : "+simulation.policies.get(node).fst.getName());
 						pe.setPolicyUserSession(simulation.policies.get(node).fst.getName(), node, "s" + node);
 					}
 				}
