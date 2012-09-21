@@ -1,13 +1,22 @@
 package policyTools.simulation;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+
 import kevoree.ContainerRoot;
 import kevoree.KevoreeFactory;
+import kevoree.KevoreePackage;
 import kevoreeTools.editor.KevoreeEditor;
 import kevoreeTools.guiEditor.controllers.KevoreeListener;
+import kevoreeTools.guiEditor.graphicComponents.FileChooser;
 import policy.Operation;
 import policy.Permission;
 import policy.Policy;
@@ -20,6 +29,7 @@ import policy.impl.RoleImpl;
 import policyTools.editor.PolicyEditor;
 import policyTools.generator.Generator;
 import policyTools.guiEditor.controllers.PolicyListener;
+import policyTools.guiEditor.graphicComponents.GraphMonitor;
 
 import com.sun.tools.javac.util.Pair;
 
@@ -61,6 +71,9 @@ public abstract class Simulation {
 
 		kevoreeEditor = new KevoreeEditor(kevoree);
 		policyEditor = new PolicyEditor(policy);
+//		System.out.println("number of rules : "+policyEditor.getNumberPolicyRules());
+		GraphMonitor gm = new GraphMonitor(policy);
+		
 
 		kevoreeListener = new KevoreeListener(this, KevoreeListener.STRATEGY_SIMPLE);
 		policyListener = new PolicyListener(this);
@@ -151,8 +164,6 @@ public abstract class Simulation {
 		return res;
 	}
 	
-	
-	
 	public void activateUsersRoles() {
 		HashSet<String> users = policyEditor.getPolicyUsersNames(policy
 				.getName());
@@ -176,6 +187,32 @@ public abstract class Simulation {
 //			}
 		}
 	}
+	
+	public void saveArchitectureModel(){
+		ResourceSet resourceSetMetamodel;
+		Resource resourceModel;
+		// REGISTER THE METAMODEL
+		resourceSetMetamodel = new ResourceSetImpl();
+		resourceSetMetamodel.getPackageRegistry().put(KevoreePackage.eNS_URI,
+		KevoreePackage.eINSTANCE);
+		resourceSetMetamodel.getResourceFactoryRegistry()
+		.getExtensionToFactoryMap()
+		.put("xmi", new XMIResourceFactoryImpl());
+		FileChooser fc = new FileChooser(null);
+		System.out.println(fc.getChooser().getSelectedFile().getAbsolutePath());
+		String path = fc.getChooser().getSelectedFile().getAbsolutePath();
+		 // SAVE THE MODEL
+		 resourceModel = resourceSetMetamodel.createResource(URI
+		 .createFileURI(path));
+		 resourceModel.getContents().add(kevoree);
+		 try {
+		 resourceModel.save(null);
+		 } catch (IOException e) {
+		 System.out.println("error during the model saving step");
+		 e.printStackTrace();
+		 }
+	}
+	
 	
 	
 }
