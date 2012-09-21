@@ -196,7 +196,7 @@ public class Generator{
 	
 	
 	
-	public void generateModelExampleASMSvaryUsers3(int numberUsers, int numberSales) {
+	public void generateModelExampleASMSvaryUsers3(int numberUsers, int numberAuctions) {
 		PolicyEditor pe = new PolicyEditor(policy);
 		String policyName = "AuctionSaleSystemPolicy";
 		
@@ -214,16 +214,19 @@ public class Generator{
 		pe.addPolicyRole(policyName, "Seller");
 		pe.getPolicyRoleByName(policyName, "Seller").setArchType("Seller");
 		
+		pe.addPolicyRole(policyName, "Auctioneer");
+		pe.getPolicyRoleByName(policyName, "Auctioneer").setArchType("Auctioneer");
+		
 		
 		//adding permissions
-		pe.addPolicyPermission(policyName, "pUser");
-		pe.addPolicyPermission(policyName, "pPersonal");
-		
-		pe.addPolicyPermission(policyName, "pAdmin");
+		pe.addPolicyPermission(policyName, "pBuyer");
+		pe.addPolicyPermission(policyName, "pBuyerCustomized");
+		pe.addPolicyPermission(policyName, "pSeller");
+		pe.addPolicyPermission(policyName, "pAuctioneer");
 		
 	
 		//adding operations
-			//user
+			//buyers operations
 		pe.addPolicyOperation(policyName, "bid");
 		pe.addPolicyOperation(policyName, "register");
 		pe.addPolicyOperation(policyName, "unregister");
@@ -232,30 +235,39 @@ public class Generator{
 		pe.addPolicyOperation(policyName, "proposeAprice");
 		
 	
-			//user and personal
+			//buyers and customized buyers
 		pe.addPolicyOperation(policyName, "bid10");
 		pe.addPolicyOperation(policyName, "bid50");
 		pe.addPolicyOperation(policyName, "bid100");
 		
 
-			//admin
-		pe.addPolicyOperation(policyName, "create");
-		pe.addPolicyOperation(policyName, "read");
-		pe.addPolicyOperation(policyName, "update");
-		pe.addPolicyOperation(policyName, "delete");
-		pe.addPolicyOperation(policyName, "stop");
-		pe.addPolicyOperation(policyName, "describe");
-	
+			//auctioneer operations
+		pe.addPolicyOperation(policyName, "createAuction");
+		pe.addPolicyOperation(policyName, "openAuction");
+		pe.addPolicyOperation(policyName, "updateAuction");
+		pe.addPolicyOperation(policyName, "deleteAuction");
+		pe.addPolicyOperation(policyName, "closeAuction");
+		pe.addPolicyOperation(policyName, "notifyAuctionWinner");
 		
-	
+		
+		
+		// seller operations
+		pe.addPolicyOperation(policyName, "addItem");
+		pe.addPolicyOperation(policyName, "addItemWithNotifications");
+		pe.addPolicyOperation(policyName, "withdrawItem");
+		
+		
 		//adding objects
-		for(int i = 0;i<numberSales;i++){
-			pe.addPolicyObject(policyName, "Sale"+i);
-			pe.getPolicyObjectByName(policyName, "Sale"+i).setArchType("Sale");
+		for(int i = 0;i<numberAuctions;i++){
+			pe.addPolicyObject(policyName, "Auction"+i);
+			pe.getPolicyObjectByName(policyName, "Auction"+i).setArchType("Auction");
 		}
 		
-		pe.addPolicyObject(policyName, "SaleManager");
-		pe.getPolicyObjectByName(policyName, "SaleManager").setArchType("SaleManager");
+		pe.addPolicyObject(policyName, "AuctionManager");
+		pe.getPolicyObjectByName(policyName, "AuctionManager").setArchType("AuctionManager");
+		
+		pe.addPolicyObject(policyName, "ItemManager");
+		pe.getPolicyObjectByName(policyName, "ItemManager").setArchType("ItemManager");
 		
 		
 		//adding dsod
@@ -264,62 +276,73 @@ public class Generator{
 		//adding relationships users to roles
 		for(int i = 0;i<numberUsers;i++){
 			pe.addPolicyUserRole(policyName, "User"+i, "Buyer");
-			pe.addPolicyUserRole(policyName, "User"+i, "Seller");	
+			pe.addPolicyUserRole(policyName, "User"+i, "Seller");
+			pe.addPolicyUserRole(policyName, "User"+i, "Auctioneer");	
 		}
 		
 		//adding relationships between role and permissions
-		pe.addPolicyRolePermission(policyName, "Buyer", "pUser");
-		pe.addPolicyRolePermission(policyName, "Buyer", "pPersonal");
-		pe.addPolicyRolePermission(policyName, "Seller", "pAdmin");
-		
-		
-		//adding relationships between role and permissions
-		pe.addPolicyPermissionOperation(policyName, "pUser", "bid");
-		pe.addPolicyPermissionOperation(policyName, "pUser", "register");
-		pe.addPolicyPermissionOperation(policyName, "pUser", "unregister");
-		pe.addPolicyPermissionOperation(policyName, "pUser", "comment");
-		pe.addPolicyPermissionOperation(policyName, "pUser", "proposeAprice");
-		
-		pe.addPolicyPermissionOperation(policyName, "pPersonal", "bid");
-		pe.addPolicyPermissionOperation(policyName, "pPersonal", "bid10");
-		pe.addPolicyPermissionOperation(policyName, "pPersonal", "bid50");
-		pe.addPolicyPermissionOperation(policyName, "pPersonal", "register");
-		pe.addPolicyPermissionOperation(policyName, "pPersonal", "unregister");
-		pe.addPolicyPermissionOperation(policyName, "pPersonal", "comment");
-		pe.addPolicyPermissionOperation(policyName, "pPersonal", "proposeAprice");
+		pe.addPolicyRolePermission(policyName, "Buyer", "pBuyer");
+		pe.addPolicyRolePermission(policyName, "Buyer", "pBuyerCustomized");
+		pe.addPolicyRolePermission(policyName, "Seller", "pSeller");
+		pe.addPolicyRolePermission(policyName, "Auctioneer", "pAuctioneer");
 		
 		
 		
-		pe.addPolicyPermissionOperation(policyName, "pAdmin", "create");
-		pe.addPolicyPermissionOperation(policyName, "pAdmin", "read");
-		pe.addPolicyPermissionOperation(policyName, "pAdmin", "update");
-		pe.addPolicyPermissionOperation(policyName, "pAdmin", "delete");
-		pe.addPolicyPermissionOperation(policyName, "pAdmin", "stop");
-		pe.addPolicyPermissionOperation(policyName, "pAdmin", "describe");
+		//adding relationships between permissions and operations
+		pe.addPolicyPermissionOperation(policyName, "pBuyer", "bid");
+		pe.addPolicyPermissionOperation(policyName, "pBuyer", "register");
+		pe.addPolicyPermissionOperation(policyName, "pBuyer", "unregister");
+		pe.addPolicyPermissionOperation(policyName, "pBuyer", "comment");
+		pe.addPolicyPermissionOperation(policyName, "pBuyer", "proposeAprice");
+		
+		pe.addPolicyPermissionOperation(policyName, "pBuyerCustomized", "bid");
+		pe.addPolicyPermissionOperation(policyName, "pBuyerCustomized", "bid10");
+		pe.addPolicyPermissionOperation(policyName, "pBuyerCustomized", "bid50");
+		pe.addPolicyPermissionOperation(policyName, "pBuyerCustomized", "register");
+		pe.addPolicyPermissionOperation(policyName, "pBuyerCustomized", "unregister");
+		pe.addPolicyPermissionOperation(policyName, "pBuyerCustomized", "comment");
+		pe.addPolicyPermissionOperation(policyName, "pBuyerCustomized", "proposeAprice");
+		
+		
+		pe.addPolicyPermissionOperation(policyName, "pSeller", "addItem");
+		pe.addPolicyPermissionOperation(policyName, "pSeller", "addItemWithNotifications");
+		pe.addPolicyPermissionOperation(policyName, "pSeller", "withdrawItem");
+		
+		pe.addPolicyPermissionOperation(policyName, "pAuctioneer", "createAuction");
+		pe.addPolicyPermissionOperation(policyName, "pAuctioneer", "openAuction");
+		pe.addPolicyPermissionOperation(policyName, "pAuctioneer", "updateAuction");
+		pe.addPolicyPermissionOperation(policyName, "pAuctioneer", "deleteAuction");
+		pe.addPolicyPermissionOperation(policyName, "pAuctioneer", "closeAuction");
+		pe.addPolicyPermissionOperation(policyName, "pAuctioneer", "notifyAuctionWinner");
 
 		//adding relationships between role and permissions and objects
 		
-		for(int i = 0;i<numberSales;i++){
-			pe.addPolicyPermissionOperationObject(policyName, "pUser","bid","Sale"+i);
-			pe.addPolicyPermissionOperationObject(policyName, "pUser","register","Sale"+i);
-			pe.addPolicyPermissionOperationObject(policyName, "pUser","unregister","Sale"+i);
-			pe.addPolicyPermissionOperationObject(policyName, "pUser","comment","Sale"+i);
-			pe.addPolicyPermissionOperationObject(policyName, "pUser","proposeAprice","Sale"+i);
+		for(int i = 0;i<numberAuctions;i++){
+			pe.addPolicyPermissionOperationObject(policyName, "pBuyer","bid","Auction"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pBuyer","register","Auction"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pBuyer","unregister","Auction"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pBuyer","comment","Auction"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pBuyer","proposeAprice","Auction"+i);
 			
-			pe.addPolicyPermissionOperationObject(policyName, "pPersonal","bid","Sale"+i);
-			pe.addPolicyPermissionOperationObject(policyName, "pPersonal","bid10","Sale"+i);
-			pe.addPolicyPermissionOperationObject(policyName, "pPersonal","bid50","Sale"+i);
-			pe.addPolicyPermissionOperationObject(policyName, "pPersonal","register","Sale"+i);
-			pe.addPolicyPermissionOperationObject(policyName, "pPersonal","unregister","Sale"+i);
-			pe.addPolicyPermissionOperationObject(policyName, "pPersonal","comment","Sale"+i);
-			pe.addPolicyPermissionOperationObject(policyName, "pPersonal","proposeAprice","Sale"+i);
-			
-			pe.addPolicyPermissionOperationObject(policyName, "pAdmin","stop","Sale"+i);
-			pe.addPolicyPermissionOperationObject(policyName, "pAdmin","describe","Sale"+i);
-			
+			pe.addPolicyPermissionOperationObject(policyName, "pBuyerCustomized","bid","Auction"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pBuyerCustomized","bid10","Auction"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pBuyerCustomized","bid50","Auction"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pBuyerCustomized","register","Auction"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pBuyerCustomized","unregister","Auction"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pBuyerCustomized","comment","Auction"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pBuyerCustomized","proposeAprice","Auction"+i);
 		}
-		pe.addPolicyPermissionOperationObject(policyName, "pAdmin","create","SaleManager");
-		pe.addPolicyPermissionOperationObject(policyName, "pAdmin","delete","SaleManager");
+		
+		pe.addPolicyPermissionOperationObject(policyName, "pSeller","addItem","ItemManager");
+		pe.addPolicyPermissionOperationObject(policyName, "pSeller","addItemWithNotifications","ItemManager");
+		pe.addPolicyPermissionOperationObject(policyName, "pSeller","withdrawItem","ItemManager");
+		
+		pe.addPolicyPermissionOperationObject(policyName, "pAuctioneer","createAuction","AuctionManager");
+		pe.addPolicyPermissionOperationObject(policyName, "pAuctioneer","openAuction","AuctionManager");
+		pe.addPolicyPermissionOperationObject(policyName, "pAuctioneer","updateAuction","AuctionManager");
+		pe.addPolicyPermissionOperationObject(policyName, "pAuctioneer","deleteAuction","AuctionManager");			
+		pe.addPolicyPermissionOperationObject(policyName, "pAuctioneer","closeAuction","AuctionManager");
+		pe.addPolicyPermissionOperationObject(policyName, "pAuctioneer","notifyAuctionWinner","AuctionManager");		
 	}
 		
 	

@@ -8,8 +8,8 @@ public class Experiments {
 
 	public static void main(String[] args) {
 
-		int users = 20;
-		int resources = 20;
+		int users = 5;
+		int resources = 5;
 		double [][] executionTimeSP = new double[users][resources];
 		double [][] executionTimeSS = new double[users][resources];
 		double [][] executionTimeCompare = new double[users][resources];

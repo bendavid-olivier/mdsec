@@ -91,8 +91,8 @@ public class KevoreeListener {
 
 	public KevoreeListener(Simulation k, String strategy) {
 		kevoree = k.kevoree;
-		System.out.println(k);
-		System.out.println(k.kevoree);
+//		System.out.println(k);
+//		System.out.println(k.kevoree);
 		current_strategy=strategy; 
 		registerLiteners();
 		simulation = k;

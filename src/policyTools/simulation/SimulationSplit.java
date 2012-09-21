@@ -44,7 +44,7 @@ public class SimulationSplit extends Simulation{
 		policies =  new HashMap<String, Pair<Policy,PolicyListener>>();
 		Splitter splitter = new Splitter(policy);
 		
-		for(Policy p : splitter.split()){
+		for(Policy p : splitter.splitByUsers()){
 			policies.put(p.getName(),new  Pair<Policy, PolicyListener>(p, new PolicyListener(this,p)));
 		}
 		for(Entry e :  policies.entrySet()){
@@ -72,7 +72,7 @@ public class SimulationSplit extends Simulation{
 		policies =  new HashMap<String, Pair<Policy,PolicyListener>>();
 		Splitter splitter = new Splitter(policy);
 		
-		for(Policy p : splitter.split()){
+		for(Policy p : splitter.splitByUsers()){
 			policies.put(p.getName(),new  Pair<Policy, PolicyListener>(p, new PolicyListener(this,p)));
 		}
 		for(Entry e :  policies.entrySet()){
@@ -124,6 +124,49 @@ public class SimulationSplit extends Simulation{
 		activateUsersRoles();
 	}
 	
+	
+//	public void activateUsersRoles(){
+//		HashSet<String> users = policyEditor.getPolicyUsersNames(policy.getName());
+//		for(String user : users){
+//			HashSet<String> roles = new HashSet<String>();
+//			for(Role r : policyEditor.getPolicyUserByName(policy.getName(), user).getRoles()){
+//				roles.add(r.getName());
+//			}
+//			
+//			
+//			
+//			for(String role : roles){
+//				kevoreeEditor.addNodeComponent(user, role, role);
+//			}
+//		}
+//	}
+	
+	
+	public void activateUsersRoles() {
+		HashSet<String> users = policyEditor.getPolicyUsersNames(policy
+				.getName());
+		for (String user : users) {
+			HashSet<String> roles = new HashSet<String>();
+			String[] rolls = new String[policyEditor.getPolicyUserByName(policy.getName(),
+					user).getRoles().size()];
+			int cpt = 0;		
+			for (Role r : policyEditor.getPolicyUserByName(policy.getName(),
+					user).getRoles()) {
+//				roles.add(r.getName());
+				rolls[cpt] = r.getName();
+				cpt++;
+			}
+			for(int i : createArrayOfUniqueNumber(rolls.length)){
+				System.out.println(user+" "+rolls[i]);
+				kevoreeEditor.addNodeComponent(user, rolls[i], rolls[i]);
+			}
+//			for (String role : roles) {
+//				kevoreeEditor.addNodeComponent(user, role, role);
+//			}
+		}
+	}
+	
+	
 	public void addResources(){
 		PolicyEditor pe = new PolicyEditor(policy);
 		HashSet<policy.Object> objects = pe.getPolicyObjects(policy.getName());
@@ -140,18 +183,7 @@ public class SimulationSplit extends Simulation{
 		}
 	}
 	
-	public void activateUsersRoles(){
-		HashSet<String> users = policyEditor.getPolicyUsersNames(policy.getName());
-		for(String user : users){
-			HashSet<String> roles = new HashSet<String>();
-			for(Role r : policyEditor.getPolicyUserByName(policy.getName(), user).getRoles()){
-				roles.add(r.getName());
-			}
-			for(String role : roles){
-				kevoreeEditor.addNodeComponent(user, role, role);
-			}
-		}
-	}
+	
 
 	
 	public static void main(String[] args) {

@@ -1,6 +1,8 @@
 package policyTools.simulation;
 
 import java.util.HashSet;
+import java.util.Random;
+
 import policy.*;
 import policy.impl.*;
 import policyTools.editor.PolicyEditor;
@@ -132,33 +134,30 @@ public class SimulationSimple extends Simulation{
 	public void activateUsersRoles() {
 		HashSet<String> users = policyEditor.getPolicyUsersNames(policy
 				.getName());
-	
 		for (String user : users) {
 			HashSet<String> roles = new HashSet<String>();
-
-//			String[] rolls = new String[policyEditor.getPolicyUserByName(policy.getName(),
-//					user).getRoles().size()];
-//			int cpt = 0;
-			
+			String[] rolls = new String[policyEditor.getPolicyUserByName(policy.getName(),
+					user).getRoles().size()];
+			int cpt = 0;		
 			for (Role r : policyEditor.getPolicyUserByName(policy.getName(),
 					user).getRoles()) {
-				roles.add(r.getName());
-//				rolls[cpt] = r.getName();
-//				cpt++;
+//				roles.add(r.getName());
+				rolls[cpt] = r.getName();
+				cpt++;
 			}
-			
-//			for(int i = rolls.length -1 ; i >= 0; i--){
-//				System.out.println(rolls[i]);
-//				kevoreeEditor.addNodeComponent(user, rolls[i], rolls[i]);
+			for(int i : createArrayOfUniqueNumber(rolls.length)){
+				System.out.println(user+" "+rolls[i]);
+				kevoreeEditor.addNodeComponent(user, rolls[i], rolls[i]);
+			}
+//			for (String role : roles) {
+//				kevoreeEditor.addNodeComponent(user, role, role);
 //			}
-			
-			for (String role : roles) {
-				kevoreeEditor.addNodeComponent(user, role, role);
-			}
-			
-			
 		}
 	}
+	
+	
+
+	
 
 	public static void main(String[] args) {
 		Chrono c = new Chrono();
@@ -172,6 +171,6 @@ public class SimulationSimple extends Simulation{
 		c.stop();
 		System.out.println("END SIMULATION SIMPLE : " + c.displayTime());
 	}
-	
-	
 }
+	
+	
