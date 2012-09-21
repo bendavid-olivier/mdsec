@@ -19,6 +19,7 @@
 	<classpathentry kind="lib" path="lib/sunxacml.jar"/>
 	<classpathentry kind="lib" path="lib/tools.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="lib/swt.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
