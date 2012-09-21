@@ -59,7 +59,7 @@ public class Statistics {
 			System.out.print(d + " ");
 		System.out.println();*/
 	
-		System.out.println("\tTotal run time : " + df.format(sum.evaluate(executionTime, start, length)));
+		totalExecutionTimes(start, length);
 		System.out.println("\tmin time : "+ df.format(min.evaluate(executionTime, start, length)));
 		System.out.println("\tmax time : "+ df.format(max.evaluate(executionTime, start, length)));
 		System.out.println("\tmean time : "+mean.evaluate(executionTime, start, length));
@@ -93,6 +93,13 @@ public class Statistics {
 			}
 		}
 		return mode;
+	}
+	
+	
+	public void totalExecutionTimes(int start, int length) {
+		DecimalFormat df = new DecimalFormat();
+		Sum sum = new Sum();
+		System.out.println("\tTotal run time : " + df.format(sum.evaluate(executionTime, start, length)));
 	}
 	
 	public static void main(String[] args) {

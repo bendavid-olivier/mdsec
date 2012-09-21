@@ -8,8 +8,8 @@ public class Experiments {
 
 	public static void main(String[] args) {
 
-		int users = 5;
-		int resources = 5;
+		int users = 40;
+		int resources = 40;
 		double [][] executionTimeSP = new double[users][resources];
 		double [][] executionTimeSS = new double[users][resources];
 		double [][] executionTimeCompare = new double[users][resources];
@@ -28,6 +28,8 @@ public class Experiments {
 				executionTimeSP[i][j] = c.timeMs();
 			}
 		}
+		
+		
 		System.out.println("END SIMULATION SPLIT");
 		
 		System.out.println("START SIMULATION SIMPLE");
@@ -45,6 +47,8 @@ public class Experiments {
 			}
 		}
 		System.out.println("END SIMULATION SIMPLE");
+		
+		
 		
 		for (int i=0; i<users; i++) 
 			for (int j=0; j<resources; j++)
