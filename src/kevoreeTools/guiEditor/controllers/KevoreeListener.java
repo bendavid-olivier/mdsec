@@ -167,7 +167,7 @@ public class KevoreeListener {
 										pe.addPolicySessionRole(getAppropriatePolicy(node).getName(), "s" + node, compType);
 									}
 									else{
-										System.out.println("dsod violation");
+//										System.out.println("dsod violation");
 										simulation.kevoreeEditor.removeNodeComponent(node, comp);
 										
 									}

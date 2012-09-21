@@ -18,7 +18,6 @@ public class Experiments {
 		System.out.println("START SIMULATION SPLIT");
 		for (int i=0; i<users; i++) {
 			for (int j=0; j<resources; j++){
-
 				c.start();
 				SimulationSplit simul = new SimulationSplit(i+1, j+1);
 				simul.loadTypes();
