@@ -12,27 +12,27 @@ public class CommandSave extends Command{
 		super(e, nme, desc);
 	}
 	public void execute(){
-	ResourceSet resourceSetMetamodel;
-	Resource resourceModel;
-	// REGISTER THE METAMODEL
-	resourceSetMetamodel = new ResourceSetImpl();
-	resourceSetMetamodel.getPackageRegistry().put(KevoreePackage.eNS_URI,
-	KevoreePackage.eINSTANCE);
-	resourceSetMetamodel.getResourceFactoryRegistry()
-	.getExtensionToFactoryMap()
-	.put("xmi", new XMIResourceFactoryImpl());
-	FileChooser fc = new FileChooser(editor);
-	System.out.println(fc.getChooser().getSelectedFile().getAbsolutePath());
-	String path = fc.getChooser().getSelectedFile().getAbsolutePath();
-	 // SAVE THE MODEL
-	 resourceModel = resourceSetMetamodel.createResource(URI
-	 .createFileURI(path));
-	 resourceModel.getContents().add(editor.getKevoree());
-	 try {
-	 resourceModel.save(null);
-	 } catch (IOException e) {
-	 System.out.println("error during the model saving step");
-	 e.printStackTrace();
-	 }
+		ResourceSet resourceSetMetamodel;
+		Resource resourceModel;
+		// REGISTER THE METAMODEL
+		resourceSetMetamodel = new ResourceSetImpl();
+		resourceSetMetamodel.getPackageRegistry().put(KevoreePackage.eNS_URI,
+		KevoreePackage.eINSTANCE);
+		resourceSetMetamodel.getResourceFactoryRegistry()
+		.getExtensionToFactoryMap()
+		.put("xmi", new XMIResourceFactoryImpl());
+		FileChooser fc = new FileChooser(editor);
+		System.out.println(fc.getChooser().getSelectedFile().getAbsolutePath());
+		String path = fc.getChooser().getSelectedFile().getAbsolutePath();
+		 // SAVE THE MODEL
+		 resourceModel = resourceSetMetamodel.createResource(URI
+		 .createFileURI(path));
+		 resourceModel.getContents().add(editor.getKevoree());
+		 try {
+		 resourceModel.save(null);
+		 } catch (IOException e) {
+		 System.out.println("error during the model saving step");
+		 e.printStackTrace();
+		 }
 	 }
 }

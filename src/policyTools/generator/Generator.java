@@ -298,6 +298,7 @@ public class Generator{
 		pe.addPolicyPermissionOperation(policyName, "pBuyerCustomized", "bid");
 		pe.addPolicyPermissionOperation(policyName, "pBuyerCustomized", "bid10");
 		pe.addPolicyPermissionOperation(policyName, "pBuyerCustomized", "bid50");
+		pe.addPolicyPermissionOperation(policyName, "pBuyerCustomized", "bid100");
 		pe.addPolicyPermissionOperation(policyName, "pBuyerCustomized", "register");
 		pe.addPolicyPermissionOperation(policyName, "pBuyerCustomized", "unregister");
 		pe.addPolicyPermissionOperation(policyName, "pBuyerCustomized", "comment");
@@ -327,6 +328,7 @@ public class Generator{
 			pe.addPolicyPermissionOperationObject(policyName, "pBuyerCustomized","bid","Auction"+i);
 			pe.addPolicyPermissionOperationObject(policyName, "pBuyerCustomized","bid10","Auction"+i);
 			pe.addPolicyPermissionOperationObject(policyName, "pBuyerCustomized","bid50","Auction"+i);
+			pe.addPolicyPermissionOperationObject(policyName, "pBuyerCustomized","bid100","Auction"+i);
 			pe.addPolicyPermissionOperationObject(policyName, "pBuyerCustomized","register","Auction"+i);
 			pe.addPolicyPermissionOperationObject(policyName, "pBuyerCustomized","unregister","Auction"+i);
 			pe.addPolicyPermissionOperationObject(policyName, "pBuyerCustomized","comment","Auction"+i);

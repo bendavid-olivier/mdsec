@@ -8,8 +8,13 @@ public class Experiments {
 
 	public static void main(String[] args) {
 
+
 		int users = 40;
 		int resources = 40;
+
+		Chrono cTotal = new Chrono();
+		cTotal.start();
+
 		double [][] executionTimeSP = new double[users][resources];
 		double [][] executionTimeSS = new double[users][resources];
 		double [][] executionTimeCompare = new double[users][resources];
@@ -18,6 +23,7 @@ public class Experiments {
 		System.out.println("START SIMULATION SPLIT");
 		for (int i=0; i<users; i++) {
 			for (int j=0; j<resources; j++){
+
 				c.start();
 				SimulationSplit simul = new SimulationSplit(i+1, j+1);
 				simul.loadTypes();
@@ -60,5 +66,8 @@ public class Experiments {
 				System.out.print(df.format(executionTimeCompare[i][j])  + "\t");
 			System.out.println();
 		}
-	}	
+		
+		cTotal.stop();
+		System.out.println("total time : "+cTotal.displayTime());
+		}	
 }

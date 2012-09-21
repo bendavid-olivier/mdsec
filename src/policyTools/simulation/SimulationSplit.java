@@ -4,14 +4,9 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import com.sun.tools.javac.util.Pair;
 import policy.*;
-import policyTools.editor.PolicyEditor;
-import policyTools.generator.Generator;
 import policyTools.guiEditor.controllers.PolicyListener;
 import policyTools.split.Splitter;
 import utils.time.Chrono;
-import kevoree.KevoreeFactory;
-import kevoreeTools.editor.KevoreeEditor;
-import kevoreeTools.guiEditor.controllers.KevoreeListener;
 
 //one architectural model and only multiple policy models splitted by users.
 public class SimulationSplit extends Simulation{
@@ -48,11 +43,12 @@ public class SimulationSplit extends Simulation{
 		Chrono c = new Chrono();
 		c.start();
 		System.out.println("START SIMULATION SPLIT");
-		SimulationSplit simul = new SimulationSplit();
+		SimulationSplit simul = new SimulationSplit(3,1);
 		simul.loadTypes();
 		simul.kevoreeListener.listen();
 		simul.policyListener.listen();
 		simul.initSimulationArchitecturalChanges();
+//		simul.saveArchitectureModel();
 		c.stop();
 		System.out.println("END SIMULATION SPLIT : "+c.displayTime());
 	}	
