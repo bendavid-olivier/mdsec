@@ -5,6 +5,7 @@ import policy.*;
 import policy.impl.*;
 import policyTools.editor.PolicyEditor;
 import policyTools.generator.Generator;
+import policyTools.guiEditor.controllers.PolicyListener;
 import policyTools.guiEditor.controllers.PolicyListenerSimple;
 import utils.time.Chrono;
 import kevoree.ContainerRoot;
@@ -16,18 +17,7 @@ import kevoreeTools.guiEditor.controllers.KevoreeListenerSimple;
 
 public class SimulationSimple extends Simulation{
 
-	public ContainerRoot kevoree;
-	public Policy policy;
-	
-//	public KevoreeListenerSimple kevoreeListener;
-	public KevoreeListener kevoreeListener;
-	public PolicyListenerSimple policyListener;
 
-	public KevoreeEditor kevoreeEditor;
-	public PolicyEditor policyEditor;
-
-	public KevoreeFactory kevoreeFactory;
-	public PolicyFactory policyFactory;
 
 	public SimulationSimple() {
 		kevoreeFactory = KevoreeFactory.eINSTANCE;
@@ -45,7 +35,7 @@ public class SimulationSimple extends Simulation{
 
 //		kevoreeListener = new KevoreeListenerSimple(this);
 		kevoreeListener = new KevoreeListener(this, KevoreeListener.STRATEGY_SIMPLE);
-		policyListener = new PolicyListenerSimple(this);
+		policyListener = new PolicyListener(this);
 		
 		loadTypes();
 
@@ -67,8 +57,9 @@ public class SimulationSimple extends Simulation{
 		policyEditor = new PolicyEditor(policy);
 
 //		kevoreeListener = new KevoreeListenerSimple(this);
+		System.out.println(kevoree);
 		kevoreeListener = new KevoreeListener(this, KevoreeListener.STRATEGY_SIMPLE);
-		policyListener = new PolicyListenerSimple(this);
+		policyListener = new PolicyListener(this);
 
 	}
 

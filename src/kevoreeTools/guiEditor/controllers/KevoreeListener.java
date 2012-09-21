@@ -55,6 +55,7 @@ public class KevoreeListener {
 
 	public void initMatchers() {
 		try {
+			
 			nodeMatcher = NodeMatcher.FACTORY.getMatcher(kevoree);
 			nodeComponentMatcher = NodeComponentMatcher.FACTORY
 					.getMatcher(kevoree);
@@ -90,6 +91,8 @@ public class KevoreeListener {
 
 	public KevoreeListener(Simulation k, String strategy) {
 		kevoree = k.kevoree;
+		System.out.println(k);
+		System.out.println(k.kevoree);
 		current_strategy=strategy; 
 		registerLiteners();
 		simulation = k;
@@ -108,9 +111,13 @@ public class KevoreeListener {
 			public void run() {
 				for (NodeSignature sig : monitorNode.matchFoundEvents) {
 					String node = ((ContainerNode) sig.getValueOfN()).getName();
-					if(simulation.policies.containsKey(node)){
+					
+					if(getAppropriatePolicy(node) != null){
 						PolicyEditor pe = new PolicyEditor(getAppropriatePolicy(node));
-						pe.setPolicyUserSession(simulation.policies.get(node).fst.getName(), node, "s" + node);
+						
+						if(pe.getPolicyUserByName(getAppropriatePolicy(node).getName(), node) != null){						
+							pe.setPolicyUserSession(getAppropriatePolicy(node).getName(), node, "s" + node);
+						}
 					}
 				}
 				for (NodeSignature sig : monitorNode.matchLostEvents) {
@@ -130,37 +137,42 @@ public class KevoreeListener {
 							.getName();
 					String compType = ((ComponentInstance) sig.getValueOfC())
 							.getTypeDefinition().getName();
-					if(simulation.policies.containsKey(node)){
+					
+					if(getAppropriatePolicy(node) != null){
 						PolicyEditor pe = new PolicyEditor(getAppropriatePolicy(node));
-						// check whether it is a role activation ?
-						boolean roleActivation = true;
-						// check if it is a role
-						if (pe.getPolicyRoleByName(simulation.policies.get(node).fst.getName(), compType) == null) {
-							roleActivation = false;
+						String policyName = getAppropriatePolicy(node).getName();
+						if(pe.getPolicyUserByName(getAppropriatePolicy(node).getName(), node) != null){		
+							
+							// check whether it is a role activation ?
+							boolean roleActivation = true;
+							// check if it is a role
+							if (pe.getPolicyRoleByName(getAppropriatePolicy(node).getName(), compType) == null) {
+								roleActivation = false;
+							}
+							// check if the role is associated to the user
+							if (pe.getPolicyUserRoleByName(
+									getAppropriatePolicy(node)
+											.getName(), node, compType) == null) {
+								roleActivation = false;
+							}
+							// check if the role can be activated
+							// TODO smartly
+							// activate the role
+							if (roleActivation) {
+								boolean dsod = true;
+									for(Role rr : pe.getPolicyUserByName(policyName, node).getSession().getRoles()){
+										dsod = dsod && PolicyChecker.checkDSoD(simulation.policy,rr.getName() ,comp);
+									}
+									if(dsod){	
+										pe.addPolicySessionRole(getAppropriatePolicy(node).getName(), "s" + node, compType);
+									}
+									else{
+										System.out.println("dsod violation");
+										simulation.kevoreeEditor.removeNodeComponent(node, comp);
+										
+									}
+							}	
 						}
-						// check if the role is associated to the user
-						if (pe.getPolicyUserRoleByName(
-								simulation.policies.get(node).fst
-										.getName(), node, compType) == null) {
-							roleActivation = false;
-						}
-						// check if the role can be activated
-						// TODO smartly
-						// activate the role
-						if (roleActivation) {
-							boolean dsod = true;
-								for(Role rr : pe.getPolicyUserByName(simulation.policy.getName(), node).getSession().getRoles()){
-									dsod = dsod && PolicyChecker.checkDSoD(simulation.policy,rr.getName() ,comp);
-								}
-								if(dsod){	
-									pe.addPolicySessionRole(simulation.policies.get(node).fst.getName(), "s" + node, compType);
-								}
-								else{
-									System.out.println("dsod violation");
-									simulation.kevoreeEditor.removeNodeComponent(node, comp);
-									
-								}
-						}	
 					}
 				}
 
@@ -242,7 +254,8 @@ public class KevoreeListener {
 			return simulation.policy;
 		}
 		if(current_strategy.equals(STRATEGY_SPLITUSERS)){
-			return simulation.policies.get(name).fst;
+			if(simulation.policies.get(name) != null)
+				return simulation.policies.get(name).fst;
 		}
 		return res;
 	}

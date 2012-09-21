@@ -20,6 +20,7 @@ import policy.Role;
 import policy.Session;
 import policy.User;
 import policyTools.guiEditor.graphicComponents.*;
+import policyTools.simulation.Simulation;
 import policyTools.simulation.SimulationSplit;
 import policyTools.transformations.IPolicy2KevScript;
 import policyTools.transformations.Policy2KevScript;
@@ -62,7 +63,8 @@ public class PolicyListener {
 	final DeltaMonitor<UserRoleRuleSignature> monitorUserRule;
 	final DeltaMonitor<UserActivatedRoleRuleSignature> monitorActivatedUserRule;
 
-	private SimulationSplit simulation;
+	//private SimulationSplit simulation;
+	private Simulation simulation;
 
 	private int portNumber;
 	
@@ -133,7 +135,7 @@ public class PolicyListener {
 		monitorActivatedUserRule = userActivatedRuleMatcher.newDeltaMonitor(false);
 	}
 	
-	public PolicyListener(SimulationSplit s){
+	public PolicyListener(Simulation s){
 		simulation = s;
 		policy = simulation.policy;
 		transfo2XACML  = new Policy2KevScriptXACML(policy);
@@ -153,7 +155,7 @@ public class PolicyListener {
 		monitorActivatedUserRule = userActivatedRuleMatcher.newDeltaMonitor(false);
 	}
 	
-	public PolicyListener(SimulationSplit s, Policy p){
+	public PolicyListener(Simulation s, Policy p){
 		simulation = s;
 		policy = p;
 		transfo2XACML  = new Policy2KevScriptXACML(policy);
