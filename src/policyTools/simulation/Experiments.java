@@ -7,8 +7,8 @@ import utils.time.Chrono;
 
 public class Experiments{
 	private static int USERS = 5;
-	private static int RESOURCES = 5;
-	private static int ITERATIONS = 2;
+	private static int RESOURCES =5;
+	private static int ITERATIONS = 5;
 	private static int DIFFERENCE = 50;
 	private static DecimalFormat df = new DecimalFormat();
 
@@ -28,6 +28,10 @@ public class Experiments{
 
 	public Pair<Integer, Integer> statsSize() { 
 		return new Pair<Integer,Integer>(statistics.length, statistics[0].length);
+	}
+
+	public Statistics[][] getStats() {
+		return statistics;
 	}
 
 	private double [][][] setLocalBC ( Strategy strategy) {
@@ -61,11 +65,14 @@ public class Experiments{
 
 	private void runStrategy(Strategy strategy) {
 		switch (strategy) {
-		case ROLE_SPLIT: runSplitRole();
-		break;
-		case USER_SPLIT: runSplitUser();
-		break;
-		default: runSimple();
+		case ROLE_SPLIT: 
+			runSplitRole();
+			break;
+		case USER_SPLIT: 
+			runSplitUser();
+			break;
+		default: 
+			runSimple();
 		}
 	}
 
@@ -130,12 +137,14 @@ public class Experiments{
 	private void compareExperiments(double[][] vals, 
 			double[][] base, 
 			double[][] compareTo, 
-			Strategy stg1, Strategy stg2) {
+			Strategy stg1, Strategy stg2,
+			int iteration) {
 
 		Pair<Integer,Integer> splitBetter;
 
 		//Print Compare Results
-		System.out.println("\nComparison: Difference between " + stg1 + " and " + stg2 + " Strategies");
+		System.out.println("\nComparison: Difference between " + stg1 + " and " + stg2 + 
+				" Strategies on ITERATION: " + iteration );
 		splitBetter = calculateStrategiesComparisons(vals, base, compareTo, stg1, stg2);
 
 		System.out.println(stg2 + " strategy was: \n\tbetter in " + splitBetter.fst + " out of " + 
@@ -200,27 +209,27 @@ public class Experiments{
 			for (int h=0; h<ITERATIONS;h++) {
 				System.out.println("------------------------------------------------------------------------------------------------------------------------");
 				System.out.println("Start of Iteration: " + (h+1));
+				
 				//start clock for total
 				cTotal.start();
-
+				
 				//execute Strategy
-				System.out.println("\tStart: Simulation " + stg1 + " on iteration " + (h+1));
+				System.out.println("\tStart: Simulation " + stg1);
 				runStrategy(stg1);
-				System.out.println("\tStart: Simulation " + stg2 + " on iteration " + (h+1));
+				System.out.println("\tStart: Simulation " + stg2);
 				runStrategy(stg2);
 
 				//stop clock for total
 				cTotal.stop();
 				totalTimes[h] = cTotal.timeMs();
-				System.out.println("\tTotal time for Simulations on iteration: " + (h+1) + " is " + df.format(totalTimes[h]/1000) + " seconds\n");
+				System.out.println("\tTotal time for Simulations is " + df.format(totalTimes[h]/1000) + " seconds\n");
 
-				compareExperiments(vals[h], base[h], compareTo[h],stg1, stg2);
+				compareExperiments(vals[h], base[h], compareTo[h],stg1, stg2, h+1);
 			}//end for
 
-			System.out.println("ITERATIONS: Time for each run" );
+			System.out.println("All ITERATIONS: Time for each run" );
 			for (int i=0; i<ITERATIONS; i++)
-				System.out.println("\tTotal time for Simulations on iteration: " + (i+1) + " is " 
-						+ df.format(totalTimes[i]/1000) + " seconds");
+				System.out.println("\t time on iteration: " + (i+1) + " is " + df.format(totalTimes[i]/1000) + " seconds");
 		}
 		else 
 			System.out.println("Invalid Comparisons: " + stg1 + " and " + stg2 );
@@ -250,7 +259,7 @@ public class Experiments{
 
 			//Print Compare Results
 			for (int i=0; i<ITERATIONS; i++)
-				compareExperiments(vals[i], base[i], compareTo[i], stg1, stg2);
+				compareExperiments(vals[i], base[i], compareTo[i], stg1, stg2, i+1);
 		}
 
 		else 
@@ -275,19 +284,41 @@ public class Experiments{
 			}
 	}
 
-	public void compareStatistics(Experiments exp) {
+	public void compareStatistics(Experiments exp, int whichBetter) {
 		Pair<Integer,Integer> p = exp.statsSize();
 		if (statistics.length == p.fst && statistics[0].length == p.snd ){
-			Statistics[][] compareTo = exp.statistics;
+			Statistics[][] t = exp.getStats();
+			int better=0, worse=0, equal=0;
 			for (int i=0; i<USERS; i++) {
 				for (int j=0; j<RESOURCES; j++){
-					//System.out.println("Statistics for s: \n" + statistics[i][j]);
-					//System.out.println("Statistics for t: \n" + compareTo[i][j]);
+					//System.out.println("Statistics for base: \n" + statistics[i][j]);
+					//System.out.println("Statistics for comparison: \n" + t[i][j]);
 
-					System.out.print("Comparing in dimension " + (i+1) + " USERS and " + (j+1) + "RESOURCES gives: " + 
-							statistics[i][j].compareTo(compareTo[i][j]) );
-				}
-			}
+					int c = statistics[i][j].compareTo(t[i][j]) ;
+					switch(whichBetter) { //fall through is intended
+					case 2:
+						if (c<0){
+							better++;
+							//System.out.println("Comparing in dimension " + (i+1) + " USERS and " + (j+1) + " RESOURCES gives: " + c );
+						}
+					case 1:
+						if (c>0){
+							worse++;
+							//System.out.println("Comparing in dimension " + (i+1) + " USERS and " + (j+1) + " RESOURCES gives: " + c );
+						}
+						break;
+					case 0:
+						if (c==0){
+							equal++;
+							//System.out.println("Comparing in dimension " + (i+1) + " USERS and " + (j+1) + " RESOURCES gives: " + c );
+						}
+						break;
+					default:
+						System.out.println("Invalid!");
+					} //end switch	
+				}//end for j
+			} //end for i
+			System.out.println("Cases better: " + better + ", worse: " + worse + ", equal: " + equal);
 		}
 		else System.out.println("Not Comparable: Incompatible dimensions!");
 	}
@@ -303,12 +334,41 @@ public class Experiments{
 
 		System.out.println("\n\n");
 		System.out.println("========================================================================================================================");
-		System.out.println("Comparing Statistics---");
-		//experiment1.calculateStatistics(Strategy.SIMPLE);
-		//experiment1.calculateStatistics(Strategy.SIMPLE);
-		//experiment1.compareStatistics(experiment2);
+		System.out.println("Comparing Statistics SIMPLE Interleaved to SIMPLE Sequential---");
+		experiment1.calculateStatistics(Strategy.SIMPLE);
+		experiment2.calculateStatistics(Strategy.SIMPLE);
+		//experiment1.compareStatistics(experiment2, 0);
+		//experiment1.compareStatistics(experiment2, 1);
+		experiment1.compareStatistics(experiment2, 2);
+		
+		System.out.println("\n\n");
+		System.out.println("========================================================================================================================");
+		System.out.println("Comparing Statistics USER_SPLIT Interleaved to USER_SPLIT Sequential---");
+		experiment1.calculateStatistics(Strategy.USER_SPLIT);
+		experiment2.calculateStatistics(Strategy.USER_SPLIT);
+		//experiment1.compareStatistics(experiment2, 0);
+		//experiment1.compareStatistics(experiment2, 1);
+		experiment1.compareStatistics(experiment2, 2);
+		
+		
+		System.out.println("\n\n");
+		System.out.println("========================================================================================================================");
+		System.out.println("Comparing Statistics SIMPLE Interleaved to USER_SPLIT Sequential---");
+		experiment1.calculateStatistics(Strategy.SIMPLE);
+		experiment2.calculateStatistics(Strategy.USER_SPLIT);
+		//experiment1.compareStatistics(experiment2, 0);
+		//experiment1.compareStatistics(experiment2, 1);
+		experiment1.compareStatistics(experiment2, 2);
+		
+		System.out.println("\n\n");
+		System.out.println("========================================================================================================================");
+		System.out.println("Comparing Statistics USER_SPLIT Interleaved to SIMPLE Sequential---");
+		experiment1.calculateStatistics(Strategy.USER_SPLIT);
+		experiment2.calculateStatistics(Strategy.SIMPLE);
+		//experiment1.compareStatistics(experiment2, 0);
+		//experiment1.compareStatistics(experiment2, 1);
+		experiment1.compareStatistics(experiment2, 2);
+		
 	}
-
-
 
 }

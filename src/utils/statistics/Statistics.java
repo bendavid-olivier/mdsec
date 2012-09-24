@@ -89,13 +89,13 @@ public class Statistics implements Comparable<Statistics>{
 			int a = 0;
 			int b = 0;
 			//until we decide what better statistics mean this is a working definition
-			if (Double.compare(sd, s.getSD())<0) a++; else b++;
-			if (Double.compare(max, s.getMAX())<0) a++; else b++;
-			if (Double.compare(min, s.getMIN())<0) a++; else b++;
-			if (Double.compare(mean, s.getMEAN())<0) a++; else b++;
+			//if (Double.compare(sd, s.getSD())<0) a++; else b++;
+			//if (Double.compare(max, s.getMAX())<0) a++; else b++;
+			//if (Double.compare(min, s.getMIN())<0) a++; else b++;
+			//if (Double.compare(mean, s.getMEAN())<0) a++; else b++;
 			if (Double.compare(sum, s.getSUM())<0) a++; else b++;
-			if ( (Double.compare(mode.getKey(), s.getMODE().getKey())>0) && (mode.getValue() >= s.getMODE().getValue()))
-				a++; else b++;
+			//if ( (Double.compare(mode.getKey(), s.getMODE().getKey())>0) && (mode.getValue() >= s.getMODE().getValue()))
+				//a++; else b++;
 
 			if (a>b)
 				return a;
