@@ -72,7 +72,7 @@ public abstract class Simulation {
 		kevoreeEditor = new KevoreeEditor(kevoree);
 		policyEditor = new PolicyEditor(policy);
 //		System.out.println("number of rules : "+policyEditor.getNumberPolicyRules());
-		GraphMonitor gm = new GraphMonitor(policy);
+		//GraphMonitor gm = new GraphMonitor(policy);
 		
 
 		kevoreeListener = new KevoreeListener(this, KevoreeListener.STRATEGY_SIMPLE);
