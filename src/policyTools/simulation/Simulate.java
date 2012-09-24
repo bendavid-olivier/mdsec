@@ -26,7 +26,7 @@ public class Simulate {
 		//initialise
 		Statistics stats = new Statistics(executionTime);
 		//runs the statistics and also say whether the results should be grouped in ranges - right now the range is 10 groups.
-		stats.statistics(false);
+		stats.printStatistics(false);
 	}
 	
 	
@@ -48,7 +48,7 @@ public class Simulate {
 		//initialise
 		Statistics stats = new Statistics(executionTime);
 		//runs the statistics and also say whether the results should be grouped in ranges - right now the range is 10 groups.
-		stats.statistics(false);
+		stats.printStatistics(false);
 	}	
 	
 	
