@@ -6,9 +6,9 @@ import utils.statistics.Statistics;
 import utils.time.Chrono;
 
 public class Experiments{
-	private static int USERS = 5;
+	private static int USERS = 10;
 	private static int RESOURCES =5;
-	private static int ITERATIONS = 5;
+	private static int ITERATIONS = 10;
 	private static int DIFFERENCE = 50;
 	private static DecimalFormat df = new DecimalFormat();
 
@@ -266,7 +266,7 @@ public class Experiments{
 			System.out.println("Invalid Comparisons: " + stg1 + " and " + stg2 );
 	}
 
-	public void calculateStatistics(Strategy strategy) {
+	public Statistics[][] calculateStatistics(Strategy strategy) {
 		/*for h, i, and j, where i and j do not change, 
 		 *  we have all the execution times for the h ITERATIONS for i USERS and j RESOURCES 
 		 */
@@ -282,19 +282,24 @@ public class Experiments{
 				stats.update(0, ITERATIONS);
 				statistics[i][j] = stats;
 			}
+		return statistics;
 	}
 
 	public void compareStatistics(Experiments exp, int whichBetter) {
-		Pair<Integer,Integer> p = exp.statsSize();
-		if (statistics.length == p.fst && statistics[0].length == p.snd ){
-			Statistics[][] t = exp.getStats();
+		compareStatistics(statistics, exp.getStats(), whichBetter);
+	}
+
+	public static void compareStatistics(Statistics[][] base, Statistics[][] compare, int whichBetter) {
+		
+		if (base.length == compare.length && base[0].length == compare[0].length ){
+			
 			int better=0, worse=0, equal=0;
 			for (int i=0; i<USERS; i++) {
 				for (int j=0; j<RESOURCES; j++){
 					//System.out.println("Statistics for base: \n" + statistics[i][j]);
 					//System.out.println("Statistics for comparison: \n" + t[i][j]);
 
-					int c = statistics[i][j].compareTo(t[i][j]) ;
+					int c = base[i][j].compareTo(compare[i][j]) ;
 					switch(whichBetter) { //fall through is intended
 					case 2:
 						if (c<0){
@@ -322,8 +327,8 @@ public class Experiments{
 		}
 		else System.out.println("Not Comparable: Incompatible dimensions!");
 	}
-
-	public static void main(String[] args) {
+	
+	public static void experiement1() {
 		Experiments experiment1 = new Experiments();
 		experiment1.compareSearchStrategiesInterleave(Strategy.SIMPLE, Strategy.USER_SPLIT);
 
@@ -368,7 +373,38 @@ public class Experiments{
 		//experiment1.compareStatistics(experiment2, 0);
 		//experiment1.compareStatistics(experiment2, 1);
 		experiment1.compareStatistics(experiment2, 2);
+	}	
 		
+	public static void experiement2() {
+	
+		/* using Sequential Execution for Comparison, 
+		 * can only be run when ROLE_SPLIT strategy has been implemented*/
+		Experiments experiment = new Experiments();
+		
+		//run all strategies
+		experiment.runSimple();
+		experiment.runSplitUser();
+		experiment.runSplitRole();
+		
+		//calculate statistics for all categories
+		Statistics[][] simpleStats = experiment.calculateStatistics(Strategy.SIMPLE);
+		Statistics[][] userSplitStats = experiment.calculateStatistics(Strategy.USER_SPLIT);
+		Statistics[][] roleSplitStats = experiment.calculateStatistics(Strategy.ROLE_SPLIT);
+		
+		//run comparisons on statistics
+		System.out.println("========================================================================================================================");
+		System.out.println("Comparing Statistics SIMPLE Sequential to USER_SPLIT Sequential ---");
+		Experiments.compareStatistics(simpleStats, userSplitStats, 2);
+		System.out.println("========================================================================================================================");
+		System.out.println("Comparing Statistics SIMPLE Sequential to ROLE_SPLIT Sequential ---");
+		Experiments.compareStatistics(simpleStats, roleSplitStats, 2);
+		System.out.println("========================================================================================================================");
+		System.out.println("Comparing Statistics ROLE_SPLIT Sequential to USER_SPLIT Sequential ---");
+		Experiments.compareStatistics(roleSplitStats, userSplitStats, 2);
+	}
+	
+	public static void main(String[] args) {
+		Experiments.experiement1();
 	}
 
 }
