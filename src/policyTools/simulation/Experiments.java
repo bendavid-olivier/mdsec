@@ -129,9 +129,23 @@ public class Experiments{
 	private void splitRole( Chrono c, int iteration) {
 		for (int i=0; i<USERS; i++) {
 			for (int j=0; j<RESOURCES; j++){
-
+				c.start();
+				SimulationSplitByRole simul = new SimulationSplitByRole(i+1, j+1);
+				simul.loadTypes();
+				simul.kevoreeListener.listen();
+				simul.policyListener.listen();
+				simul.initSimulationArchitecturalChanges();
+				c.stop();
+				executionTimeSPR[iteration][i][j] = c.timeMs();
 			}
 		}
+	}
+
+	private void runALL(int iteration) {
+		Chrono c = new Chrono();
+		simple(c, iteration);
+		splitUser(c, iteration);
+		splitRole(c, iteration);
 	}
 
 	private double totalRuntime(Strategy stg) {
@@ -404,7 +418,7 @@ public class Experiments{
 		 * can only be run when ROLE_SPLIT strategy has been implemented*/
 		Experiments experiment = new Experiments();
 		
-		//run all strategies
+		//run all strategies Sequentially
 		experiment.runSimple();
 		experiment.runSplitUser();
 		experiment.runSplitRole();
@@ -425,6 +439,61 @@ public class Experiments{
 		System.out.println("Comparing Statistics ROLE_SPLIT Sequential to USER_SPLIT Sequential ---");
 		Experiments.compareStatistics(roleSplitStats, userSplitStats, 2);
 	}
+	
+	public static void experiement3() {
+		
+		/* using Interleaved Execution for Comparison, 
+		 * can only be run when ROLE_SPLIT strategy has been implemented*/
+		Experiments experiment = new Experiments();
+		
+		//run all strategies Interleaved
+		for (int h=0; h<ITERATIONS; h++)
+			experiment.runALL(h);
+		
+		//calculate statistics for all categories
+		Statistics[][] simpleStats = experiment.calculateStatistics(Strategy.SIMPLE);
+		Statistics[][] userSplitStats = experiment.calculateStatistics(Strategy.USER_SPLIT);
+		Statistics[][] roleSplitStats = experiment.calculateStatistics(Strategy.ROLE_SPLIT);
+		
+		//run comparisons on statistics
+		System.out.println("========================================================================================================================");
+		System.out.println("Comparing Statistics SIMPLE Interleaved to USER_SPLIT Interleaved ---");
+		Experiments.compareStatistics(simpleStats, userSplitStats, 2);
+		System.out.println("========================================================================================================================");
+		System.out.println("Comparing Statistics SIMPLE Interleaved to ROLE_SPLIT Interleaved ---");
+		Experiments.compareStatistics(simpleStats, roleSplitStats, 2);
+		System.out.println("========================================================================================================================");
+		System.out.println("Comparing Statistics ROLE_SPLIT Interleaved to USER_SPLIT Interleaved ---");
+		Experiments.compareStatistics(roleSplitStats, userSplitStats, 2);
+	}
+	
+	public static void experiement4() {
+		
+		/* using Sequential and Interleaved Execution for Comparison, 
+		 * can only be run when ROLE_SPLIT strategy has been implemented*/
+		Experiments experimentSeq = new Experiments();
+		Experiments experimentInt = new Experiments();
+		
+		//run all strategies Sequentially
+		experimentSeq.runSimple();
+		experimentSeq.runSplitUser();
+		experimentSeq.runSplitRole();
+				
+		//run all strategies Interleaved
+		for (int h=0; h<ITERATIONS; h++)
+			experimentInt.runALL(h);
+		
+		//calculate statistics for all categories
+		Statistics[][] simpleStatsSeq = experimentSeq.calculateStatistics(Strategy.SIMPLE);
+		Statistics[][] userSplitStatsSeq = experimentSeq.calculateStatistics(Strategy.USER_SPLIT);
+		Statistics[][] roleSplitStatsSeq = experimentSeq.calculateStatistics(Strategy.ROLE_SPLIT);
+		
+		//calculate statistics for all categories
+		Statistics[][] simpleStatsInt = experimentSeq.calculateStatistics(Strategy.SIMPLE);
+		Statistics[][] userSplitStatsInt = experimentSeq.calculateStatistics(Strategy.USER_SPLIT);
+		Statistics[][] roleSplitStatsInt = experimentSeq.calculateStatistics(Strategy.ROLE_SPLIT);
+	}
+
 	
 	public static void main(String[] args) {
 		Experiments.experiement1();
