@@ -495,7 +495,7 @@ public class Experiments{
 	}
 
 	public static void main(String[] args) {
-		Experiments.experiement1();
+		Experiments.experiement2();
 	}
 
 }
