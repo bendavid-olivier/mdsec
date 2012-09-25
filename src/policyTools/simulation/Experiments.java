@@ -494,9 +494,8 @@ public class Experiments{
 		Statistics[][] roleSplitStatsInt = experimentSeq.calculateStatistics(Strategy.ROLE_SPLIT);
 	}
 
-	
 	public static void main(String[] args) {
-		Experiments.experiement1();
+		Experiments.experiement2();
 	}
 
 }
