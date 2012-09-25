@@ -1,13 +1,11 @@
 package policyTools.simulation;
 
-import java.util.HashMap;
 import java.util.Map.Entry;
 import com.sun.tools.javac.util.Pair;
 import policy.*;
 import policyTools.editor.PolicyEditor;
 import policyTools.guiEditor.controllers.PolicyListener;
 import policyTools.guiEditor.graphicComponents.GraphMonitor;
-import policyTools.split.Splitter;
 import utils.time.Chrono;
 
 //one architectural model and only multiple policy models splitted by users.
@@ -26,6 +24,7 @@ public class SimulationSplitByRole extends SimulationSplit{
 	
 	public SimulationSplitByRole(int numberUsers, int numberResources){
 		super(numberUsers, numberResources);	
+		GraphMonitor agm = new GraphMonitor(policy);
 		for(Policy p : splitter.splitByRoles()){
 			policies.put(p.getName(),new  Pair<Policy, PolicyListener>(p, new PolicyListener(this,p)));
 			PolicyEditor pepe = new PolicyEditor(p);

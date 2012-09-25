@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import com.sun.tools.javac.util.Pair;
 import policy.*;
+import policyTools.editor.PolicyEditor;
 import policyTools.guiEditor.controllers.PolicyListener;
+import policyTools.guiEditor.graphicComponents.GraphMonitor;
 import policyTools.split.Splitter;
 import utils.time.Chrono;
 
@@ -27,6 +29,9 @@ public class SimulationSplitByUser extends SimulationSplit{
 		super(numberUsers, numberResources);	
 		for(Policy p : splitter.splitByUsers()){
 			policies.put(p.getName(),new  Pair<Policy, PolicyListener>(p, new PolicyListener(this,p)));
+			PolicyEditor pepe = new PolicyEditor(p);
+			System.out.println("number of rules : "+pepe.getNumberPolicyRules());
+			GraphMonitor gm = new GraphMonitor(p);
 		}
 		for(Entry e :  policies.entrySet()){
 			((Pair<Policy,PolicyListener>)e.getValue()).snd.listen();

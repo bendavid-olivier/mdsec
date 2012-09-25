@@ -11,13 +11,10 @@ public class Splitter {
 	public Policy policy;
 	public PolicyFactory factory;
 	
-	
 	public Splitter(Policy p){
 		policy = p;
 		factory = PolicyFactory.eINSTANCE;
 	}
-	
-	
 	
 	public HashSet<Policy> splitByUsers(){
 		HashSet<Policy> res = new HashSet<Policy>();
@@ -48,6 +45,11 @@ public class Splitter {
 						}
 					}
 				}
+				for(Role rd : r.getDsod()){
+					Role rold = pe.cloneRole(rd);
+					p.getElements().add(rold);
+					pe.addPolicyRoleRoleDSOD(policyName, r.getName(), rold.getName());
+				}
 			}
 			res.add(p);
 		}
@@ -58,6 +60,7 @@ public class Splitter {
 		HashSet<Policy> res = new HashSet<Policy>();
 		PolicyEditor policyEditor = new PolicyEditor(policy);
 			for(Role r : policyEditor.getPolicyRoles(policy.getName())){
+				System.out.println("splitting : "+r.getName());
 				String policyName = r.getName();
 				Policy p = factory.createPolicy();
 				p.setName(r.getName());
@@ -68,12 +71,18 @@ public class Splitter {
 				for(Role rd : r.getDsod()){
 					Role rold = pe.cloneRole(rd);
 					p.getElements().add(rold);
-					pe.addPolicyRoleRoleDSOD(policyName, r.getName(), rd.getName());
+					pe.addPolicyRoleRoleDSOD(policyName, r.getName(), rold.getName());
+//					System.out.println(r.getName() + " : "+rold.getName());
+//					for(User u : rold.getUsers()){
+//						User usr = pe.cloneUser(u);
+//						p.getElements().add(usr);
+//						pe.addPolicyUserRole(policyName, usr.getName(), rold.getName());
+//					}
 				}
 				
 				for(User u : r.getUsers()){
 					User usr = pe.cloneUser(u);
-					p.getElements().add(rol);
+					p.getElements().add(usr);
 					pe.addPolicyUserRole(policyName, usr.getName(), rol.getName());
 				}
 			
