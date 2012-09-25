@@ -114,7 +114,7 @@ public class Experiments{
 		for (int i=0; i<USERS; i++) {
 			for (int j=0; j<RESOURCES; j++){
 				c.start();
-				SimulationSplit simul = new SimulationSplit(i+1, j+1);
+				SimulationSplit simul = new SimulationSplitByUser(i+1, j+1);
 				simul.loadTypes();
 				simul.kevoreeListener.listen();
 				simul.policyListener.listen();
