@@ -13,8 +13,6 @@ public abstract class SimulationSplit extends Simulation{
 
 	public Splitter splitter;
 	
-	
-	
 	public SimulationSplit()  {
 		super();
 		policies =  new HashMap<String, Pair<Policy,PolicyListener>>();

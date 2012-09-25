@@ -8,14 +8,36 @@ import utils.time.Chrono;
 public class Simulate {
 
 	
-	public void splitStrategy(int numberUsers, int numberResources) {
+	public void splitStrategyByUsers(int numberUsers, int numberResources) {
 		System.out.println("split strategy");
 		int numberOfIteration = 10;
 		double[] executionTime = new double[numberOfIteration]; 
 		for(int i =0;i<numberOfIteration; i++){
 			Chrono c = new Chrono();
 			c.start();
-			SimulationSplit simul = new SimulationSplit(numberUsers, numberResources);
+			SimulationSplit simul = new SimulationSplitByUser(numberUsers, numberResources);
+			simul.loadTypes();
+			simul.kevoreeListener.listen();
+			simul.policyListener.listen();
+			simul.initSimulationArchitecturalChanges();
+			c.stop();
+			executionTime[i] = c.timeMs();
+		}
+		//initialise
+		Statistics stats = new Statistics(executionTime);
+		//runs the statistics and also say whether the results should be grouped in ranges - right now the range is 10 groups.
+		stats.printStatistics(false);
+	}
+	
+	
+	public void splitStrategyByRoles(int numberUsers, int numberResources) {
+		System.out.println("split strategy");
+		int numberOfIteration = 10;
+		double[] executionTime = new double[numberOfIteration]; 
+		for(int i =0;i<numberOfIteration; i++){
+			Chrono c = new Chrono();
+			c.start();
+			SimulationSplit simul = new SimulationSplitByRole(numberUsers, numberResources);
 			simul.loadTypes();
 			simul.kevoreeListener.listen();
 			simul.policyListener.listen();
@@ -54,7 +76,8 @@ public class Simulate {
 	
 	public void simulate(int numberUsers, int numberResources){
 		simpleStrategy(numberUsers, numberResources);
-		splitStrategy(numberUsers, numberResources);
+		splitStrategyByUsers(numberUsers, numberResources);
+		splitStrategyByRoles(numberUsers, numberResources);
 	}
 	
 	
