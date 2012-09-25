@@ -24,12 +24,12 @@ public class SimulationSplitByRole extends SimulationSplit{
 	
 	public SimulationSplitByRole(int numberUsers, int numberResources){
 		super(numberUsers, numberResources);	
-		GraphMonitor agm = new GraphMonitor(policy);
+//		GraphMonitor agm = new GraphMonitor(policy);
 		for(Policy p : splitter.splitByRoles()){
 			policies.put(p.getName(),new  Pair<Policy, PolicyListener>(p, new PolicyListener(this,p)));
-			PolicyEditor pepe = new PolicyEditor(p);
-			System.out.println("number of rules : "+pepe.getNumberPolicyRules());
-			GraphMonitor gm = new GraphMonitor(p);
+//			PolicyEditor pepe = new PolicyEditor(p);
+//			System.out.println("number of rules : "+pepe.getNumberPolicyRules());
+//			GraphMonitor gm = new GraphMonitor(p);
 		}
 		for(Entry e :  policies.entrySet()){
 			((Pair<Policy,PolicyListener>)e.getValue()).snd.listen();

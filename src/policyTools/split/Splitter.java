@@ -60,7 +60,7 @@ public class Splitter {
 		HashSet<Policy> res = new HashSet<Policy>();
 		PolicyEditor policyEditor = new PolicyEditor(policy);
 			for(Role r : policyEditor.getPolicyRoles(policy.getName())){
-				System.out.println("splitting : "+r.getName());
+//				System.out.println("splitting : "+r.getName());
 				String policyName = r.getName();
 				Policy p = factory.createPolicy();
 				p.setName(r.getName());

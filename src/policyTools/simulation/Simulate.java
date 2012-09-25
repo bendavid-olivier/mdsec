@@ -76,7 +76,8 @@ public class Simulate {
 	
 	public void simulate(int numberUsers, int numberResources){
 		simpleStrategy(numberUsers, numberResources);
-		splitStrategy(numberUsers, numberResources);
+		splitStrategyByUsers(numberUsers, numberResources);
+		splitStrategyByRoles(numberUsers, numberResources);
 	}
 	
 	
