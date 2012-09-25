@@ -1,9 +1,8 @@
 package policyTools.simulation;
 
-
+import policyTools.editor.PolicyEditor;
 import utils.statistics.Statistics;
 import utils.time.Chrono;
-
 
 public class Simulate {
 
@@ -81,13 +80,54 @@ public class Simulate {
 	}
 	
 	
+	
+	public void simulate2(int numberUsers, int numberResources){
+		
+		Chrono c = new Chrono();
+		c.start();
+		Simulation simul = new SimulationSplitByUser(numberUsers, numberResources);
+//		PolicyEditor pe= new PolicyEditor(simul.policy);
+//		System.out.println(pe.getNumberPolicyRules());
+		simul.loadTypes();
+		simul.kevoreeListener.listen();
+		simul.policyListener.listen();
+		simul.initSimulationArchitecturalChanges();
+		c.stop();
+		System.out.println("split by user : "+c.displayTime());
+		
+		c = new Chrono();
+		c.start();
+		simul = new SimulationSplitByRole(numberUsers, numberResources);
+		simul.loadTypes();
+		simul.kevoreeListener.listen();
+		simul.policyListener.listen();
+		simul.initSimulationArchitecturalChanges();
+		c.stop();
+		System.out.println("split by role : " + c.displayTime());
+
+		c = new Chrono();
+		c.start();
+		simul = new SimulationSimple(numberUsers, numberResources);
+		simul.loadTypes();
+		simul.kevoreeListener.listen();
+		simul.policyListener.listen();
+		simul.initSimulationArchitecturalChanges();
+		c.stop();
+		System.out.println("       simple : " + c.displayTime());
+		
+		
+	}
+	
+	
 	public static void main(String[] args) {
 		Simulate s =new Simulate();
-		for(int users = 0;users<10;users++){
-			for(int resources = 0;resources<10;resources++){
-				System.out.println("number users : "+(users+1) + " number resources : "+(resources+1));
-				s.simulate(users, resources);
-			}
+		int users = 100;
+		int resources = 100;
+		int iteration =10;
+		
+		for(int i = 0;i<iteration;i++){
+				System.out.println("iteration : "+iteration+" number users : "+(users) + " number resources : "+(resources));
+				s.simulate2(users, resources);
 		}
 	}	
 	
