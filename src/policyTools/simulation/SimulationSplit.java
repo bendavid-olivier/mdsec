@@ -9,7 +9,7 @@ import policyTools.split.Splitter;
 import utils.time.Chrono;
 
 //one architectural model and only multiple policy models splitted by users.
-public class SimulationSplit extends Simulation{
+public abstract class SimulationSplit extends Simulation{
 
 	public Splitter splitter;
 	
@@ -27,20 +27,4 @@ public class SimulationSplit extends Simulation{
 		splitter = new Splitter(policy);	
 	}
 
-	
-
-	
-	public static void main(String[] args) {
-		Chrono c = new Chrono();
-		c.start();
-		System.out.println("START SIMULATION SPLIT");
-		SimulationSplit simul = new SimulationSplit(3,1);
-		simul.loadTypes();
-		simul.kevoreeListener.listen();
-		simul.policyListener.listen();
-		simul.initSimulationArchitecturalChanges();
-//		simul.saveArchitectureModel();
-		c.stop();
-		System.out.println("END SIMULATION SPLIT : "+c.displayTime());
-	}	
 }

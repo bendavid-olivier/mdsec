@@ -67,7 +67,6 @@ public class Splitter {
 				PolicyEditor pe = new PolicyEditor(p);
 				Role rol = pe.cloneRole(r);
 				p.getElements().add(rol);
-				
 				for(Role rd : r.getDsod()){
 					Role rold = pe.cloneRole(rd);
 					p.getElements().add(rold);
@@ -79,13 +78,11 @@ public class Splitter {
 //						pe.addPolicyUserRole(policyName, usr.getName(), rold.getName());
 //					}
 				}
-				
 				for(User u : r.getUsers()){
 					User usr = pe.cloneUser(u);
 					p.getElements().add(usr);
 					pe.addPolicyUserRole(policyName, usr.getName(), rol.getName());
-				}
-			
+				}		
 				for (Permission per : r.getPermissions()){
 					Permission perm = pe.clonePermission(per);
 					p.getElements().add(perm);
@@ -105,5 +102,4 @@ public class Splitter {
 		}
 		return res;
 	}
-	
 }
