@@ -461,6 +461,9 @@ public class PolicyEditor {
 				getPolicyRoleByName(policyName, roleDSODName));
 		getPolicyRoleByName(policyName, roleName).getDsodOpp().add(
 				getPolicyRoleByName(policyName, roleDSODName));
+		System.out.println(roleDSODName+"  "+getPolicyRoleByName(policyName, roleDSODName).getDsod().size());
+		System.out.println(roleName+"  "+getPolicyRoleByName(policyName, roleName).getDsod().size());
+	
 	}
 
 	public void removePolicyRoleRoleDSOD(String policyName, String roleName,

@@ -210,24 +210,26 @@ public class Policy2GraphO{
 
 			// SSOD role->role
 			if (e instanceof RoleImpl) {
-				for (Role r : ((Role) e).getSsod()) {
-					Edge ed = factory.createEdge();
-					ed.setName(pc.getName() + e.getName() + r.getName());
-					ed.setColor("red");
-					ed.setStyle("dashed");
-					ed.setConstraintRank(false);
-					ed.setNodeA(editor.getNodeByName(pc.getName() + e.getName()));
-					ed.setNodeB(editor.getNodeByName(pc.getName() + r.getName()));
-					g.getElements().add(ed);
-					
-					Edge ed2 = factory.createEdge();
-					ed2.setName(pc.getName() + r.getName()+e.getName());
-					ed2.setColor("red");
-					ed2.setStyle("dashed");
-					ed2.setConstraintRank(false);
-					ed2.setNodeA(editor.getNodeByName(pc.getName() + r.getName()));
-					ed2.setNodeB(editor.getNodeByName(pc.getName() + e.getName()));
-					g.getElements().add(ed2);
+				for (Role r : ((Role) e).getDsod()) {
+					if( (editor.getEdgeByName(pc.getName() + e.getName() + r.getName()) == null)){
+						Edge ed = factory.createEdge();
+						ed.setName(pc.getName() + e.getName() + r.getName());
+						ed.setColor("red");
+						ed.setStyle("dashed");
+						ed.setConstraintRank(false);
+						ed.setNodeA(editor.getNodeByName(pc.getName() + e.getName()));
+						ed.setNodeB(editor.getNodeByName(pc.getName() + r.getName()));
+						g.getElements().add(ed);
+						
+						Edge ed2 = factory.createEdge();
+						ed2.setName(pc.getName() + r.getName()+e.getName());
+						ed2.setColor("red");
+						ed2.setStyle("dashed");
+						ed2.setConstraintRank(false);
+						ed2.setNodeA(editor.getNodeByName(pc.getName() + r.getName()));
+						ed2.setNodeB(editor.getNodeByName(pc.getName() + e.getName()));
+						g.getElements().add(ed2);
+					}
 				}
 			}
 

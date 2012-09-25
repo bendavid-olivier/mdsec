@@ -135,6 +135,18 @@ public class PolicyRules2GraphO {
 
 			// role->assignedPermissions
 			if (e instanceof RoleImpl) {
+				
+				for(Role rd : ((Role) e).getDsod()){
+					Edge ed = factory.createEdge();
+					ed.setName(pc.getName() + e.getName() + rd.getName());
+					ed.setColor("red");
+					ed.setStyle("solid");
+					ed.setConstraintRank(true);
+					ed.setNodeA(editor.getNodeByName(pc.getName() + e.getName()));
+					ed.setNodeB(editor.getNodeByName(pc.getName() + rd.getName()));
+					g.getElements().add(ed);
+				}
+				
 				for (Permission p : ((Role) e).getPermissions()) {
 //					Edge ed = factory.createEdge();
 //					ed.setName(pc.getName() + e.getName() + p.getName());

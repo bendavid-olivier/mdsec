@@ -272,6 +272,7 @@ public class Generator{
 		
 		//adding dsod
 		pe.addPolicyRoleRoleDSOD(policyName, "Buyer", "Seller");
+		pe.addPolicyRoleRoleDSOD(policyName, "Seller", "Auctioneer");
 		
 		//adding relationships users to roles
 		for(int i = 0;i<numberUsers;i++){
