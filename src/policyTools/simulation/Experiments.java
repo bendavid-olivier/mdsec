@@ -8,7 +8,7 @@ import utils.time.Chrono;
 public class Experiments{
 	private static int USERS = 5;
 	private static int RESOURCES =5;
-	private static int ITERATIONS = 5;
+	private static int ITERATIONS = 3;
 	private static int DIFFERENCE = 50;
 	private static DecimalFormat df = new DecimalFormat();
 
@@ -132,6 +132,18 @@ public class Experiments{
 
 			}
 		}
+	}
+
+	private double totalRuntime(Strategy stg) {
+		double [][][] rt = setLocalBC(stg);
+		double totalRT = 0;
+		
+		for (int h=0; h<ITERATIONS; h++)
+			for (int i=0; i<USERS; i++) 
+				for (int j=0; j<RESOURCES; j++)
+					totalRT += rt[h][i][j];
+		return totalRT;
+				
 	}
 
 	private void compareExperiments(double[][] vals, 
@@ -373,6 +385,17 @@ public class Experiments{
 		//experiment1.compareStatistics(experiment2, 0);
 		//experiment1.compareStatistics(experiment2, 1);
 		experiment1.compareStatistics(experiment2, 2);
+		
+		System.out.println("\n\n");
+		System.out.println("========================================================================================================================");
+		System.out.println("Total runtime for " + Strategy.SIMPLE + " Interleaved strategy for all ITERATIONS is: " + 
+				(experiment1.totalRuntime(Strategy.SIMPLE )/1000) + " seconds"); 
+		System.out.println("Total runtime for " + Strategy.USER_SPLIT + " Interleaved strategy for all ITERATIONS is: " + 
+				(experiment1.totalRuntime(Strategy.USER_SPLIT)/1000) + " seconds");
+		System.out.println("Total runtime for " + Strategy.SIMPLE + " Sequential strategy for all ITERATIONS is: " + 
+				(experiment2.totalRuntime(Strategy.SIMPLE)/1000) + " seconds"); 
+		System.out.println("Total runtime for " + Strategy.USER_SPLIT + " Sequential strategy for all ITERATIONS is: " + 
+				(experiment2.totalRuntime(Strategy.USER_SPLIT)/1000) + " seconds");
 	}	
 		
 	public static void experiement2() {
