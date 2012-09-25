@@ -11,29 +11,20 @@ import utils.time.Chrono;
 //one architectural model and only multiple policy models splitted by users.
 public class SimulationSplit extends Simulation{
 
+	public Splitter splitter;
+	
+	
 	
 	public SimulationSplit()  {
 		super();
 		policies =  new HashMap<String, Pair<Policy,PolicyListener>>();
-		Splitter splitter = new Splitter(policy);	
-		for(Policy p : splitter.splitByUsers()){
-			policies.put(p.getName(),new  Pair<Policy, PolicyListener>(p, new PolicyListener(this,p)));
-		}
-		for(Entry e :  policies.entrySet()){
-			((Pair<Policy,PolicyListener>)e.getValue()).snd.listen();
-		}
+		splitter = new Splitter(policy);	
 	}
 	
 	public SimulationSplit(int numberUsers, int numberResources){
 		super(numberUsers, numberResources);	
 		policies =  new HashMap<String, Pair<Policy,PolicyListener>>();
-		Splitter splitter = new Splitter(policy);	
-		for(Policy p : splitter.splitByUsers()){
-			policies.put(p.getName(),new  Pair<Policy, PolicyListener>(p, new PolicyListener(this,p)));
-		}
-		for(Entry e :  policies.entrySet()){
-			((Pair<Policy,PolicyListener>)e.getValue()).snd.listen();
-		}
+		splitter = new Splitter(policy);	
 	}
 
 	

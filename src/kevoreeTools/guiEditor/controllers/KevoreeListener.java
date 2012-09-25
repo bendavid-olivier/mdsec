@@ -137,43 +137,83 @@ public class KevoreeListener {
 							.getName();
 					String compType = ((ComponentInstance) sig.getValueOfC())
 							.getTypeDefinition().getName();
-					
-					if(getAppropriatePolicy(node) != null){
-						PolicyEditor pe = new PolicyEditor(getAppropriatePolicy(node));
-						String policyName = getAppropriatePolicy(node).getName();
-						if(pe.getPolicyUserByName(getAppropriatePolicy(node).getName(), node) != null){		
-							
-							// check whether it is a role activation ?
-							boolean roleActivation = true;
-							// check if it is a role
-							if (pe.getPolicyRoleByName(getAppropriatePolicy(node).getName(), compType) == null) {
-								roleActivation = false;
+				
+					if(current_strategy.equals(STRATEGY_SPLITUSERS)){
+						if(getAppropriatePolicy(node) != null){							
+							PolicyEditor pe = new PolicyEditor(getAppropriatePolicy(node));
+							String policyName = getAppropriatePolicy(node).getName();
+							if(pe.getPolicyUserByName(getAppropriatePolicy(node).getName(), node) != null){		
+								
+								// check whether it is a role activation ?
+								boolean roleActivation = true;
+								// check if it is a role
+								if (pe.getPolicyRoleByName(getAppropriatePolicy(node).getName(), compType) == null) {
+									roleActivation = false;
+								}
+								// check if the role is associated to the user
+								if (pe.getPolicyUserRoleByName(
+										getAppropriatePolicy(node)
+												.getName(), node, compType) == null) {
+									roleActivation = false;
+								}
+								// check if the role can be activated
+								// TODO smartly
+								// activate the role
+								if (roleActivation) {
+									boolean dsod = true;
+										for(Role rr : pe.getPolicyUserByName(policyName, node).getSession().getRoles()){
+											dsod = dsod && PolicyChecker.checkDSoD(simulation.policy,rr.getName() ,comp);
+										}
+										if(dsod){	
+											pe.addPolicySessionRole(getAppropriatePolicy(node).getName(), "s" + node, compType);
+										}
+										else{
+	//										System.out.println("dsod violation");
+											simulation.kevoreeEditor.removeNodeComponent(node, comp);
+										}
+								}	
 							}
-							// check if the role is associated to the user
-							if (pe.getPolicyUserRoleByName(
-									getAppropriatePolicy(node)
-											.getName(), node, compType) == null) {
-								roleActivation = false;
-							}
-							// check if the role can be activated
-							// TODO smartly
-							// activate the role
-							if (roleActivation) {
-								boolean dsod = true;
-									for(Role rr : pe.getPolicyUserByName(policyName, node).getSession().getRoles()){
-										dsod = dsod && PolicyChecker.checkDSoD(simulation.policy,rr.getName() ,comp);
-									}
-									if(dsod){	
-										pe.addPolicySessionRole(getAppropriatePolicy(node).getName(), "s" + node, compType);
-									}
-									else{
-//										System.out.println("dsod violation");
-										simulation.kevoreeEditor.removeNodeComponent(node, comp);
-										
-									}
-							}	
 						}
 					}
+					
+					if(current_strategy.equals(STRATEGY_SPLITROLES)){
+						if(getAppropriatePolicy(compType) != null){							
+							PolicyEditor pe = new PolicyEditor(getAppropriatePolicy(node));
+							String policyName = getAppropriatePolicy(node).getName();
+							if(pe.getPolicyUserByName(getAppropriatePolicy(node).getName(), node) != null){		
+								
+								// check whether it is a role activation ?
+								boolean roleActivation = true;
+								// check if it is a role
+								if (pe.getPolicyRoleByName(getAppropriatePolicy(node).getName(), compType) == null) {
+									roleActivation = false;
+								}
+								// check if the role is associated to the user
+								if (pe.getPolicyUserRoleByName(
+										getAppropriatePolicy(node)
+												.getName(), node, compType) == null) {
+									roleActivation = false;
+								}
+								// check if the role can be activated
+								// TODO smartly
+								// activate the role
+								if (roleActivation) {
+									boolean dsod = true;
+										for(Role rr : pe.getPolicyUserByName(policyName, node).getSession().getRoles()){
+											dsod = dsod && PolicyChecker.checkDSoD(simulation.policy,rr.getName() ,comp);
+										}
+										if(dsod){	
+											pe.addPolicySessionRole(getAppropriatePolicy(node).getName(), "s" + node, compType);
+										}
+										else{
+	//										System.out.println("dsod violation");
+											simulation.kevoreeEditor.removeNodeComponent(node, comp);
+										}
+								}	
+							}
+						}
+					}
+					
 				}
 
 				for (NodeComponentSignature sig : monitorNodeComponent.matchLostEvents) {
@@ -257,7 +297,10 @@ public class KevoreeListener {
 			if(simulation.policies.get(name) != null)
 				return simulation.policies.get(name).fst;
 		}
+		if(current_strategy.equals(STRATEGY_SPLITROLES)){
+			if(simulation.policies.get(name) != null)
+				return simulation.policies.get(name).fst;
+		}
 		return res;
 	}
-	
 }
