@@ -6,9 +6,9 @@ import utils.statistics.Statistics;
 import utils.time.Chrono;
 
 public class Experiments{
-	private static int USERS = 10;
+	private static int USERS = 5;
 	private static int RESOURCES =5;
-	private static int ITERATIONS = 10;
+	private static int ITERATIONS = 5;
 	private static int DIFFERENCE = 50;
 	private static DecimalFormat df = new DecimalFormat();
 

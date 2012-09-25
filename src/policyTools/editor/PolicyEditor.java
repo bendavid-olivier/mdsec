@@ -79,6 +79,17 @@ public class PolicyEditor {
 		 return res;
 	}
 	
+	public HashSet<policy.Role> getPolicyRoles(String policyName){
+		 HashSet<policy.Role> res = new HashSet<policy.Role>();
+		 for(PolicyElement e :policy.getElements()){
+				if(e instanceof RoleImpl){
+					res.add((Role) e);
+				}
+			}
+		 return res;
+	}
+	
+	
 	public HashSet<policy.Object> getPolicyObjects(String policyName){
 		 HashSet<policy.Object> res = new HashSet<policy.Object>();
 		 for(PolicyElement e :policy.getElements()){

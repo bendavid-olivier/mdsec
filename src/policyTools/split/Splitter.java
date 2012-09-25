@@ -53,23 +53,30 @@ public class Splitter {
 		}
 		return res;
 	}
-	
-	
-	
+
 	public HashSet<Policy> splitByRoles(){
 		HashSet<Policy> res = new HashSet<Policy>();
 		PolicyEditor policyEditor = new PolicyEditor(policy);
-		for (User u : policyEditor.getPolicyUsers(policy.getName())){
-			String policyName = u.getName();
-			Policy p = factory.createPolicy();
-			p.setName(policyName);
-			PolicyEditor pe = new PolicyEditor(p);
-			User usr = pe.cloneUser(u);   
-			p.getElements().add(usr);
-			for(Role r : u.getRoles()){
+			for(Role r : policyEditor.getPolicyRoles(policy.getName())){
+				String policyName = r.getName();
+				Policy p = factory.createPolicy();
+				p.setName(r.getName());
+				PolicyEditor pe = new PolicyEditor(p);
 				Role rol = pe.cloneRole(r);
 				p.getElements().add(rol);
-				pe.addPolicyUserRole(policyName, u.getName(), rol.getName());
+				
+				for(Role rd : r.getDsod()){
+					Role rold = pe.cloneRole(rd);
+					p.getElements().add(rold);
+					pe.addPolicyRoleRoleDSOD(policyName, r.getName(), rd.getName());
+				}
+				
+				for(User u : r.getUsers()){
+					User usr = pe.cloneUser(u);
+					p.getElements().add(rol);
+					pe.addPolicyUserRole(policyName, usr.getName(), rol.getName());
+				}
+			
 				for (Permission per : r.getPermissions()){
 					Permission perm = pe.clonePermission(per);
 					p.getElements().add(perm);
@@ -85,11 +92,9 @@ public class Splitter {
 						}
 					}
 				}
-			}
 			res.add(p);
 		}
 		return res;
 	}
-	
 	
 }
