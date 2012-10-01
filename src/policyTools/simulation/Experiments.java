@@ -1,14 +1,21 @@
 package policyTools.simulation;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import com.sun.tools.javac.util.Pair;
 import utils.statistics.Statistics;
 import utils.time.Chrono;
 
 public class Experiments{
-	private static int USERS = 5;
-	private static int RESOURCES =5;
-	private static int ITERATIONS = 3;
+	
+	enum Dimension { USER, RESOURCE, ROLE}
+	
+	private static int USERS = 100;
+	private static int RESOURCES =50;
+	private static int ITERATIONS = 100;
 	private static int DIFFERENCE = 50;
 	private static DecimalFormat df = new DecimalFormat();
 
@@ -78,8 +85,10 @@ public class Experiments{
 
 	private void runSimple() {
 		Chrono c = new Chrono();
-		for (int i=0; i<ITERATIONS; i++)
+		for (int i=0; i<ITERATIONS; i++) {
+			System.out.println("Iteration " + i);
 			simple(c, i);
+		}
 	}
 
 	private void runSplitUser() {
@@ -151,13 +160,13 @@ public class Experiments{
 	private double totalRuntime(Strategy stg) {
 		double [][][] rt = setLocalBC(stg);
 		double totalRT = 0;
-		
+
 		for (int h=0; h<ITERATIONS; h++)
 			for (int i=0; i<USERS; i++) 
 				for (int j=0; j<RESOURCES; j++)
 					totalRT += rt[h][i][j];
 		return totalRT;
-				
+
 	}
 
 	private void compareExperiments(double[][] vals, 
@@ -235,10 +244,10 @@ public class Experiments{
 			for (int h=0; h<ITERATIONS;h++) {
 				System.out.println("------------------------------------------------------------------------------------------------------------------------");
 				System.out.println("Start of Iteration: " + (h+1));
-				
+
 				//start clock for total
 				cTotal.start();
-				
+
 				//execute Strategy
 				System.out.println("\tStart: Simulation " + stg1);
 				runStrategy(stg1);
@@ -316,9 +325,9 @@ public class Experiments{
 	}
 
 	public static void compareStatistics(Statistics[][] base, Statistics[][] compare, int whichBetter) {
-		
+
 		if (base.length == compare.length && base[0].length == compare[0].length ){
-			
+
 			int better=0, worse=0, equal=0;
 			for (int i=0; i<USERS; i++) {
 				for (int j=0; j<RESOURCES; j++){
@@ -353,81 +362,143 @@ public class Experiments{
 		}
 		else System.out.println("Not Comparable: Incompatible dimensions!");
 	}
+
+	public void saveResults(Strategy stg1) {
+
+		/* This will be used later to save the results by a particular dimension 
+		 * but it may not be neccessary as python (the statistical tool of choice now) 
+		 * can extract this too */
+
+		System.out.println("Start writing results for " + stg1 + " strategy...");
+		//get array with results
+		double [][][] a = setLocalBC(stg1);
+		//constructString
+		String s = "";
+		//s += "\"Simulation Results for....\"\n";
+		//s += "STRATEGY " + stg1 + "\n";
+		//s += "ITERATIONS " + ITERATIONS + "\n";
+		//s += "USERS " + USERS + "\n";
+		//s += "RESOURCES " + RESOURCES + "\n";
+		
+		for (int h=0; h<ITERATIONS; h++){
+			//s += (h+1) + "\n";
+			for (int i=0; i<USERS; i++) {
+				for (int j=0; j<RESOURCES; j++)
+					s += a[h][i][j] + " ";
+				//s += "\n";
+			} // end loop for i
+		}//end loop for h
+
+		try {
+			File file = new File("../Results/" + stg1 + "_" + ITERATIONS + "_" + USERS + "_" + RESOURCES + ".data");
+
+			// if file doesnt exists, then create it
+			if (!file.exists()) 
+				file.createNewFile();
+
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(s);
+			bw.close();
+
+			System.out.println("Done writing file");
+
+		} catch (IOException e) {
+			e.printStackTrace();}	
+	}
+
+	public static void experimentSave () {
+		Experiments experimentSeq = new Experiments();
 	
-	public static void experiement1() {
+		//run all strategies Sequentially
+		experimentSeq.runSimple();
+		experimentSeq.saveResults(Strategy.SIMPLE);
+		
+		//experimentSeq.runSplitUser();
+		//experimentSeq.runSplitRole();
+
+		//Experiments experimentInt = new Experiments();
+		//run all strategies Interleaved
+		//for (int h=0; h<ITERATIONS; h++)
+			//experimentInt.runALL(h);
+		
+		
+	}
+
+	public static void experiement1(Strategy stg1, Strategy stg2) {
 		Experiments experiment1 = new Experiments();
-		experiment1.compareSearchStrategiesInterleave(Strategy.SIMPLE, Strategy.USER_SPLIT);
+		experiment1.compareSearchStrategiesInterleave(stg1, stg2);
 
 		System.out.println("\n\n");
 		System.out.println("========================================================================================================================");
 		Experiments experiment2 = new Experiments();
-		experiment2.compareSearchStrategiesSequental(Strategy.SIMPLE, Strategy.USER_SPLIT);
+		experiment2.compareSearchStrategiesSequental(stg1, stg2);
 
 		System.out.println("\n\n");
 		System.out.println("========================================================================================================================");
-		System.out.println("Comparing Statistics SIMPLE Interleaved to SIMPLE Sequential---");
-		experiment1.calculateStatistics(Strategy.SIMPLE);
-		experiment2.calculateStatistics(Strategy.SIMPLE);
+		System.out.println("Comparing Statistics " + stg1 + " Interleaved to "  + stg1 + " Sequential---");
+		experiment1.calculateStatistics(stg1);
+		experiment2.calculateStatistics(stg1);
 		//experiment1.compareStatistics(experiment2, 0);
 		//experiment1.compareStatistics(experiment2, 1);
 		experiment1.compareStatistics(experiment2, 2);
-		
+
 		System.out.println("\n\n");
 		System.out.println("========================================================================================================================");
-		System.out.println("Comparing Statistics USER_SPLIT Interleaved to USER_SPLIT Sequential---");
-		experiment1.calculateStatistics(Strategy.USER_SPLIT);
-		experiment2.calculateStatistics(Strategy.USER_SPLIT);
+		System.out.println("Comparing Statistics " + stg2 + " Interleaved to " + stg2 + " Sequential---");
+		experiment1.calculateStatistics(stg2);
+		experiment2.calculateStatistics(stg2);
 		//experiment1.compareStatistics(experiment2, 0);
 		//experiment1.compareStatistics(experiment2, 1);
 		experiment1.compareStatistics(experiment2, 2);
-		
-		
+
+
 		System.out.println("\n\n");
 		System.out.println("========================================================================================================================");
-		System.out.println("Comparing Statistics SIMPLE Interleaved to USER_SPLIT Sequential---");
-		experiment1.calculateStatistics(Strategy.SIMPLE);
-		experiment2.calculateStatistics(Strategy.USER_SPLIT);
+		System.out.println("Comparing Statistics " + stg1 + " Interleaved to " + stg2 + " Sequential---");
+		experiment1.calculateStatistics(stg1);
+		experiment2.calculateStatistics(stg2);
 		//experiment1.compareStatistics(experiment2, 0);
 		//experiment1.compareStatistics(experiment2, 1);
 		experiment1.compareStatistics(experiment2, 2);
-		
+
 		System.out.println("\n\n");
 		System.out.println("========================================================================================================================");
-		System.out.println("Comparing Statistics USER_SPLIT Interleaved to SIMPLE Sequential---");
-		experiment1.calculateStatistics(Strategy.USER_SPLIT);
-		experiment2.calculateStatistics(Strategy.SIMPLE);
+		System.out.println("Comparing Statistics " + stg2 + " Interleaved to " + stg1 + " Sequential---");
+		experiment1.calculateStatistics(stg2);
+		experiment2.calculateStatistics(stg1);
 		//experiment1.compareStatistics(experiment2, 0);
 		//experiment1.compareStatistics(experiment2, 1);
 		experiment1.compareStatistics(experiment2, 2);
-		
+
 		System.out.println("\n\n");
 		System.out.println("========================================================================================================================");
-		System.out.println("Total runtime for " + Strategy.SIMPLE + " Interleaved strategy for all ITERATIONS is: " + 
-				(experiment1.totalRuntime(Strategy.SIMPLE )/1000) + " seconds"); 
-		System.out.println("Total runtime for " + Strategy.USER_SPLIT + " Interleaved strategy for all ITERATIONS is: " + 
-				(experiment1.totalRuntime(Strategy.USER_SPLIT)/1000) + " seconds");
-		System.out.println("Total runtime for " + Strategy.SIMPLE + " Sequential strategy for all ITERATIONS is: " + 
-				(experiment2.totalRuntime(Strategy.SIMPLE)/1000) + " seconds"); 
-		System.out.println("Total runtime for " + Strategy.USER_SPLIT + " Sequential strategy for all ITERATIONS is: " + 
-				(experiment2.totalRuntime(Strategy.USER_SPLIT)/1000) + " seconds");
-	}	
-		
+		System.out.println("Total runtime for " + stg1 + " Interleaved strategy for all ITERATIONS is: " + 
+				(experiment1.totalRuntime(stg1 )/1000) + " seconds"); 
+		System.out.println("Total runtime for " + stg2 + " Interleaved strategy for all ITERATIONS is: " + 
+				(experiment1.totalRuntime(stg2)/1000) + " seconds");
+		System.out.println("Total runtime for " + stg1 + " Sequential strategy for all ITERATIONS is: " + 
+				(experiment2.totalRuntime(stg1)/1000) + " seconds"); 
+		System.out.println("Total runtime for " + stg2 + " Sequential strategy for all ITERATIONS is: " + 
+				(experiment2.totalRuntime(stg2)/1000) + " seconds");
+	}
+
 	public static void experiement2() {
-	
+
 		/* using Sequential Execution for Comparison, 
 		 * can only be run when ROLE_SPLIT strategy has been implemented*/
 		Experiments experiment = new Experiments();
-		
+
 		//run all strategies Sequentially
 		experiment.runSimple();
 		experiment.runSplitUser();
 		experiment.runSplitRole();
-		
+
 		//calculate statistics for all categories
 		Statistics[][] simpleStats = experiment.calculateStatistics(Strategy.SIMPLE);
 		Statistics[][] userSplitStats = experiment.calculateStatistics(Strategy.USER_SPLIT);
 		Statistics[][] roleSplitStats = experiment.calculateStatistics(Strategy.ROLE_SPLIT);
-		
+
 		//run comparisons on statistics
 		System.out.println("========================================================================================================================");
 		System.out.println("Comparing Statistics SIMPLE Sequential to USER_SPLIT Sequential ---");
@@ -439,22 +510,22 @@ public class Experiments{
 		System.out.println("Comparing Statistics ROLE_SPLIT Sequential to USER_SPLIT Sequential ---");
 		Experiments.compareStatistics(roleSplitStats, userSplitStats, 2);
 	}
-	
+
 	public static void experiement3() {
-		
+
 		/* using Interleaved Execution for Comparison, 
 		 * can only be run when ROLE_SPLIT strategy has been implemented*/
 		Experiments experiment = new Experiments();
-		
+
 		//run all strategies Interleaved
 		for (int h=0; h<ITERATIONS; h++)
 			experiment.runALL(h);
-		
+
 		//calculate statistics for all categories
 		Statistics[][] simpleStats = experiment.calculateStatistics(Strategy.SIMPLE);
 		Statistics[][] userSplitStats = experiment.calculateStatistics(Strategy.USER_SPLIT);
 		Statistics[][] roleSplitStats = experiment.calculateStatistics(Strategy.ROLE_SPLIT);
-		
+
 		//run comparisons on statistics
 		System.out.println("========================================================================================================================");
 		System.out.println("Comparing Statistics SIMPLE Interleaved to USER_SPLIT Interleaved ---");
@@ -466,28 +537,28 @@ public class Experiments{
 		System.out.println("Comparing Statistics ROLE_SPLIT Interleaved to USER_SPLIT Interleaved ---");
 		Experiments.compareStatistics(roleSplitStats, userSplitStats, 2);
 	}
-	
+
 	public static void experiement4() {
-		
+
 		/* using Sequential and Interleaved Execution for Comparison, 
 		 * can only be run when ROLE_SPLIT strategy has been implemented*/
 		Experiments experimentSeq = new Experiments();
 		Experiments experimentInt = new Experiments();
-		
+
 		//run all strategies Sequentially
 		experimentSeq.runSimple();
 		experimentSeq.runSplitUser();
 		experimentSeq.runSplitRole();
-				
+
 		//run all strategies Interleaved
 		for (int h=0; h<ITERATIONS; h++)
 			experimentInt.runALL(h);
-		
+
 		//calculate statistics for all categories
 		Statistics[][] simpleStatsSeq = experimentSeq.calculateStatistics(Strategy.SIMPLE);
 		Statistics[][] userSplitStatsSeq = experimentSeq.calculateStatistics(Strategy.USER_SPLIT);
 		Statistics[][] roleSplitStatsSeq = experimentSeq.calculateStatistics(Strategy.ROLE_SPLIT);
-		
+
 		//calculate statistics for all categories
 		Statistics[][] simpleStatsInt = experimentSeq.calculateStatistics(Strategy.SIMPLE);
 		Statistics[][] userSplitStatsInt = experimentSeq.calculateStatistics(Strategy.USER_SPLIT);
@@ -495,7 +566,7 @@ public class Experiments{
 	}
 
 	public static void main(String[] args) {
-		Experiments.experiement2();
+		experimentSave();
 	}
 
-}
+ }

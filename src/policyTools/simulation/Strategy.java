@@ -9,9 +9,9 @@ import com.sun.tools.javac.util.Pair;
 
 public enum Strategy {
 	SIMPLE("Simple"),
-	USER_SPLIT("Split by User"),
-	ROLE_SPLIT("Split by Role"),
-	ROLE_USER_SPLIT("Split by Role and User");
+	USER_SPLIT("Split_by_User"),
+	ROLE_SPLIT("Split_by_Role"),
+	ROLE_USER_SPLIT("Split_by_Role_and_User");
 	
 	private final String type; 
 
